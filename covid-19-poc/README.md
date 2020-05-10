@@ -8,4 +8,4 @@ https://start.spring.io/
 
 # dependencies
 
-![](/imgs/poc-dependencies.png)
+![](../imgs/poc-dependencies.png)
