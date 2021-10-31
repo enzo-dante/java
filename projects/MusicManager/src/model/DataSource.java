@@ -21,9 +21,18 @@ public class DataSource {
     // SQLite3 INTEGER
     public static final String COLUMN_ALBUMS_ARTIST = "artist";
 
+    // COLUMN INDICES are 1 based, not 0 based
+    public static final int INDEX_ALBUMS_ID = 1;
+    public static final int INDEX_ALBUMS_NAME = 2;
+    public static final int INDEX_ALBUMS_ARTIST = 3;
+
     public static final String TABLE_ARTISTS = "artists";
     public static final String COLUMN_ARTISTS_ID = "_id";
     public static final String COLUMN_ARTISTS_NAME = "name";
+
+    // COLUMN INDICES are 1 based, not 0 based
+    public static final int INDEX_ARTISTS_ID = 1;
+    public static final int INDEX_ARTISTS_NAME = 2;
 
     public static final String TABLE_SONGS = "songs";
     public static final String COLUMN_SONGS_ID = "_id";
@@ -35,11 +44,22 @@ public class DataSource {
     // SQLite3 INTEGER
     public static final String COLUMN_SONGS_ALBUM = "album";
 
+    // COLUMN INDICES are 1 based, not 0 based
+    public static final int INDEX_SONGS_ID = 1;
+    public static final int INDEX_SONGS_TRACK = 2;
+    public static final int INDEX_SONGS_TITLE = 3;
+    public static final int INDEX_SONGS_ALBUM = 3;
+
+    // SQL query composition
+    public static final int ORDER_BY_NONE = 1;
+    public static final int ORDER_BY_ASC = 2;
+    public static final int ORDER_BY_DESC = 3;
+
     private Connection connection;
 
     /**
-     * This is the method which is used to get a list of artists
-     * @return A list of artists
+     * This is the method which opens a connection to the music SQLite3 database.
+     * @return A boolean indicating connection success or failure.
      * @exception SQLException On SQLite3 connection error.
      */
     public boolean open() {
@@ -54,7 +74,7 @@ public class DataSource {
     }
 
     /**
-     * This is the method which opens a connection to the music SQLite3 database.
+     * This is the method which closes a connection to the music SQLite3 database.
      * @return Nothing.
      * @exception SQLException On SQLite3 connection error.
      */
@@ -70,12 +90,29 @@ public class DataSource {
     }
 
     /**
-     * This is the method which opens a connection to the music SQLite3 database.
+     * This is the method which gets a list of all artists.
+     * SQL: SELECT * FROM artists ORDER BY COLLATE NOCASE ASC;
+     * @param sortOrder order of results in ASC or DESC.
      * @return Nothing.
      * @exception SQLException On SQLite3 connection error.
      */
+    public List<Artist> queryArtists(int sortOrder) {
 
-    public List<Artist> queryArtists() {
+        // Build string for SQL query statement
+        StringBuilder stringBuilder = new StringBuilder("SELECT * FROM ");
+        stringBuilder.append(TABLE_ARTISTS);
+        if(sortOrder != ORDER_BY_NONE) {
+            stringBuilder.append(" ORDER BY ");
+            stringBuilder.append(COLUMN_ARTISTS_NAME);
+            stringBuilder.append(" COLLATE NOCASE ");
+
+            if(sortOrder == ORDER_BY_DESC) {
+                stringBuilder.append("DESC");
+            } else {
+                stringBuilder.append("ASC");
+            }
+        }
+
         Statement statement = null;
         ResultSet results = null;
 
@@ -83,7 +120,7 @@ public class DataSource {
 
             // new instance of connection statement to maintain query data integrity
             statement = connection.createStatement();
-            results = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS);
+            results = statement.executeQuery(stringBuilder.toString());
 
             // instantiate list of artist class objects
             List<Artist> artists = new ArrayList<>();
@@ -92,9 +129,9 @@ public class DataSource {
             while(results.next()) {
                 Artist artist = new Artist();
 
-                // type cast SQL return values
-                artist.set_id(results.getInt(COLUMN_ARTISTS_ID));
-                artist.setName(results.getString(COLUMN_ARTISTS_NAME));
+                // overloaded method type cast SQL return values
+                artist.set_id(results.getInt(INDEX_ARTISTS_ID));
+                artist.setName(results.getString(INDEX_ARTISTS_NAME));
 
                 artists.add(artist);
             }
@@ -125,5 +162,16 @@ public class DataSource {
                 System.out.println("Error closing Artists Statement query: " + e.getMessage());
             }
         }
+    }
+    /**
+     * This is the method which gets a list of albums by the specified artist.
+     * SQL: SELECT * FROM artists ORDER BY COLLATE NOCASE ASC;
+     * @param artistName name of artist.
+     * @param sortOrder order of results in ASC or DESC.
+     * @return Nothing.
+     * @exception SQLException On SQLite3 connection error.
+     */
+    public List<String> queryAlbumsForAritst(String artistName, int sortOrder) {
+
     }
 }

@@ -33,7 +33,7 @@ public class Main {
         }
 
         // get all artists
-        List<Artist> artists = datasource.queryArtists();
+        List<Artist> artists = datasource.queryArtists(DataSource.ORDER_BY_ASC);
         if(artists == null) {
             System.out.println("Where have all the artists gone?");
             return;
