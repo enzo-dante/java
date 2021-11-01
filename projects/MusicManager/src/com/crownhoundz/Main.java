@@ -5,6 +5,7 @@ import model.DataSource;
 import model.SongArtist;
 
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * <h1>MusicManager!</h1>
@@ -51,7 +52,7 @@ public class Main {
 
         // for each albums.name in the albums list
         for(String albumName : albumsForArtist) {
-            System.out.println("album name: " + albumName);
+            System.out.println("\nalbum name: " + albumName);
         }
 
         System.out.println("---");
@@ -72,7 +73,48 @@ public class Main {
         System.out.println("---");
 
         int count = datasource.getCount(DataSource.TABLE_SONGS);
-        System.out.println("Songs count: " + count);
+        System.out.println("\nSongs count: " + count);
+
+        System.out.println("---");
+
+        datasource.createViewArtistList();
+
+        System.out.println("\n---SQL injection attack vulnerability test---\n");
+        System.out.println(
+                """
+                    __vulnerable StringBuilder__
+                    SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
+                                            
+                    __protected PreparedStatement__
+                    SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
+                """
+        );
+
+        // define scanner for user input prompt
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please enter a song title: ");
+
+        // capture user input with scanner
+        String userInput = scanner.nextLine();
+
+        // make SQLite query with userInput as title for WHERE clause
+        // SQL injection test as userInput: Heartless' OR 1=1 OR '
+            // the WHERE clause is using single quotes instead of double quotes,
+            // logic: since 1=1 will always be true, every record would be returned
+        List<SongArtist> songInfoArtists= datasource.querySongInfoView(userInput);
+
+        // .isEmpty() will validate if there is a return of list values
+        if(songInfoArtists.isEmpty()) {
+            System.out.println("Could not find the artist for the song!");
+            return;
+        } else {
+            for(SongArtist artist : songInfoArtists) {
+                System.out.println("\nartist: " + artist.getArtistName() +
+                        "\nalbum: " + artist.getAlbumName() +
+                        "\ntrack number: " + artist.getTrack());
+            }
+        }
 
         datasource.close();
     }

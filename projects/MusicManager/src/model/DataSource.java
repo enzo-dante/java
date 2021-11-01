@@ -1,6 +1,5 @@
 package model;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ public class DataSource {
     public static final String TABLE_ALBUMS = "albums";
     public static final String COLUMN_ALBUMS_ID = "_id";
     public static final String COLUMN_ALBUMS_NAME = "name";
-
     // SQLite3 INTEGER
     public static final String COLUMN_ALBUMS_ARTIST = "artist";
 
@@ -37,10 +35,8 @@ public class DataSource {
     public static final String TABLE_SONGS = "songs";
     public static final String COLUMN_SONGS_ID = "_id";
     public static final String COLUMN_SONGS_TITLE = "title";
-
     // SQLite3 INTEGER
     public static final String COLUMN_SONGS_TRACK = "track";
-
     // SQLite3 INTEGER
     public static final String COLUMN_SONGS_ALBUM = "album";
 
@@ -48,7 +44,7 @@ public class DataSource {
     public static final int INDEX_SONGS_ID = 1;
     public static final int INDEX_SONGS_TRACK = 2;
     public static final int INDEX_SONGS_TITLE = 3;
-    public static final int INDEX_SONGS_ALBUM = 3;
+    public static final int INDEX_SONGS_ALBUM = 4;
 
     // SQL query composition
     public static final int ORDER_BY_NONE = 1;
@@ -88,6 +84,40 @@ public class DataSource {
     public static final String SONGS_SCHEMA = "SELECT * FROM " + TABLE_SONGS;
     public static final String COUNT_FROM = "SELECT COUNT(*) AS count FROM ";
 
+    public static final String TABLE_ARTIST_LIST_VIEW = "artist_list";
+    public static final String CREATE_VIEW_ARTIST_LIST =
+            "CREATE VIEW IF NOT EXISTS " + TABLE_ARTIST_LIST_VIEW + " AS SELECT " +
+                    TABLE_ARTISTS + "." + COLUMN_ARTISTS_NAME + ", " +
+                    TABLE_ALBUMS + "." + COLUMN_ALBUMS_NAME + " AS album, " +
+                    TABLE_SONGS + "." + COLUMN_SONGS_TRACK + ", " +
+                    TABLE_SONGS + "." + COLUMN_SONGS_TITLE +
+                    " FROM " + TABLE_SONGS +
+                    " INNER JOIN " + TABLE_ALBUMS + " ON " + TABLE_SONGS + "." + COLUMN_SONGS_ALBUM + " = " + TABLE_ALBUMS + "." + COLUMN_ALBUMS_ID +
+                    " INNER JOIN " + TABLE_ARTISTS + " ON " + TABLE_ALBUMS + "." + COLUMN_ALBUMS_ARTIST + " = " + TABLE_ARTISTS + "." + COLUMN_ARTISTS_ID +
+                    " ORDER BY " + TABLE_ARTISTS + "." + COLUMN_ARTISTS_NAME + ", " +
+                    TABLE_ALBUMS + "." + COLUMN_ALBUMS_NAME + ", " +
+                    TABLE_SONGS + "." + COLUMN_SONGS_TRACK + ";";
+
+    public static final String QUERY_VIEW_SONG_INFO =
+            "SELECT " +
+                    COLUMN_ARTISTS_NAME + ", " +
+                    "album, " +
+                    COLUMN_SONGS_TRACK +
+                    " FROM " + TABLE_ARTIST_LIST_VIEW +
+                    " WHERE " + COLUMN_SONGS_TITLE + " = ";
+
+    // ? = placeholder for title
+    // SQL statement: SELECT name, album, track FROM artist_list WHERE title = ?
+    public static final String QUERY_ARTIST_LIST_PREPARED_STATEMENT =
+            "SELECT " + COLUMN_ARTISTS_NAME + ", " + COLUMN_SONGS_ALBUM + ", " + COLUMN_SONGS_TRACK +
+            " FROM " + TABLE_ARTIST_LIST_VIEW +
+            " WHERE " + COLUMN_SONGS_TITLE + " = ?";
+
+    // instance variable for PreparedStatement that is only pre-compiled only once
+        // helpful for performance and protecting against SQL Injection Attacks
+    // PreparedStatement is a subclass of Statement
+    private PreparedStatement queryArtistListView;
+
     private Connection connection;
 
     /**
@@ -98,6 +128,9 @@ public class DataSource {
     public boolean open() {
         try{
             connection = DriverManager.getConnection(JDBC_CONNECTION_STRING);
+
+            // preparedStatement(SQL_PREPARED_STATEMENT) is great for performance instead of creating a new instance on every query
+            queryArtistListView = connection.prepareStatement(QUERY_ARTIST_LIST_PREPARED_STATEMENT);
             return true;
         } catch(SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
@@ -113,6 +146,11 @@ public class DataSource {
      */
     public void close() {
         try{
+            // close resources before connection
+            if(queryArtistListView != null) {
+                queryArtistListView.close();
+            }
+
             if(connection != null) {
                 connection.close();
             }
@@ -128,7 +166,7 @@ public class DataSource {
      * SQL statement:
      *         SELECT *
      *         FROM   artists
-     *         ORDER  BY NAME COLLATE NOCASE ASC;
+     *         ORDER  BY name COLLATE NOCASE ASC;
      *
      * @param sortOrder order of results in ASC or DESC.
      * @return A list of all artists and their respective _id and name.
@@ -214,7 +252,7 @@ public class DataSource {
      * This is the method which gets a list of albums by the specified artist.
      *
      * SQL statement:
-     *         SELECT albums.NAME
+     *         SELECT albums.name
      *         FROM   albums
      *         INNER JOIN artists
      *         ON albums.artist = artists._id
@@ -282,8 +320,8 @@ public class DataSource {
      * This is the method which gets the artists.name, albums.name and songs.track by the specified songs title.
      *
      * SQL statement:
-     *         SELECT artists.NAME,
-     *                 albums.NAME,
+     *         SELECT artists.name,
+     *                 albums.name,
      *                 songs.track
      *         FROM   songs
      *         INNER JOIN albums
@@ -367,6 +405,9 @@ public class DataSource {
        Statement statement = null;
        ResultSet results = null;
 
+       // validate SQL statement
+       System.out.println("querySongsMetadata SQL statement:\n" + SONGS_SCHEMA);
+
        try {
 
            statement = connection.createStatement();
@@ -399,9 +440,13 @@ public class DataSource {
      * @return A int that shows the number of for the specified table.
      * @exception SQLException On SQLite3 statement error.
      */
-
     public int getCount(String table) {
+
         String sql = COUNT_FROM + table;
+
+        // validate SQL statement
+        System.out.println("getCount() SQL statement:\n" + sql);
+
         Statement statement = null;
         ResultSet results = null;
 
@@ -424,4 +469,105 @@ public class DataSource {
             return -1;
         }
     }
+
+    /**
+     * This is the method which creates the artist_list view if it does not exist.
+     *
+     * SQL statement:
+     *         CREATE VIEW IF NOT EXISTS artist_list AS
+     *         SELECT     artists.name AS artist,
+     *                    albums.name  AS album,
+     *                    songs.track,
+     *                    songs.title
+     *         FROM       songs
+     *         INNER JOIN albums
+     *         ON         songs.album = albums._id
+     *         INNER JOIN artists
+     *         ON         albums.artist = artists._id
+     *         ORDER BY   artists.name,
+     *                    albums.name,
+     *                    songs.track;
+     *
+     * @return A boolean that indicates success or failure.
+     * @exception SQLException On SQLite3 statement error.
+     */
+
+    public boolean createViewArtistList() {
+
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+
+            // validate SQL command
+            System.out.println("Create view artist_list SQL statement:\n" + CREATE_VIEW_ARTIST_LIST);
+
+            statement.execute(CREATE_VIEW_ARTIST_LIST);
+            return true;
+
+        } catch(SQLException e) {
+            System.out.println("Create view artist_list failed: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * This is the method which queries the artist_list view
+     *
+     * SQL statement:
+     *         SELECT name,
+     *                album,
+     *                track
+     *         FROM   artist_list
+     *         WHERE  title = '{song_title}';
+     *
+     * @param title A title of a song.
+     * @return A list of artist names, albums, and tracks order by artists.
+     * @exception SQLException On SQLite3 statement error.
+     */
+    public List<SongArtist> querySongInfoView(String title) {
+      // unnecessary with PreparedStatement
+//        Statement statement = null;
+//        ResultSet results = null;
+//
+//        StringBuilder stringBuilder = new StringBuilder(QUERY_VIEW_SONG_INFO);
+//        stringBuilder.append("'" + title + "'");
+//        System.out.println("queryViewInfoSong SQL statement:\n" + stringBuilder.toString());
+
+        try {
+//            statement = connection.createStatement();
+//            results = statement.executeQuery(stringBuilder.toString());
+
+            // preparedStatement.setString(questionMarkIndex, replacementValue)
+            queryArtistListView.setString(1, title);
+
+            // executeQuery() does not require a query since we've already preparedStatement.setString() in the line above pre-compiled
+            ResultSet results = queryArtistListView.executeQuery();
+
+            List<SongArtist> songArtists = new ArrayList<>();
+
+            while(results.next()) {
+                // instantiate new SongArtist object
+                SongArtist songArtist = new SongArtist();
+
+                songArtist.setArtistName(results.getString(1));
+                songArtist.setAlbumName(results.getString(2));
+                songArtist.setTrack(results.getInt(3));
+
+                songArtists.add(songArtist);
+            }
+
+            return songArtists;
+
+        } catch(SQLException e) {
+            System.out.println("querySongInfo failed: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
 }
