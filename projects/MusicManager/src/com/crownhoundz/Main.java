@@ -2,6 +2,7 @@ package com.crownhoundz;
 
 import model.Artist;
 import model.DataSource;
+import model.SongArtist;
 
 import java.util.List;
 
@@ -43,6 +44,35 @@ public class Main {
         for(Artist artist : artists) {
             System.out.println("_id = " + artist.get_id() + ", " + "name = " + artist.getName());
         }
+
+        System.out.println("---");
+
+        List<String> albumsForArtist = datasource.queryAlbumsForArtist("Carole King", DataSource.ORDER_BY_DESC);
+
+        // for each albums.name in the albums list
+        for(String albumName : albumsForArtist) {
+            System.out.println("album name: " + albumName);
+        }
+
+        System.out.println("---");
+
+        List<SongArtist> songArtists = datasource.queryArtistsForSong("Go Your Own Way", DataSource.ORDER_BY_DESC);
+        // for each songArtist object in the songArtists list
+        for(SongArtist songArtist : songArtists) {
+            System.out.println(
+                    "\nartist: " + songArtist.getArtistName() +
+                    "\nalbum name: " + songArtist.getAlbumName() +
+                    "\nsong track: " + songArtist.getTrack());
+        }
+
+        System.out.println("---");
+
+        datasource.querySongsMetadata();
+
+        System.out.println("---");
+
+        int count = datasource.getCount(DataSource.TABLE_SONGS);
+        System.out.println("Songs count: " + count);
 
         datasource.close();
     }
