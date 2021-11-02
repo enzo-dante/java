@@ -113,10 +113,29 @@ public class DataSource {
             " FROM " + TABLE_ARTIST_LIST_VIEW +
             " WHERE " + COLUMN_SONGS_TITLE + " = ?";
 
+    public static final String INSERT_INTO_ARTISTS = "INSERT INTO " + TABLE_ARTISTS + "(" + COLUMN_ARTISTS_NAME + ") VALUES(?)";
+    public static final String INSERT_INTO_ALBUMS = "INSERT INTO " + TABLE_ALBUMS + "(" + COLUMN_ALBUMS_NAME + ", " + COLUMN_ALBUMS_ARTIST + ") VALUES(?, ?)";
+    public static final String INSERT_INTO_SONGS = "INSERT INTO " + TABLE_SONGS + "(" + COLUMN_SONGS_TRACK + ", " + COLUMN_SONGS_TITLE + ", " + COLUMN_SONGS_ALBUM + ") VALUES(?, ?, ?)";
+
+    public static final String QUERY_ARTISTS =
+            "SELECT " + COLUMN_ARTISTS_ID +
+                    " FROM " + TABLE_ARTISTS +
+                    " WHERE " + COLUMN_ARTISTS_NAME + " = ?";
+    public static final String QUERY_ALBUMS =
+            "SELECT " + COLUMN_ALBUMS_ID +
+                    " FROM " + TABLE_ALBUMS +
+                    " WHERE " + COLUMN_ALBUMS_NAME + " = ?";
+
     // instance variable for PreparedStatement that is only pre-compiled only once
         // helpful for performance and protecting against SQL Injection Attacks
     // PreparedStatement is a subclass of Statement
     private PreparedStatement queryArtistListView;
+    private PreparedStatement insertIntoArtists;
+    private PreparedStatement insertIntoAlbums;
+    private PreparedStatement insertIntoSongs;
+
+    private PreparedStatement queryArtists;
+    private PreparedStatement queryAlbums;
 
     private Connection connection;
 
@@ -131,7 +150,17 @@ public class DataSource {
 
             // preparedStatement(SQL_PREPARED_STATEMENT) is great for performance instead of creating a new instance on every query
             queryArtistListView = connection.prepareStatement(QUERY_ARTIST_LIST_PREPARED_STATEMENT);
+
+            // Statement.RETURN_GENERATED_KEYS = need ids to pass into subsequent insert statement until committing to songs table
+            insertIntoArtists = connection.prepareStatement(INSERT_INTO_ARTISTS, Statement.RETURN_GENERATED_KEYS);
+            insertIntoAlbums = connection.prepareStatement(INSERT_INTO_ALBUMS, Statement.RETURN_GENERATED_KEYS);
+            insertIntoSongs = connection.prepareStatement(INSERT_INTO_SONGS);
+
+            queryArtists = connection.prepareStatement(QUERY_ARTISTS);
+            queryAlbums = connection.prepareStatement(QUERY_ALBUMS);
+
             return true;
+
         } catch(SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
             e.printStackTrace();
@@ -150,10 +179,30 @@ public class DataSource {
             if(queryArtistListView != null) {
                 queryArtistListView.close();
             }
+            if(insertIntoArtists != null) {
+                insertIntoArtists.close();
+            }
+
+            if(insertIntoAlbums != null) {
+                insertIntoAlbums.close();
+            }
+
+            if(insertIntoSongs != null) {
+                insertIntoSongs.close();
+            }
+
+            if(queryArtists != null) {
+                queryArtists.close();
+            }
+
+            if(queryAlbums != null) {
+                queryAlbums.close();
+            }
 
             if(connection != null) {
                 connection.close();
             }
+
         } catch(SQLException e) {
             System.out.println("Couldn't close connection to database: " + e.getMessage());
             e.printStackTrace();
@@ -568,6 +617,30 @@ public class DataSource {
         }
 
     }
+
+    /**
+     * This is the method which gets a list of all artists.
+     *
+     * SQL statement:
+     *         SELECT *
+     *         FROM   artists
+     *         ORDER  BY name COLLATE NOCASE ASC;
+     *
+     * @param sortOrder order of results in ASC or DESC.
+     * @return A list of all artists and their respective _id and name.
+     * @exception SQLException On SQLite3 statement error.
+     */
+
+    // add a song process
+
+    // get the title, album, track number, and artist
+    // check to see if the artist is already in the artist table
+    // if missing, add artist to artist table
+    // check to see if the album is already in the album table
+    // if missing, add album to album table
+    // add song to the song table
+
+
 
 
 }
