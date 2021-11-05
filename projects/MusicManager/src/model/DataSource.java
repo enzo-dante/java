@@ -619,28 +619,147 @@ public class DataSource {
     }
 
     /**
-     * This is the method which gets a list of all artists.
+     * This is the method which inserts an artist into the Artists table if missing and returns the respective _id.
      *
      * SQL statement:
-     *         SELECT *
-     *         FROM   artists
-     *         ORDER  BY name COLLATE NOCASE ASC;
+     *         INSERT INTO   artists(name)
+     *         VALUES(?);
      *
-     * @param sortOrder order of results in ASC or DESC.
-     * @return A list of all artists and their respective _id and name.
+     * @param artistName The name of the artist.
+     * @return The _id of the artist.
      * @exception SQLException On SQLite3 statement error.
      */
+    private int insertArtist(String artistName) throws SQLException {
 
-    // add a song process
+        // PreparedStatement that replaces the ? with parameter
+        queryArtists.setString(1, artistName);
 
-    // get the title, album, track number, and artist
-    // check to see if the artist is already in the artist table
-    // if missing, add artist to artist table
-    // check to see if the album is already in the album table
-    // if missing, add album to album table
-    // add song to the song table
+        // use query PreparedStatement to validate if data is already present
+        ResultSet results = queryArtists.executeQuery();
+        if(results.next()) {
+            return results.getInt(1);
+        } else {
+            // insert artist because SQL query PreparedStatement returned null
+            insertIntoArtists.setString(1, artistName);
 
+            // check if number of rows affected match expectation of 1 row created with PreparedStatement.executeUpdate()
+            int numRowsAffected = insertIntoArtists.executeUpdate();
+            if(numRowsAffected != 1) {
+                throw new SQLException("insertArtist() failed to insert an artist");
+            }
 
+            // on successful insert, get _id from newly created row in table
+            ResultSet generatedKeys = insertIntoArtists.getGeneratedKeys();
+            if(generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Couldn't get _id for artist");
+            }
+        }
+    }
 
+    /**
+     * This is the method which inserts an album into the Albums table if missing and returns the respective _id.
+     *
+     * SQL statement:
+     *         INSERT INTO   albums(name, artistId)
+     *         VALUES(?, ?);
+     *
+     * @param albumName The name of the album.
+     * @param artistId The id of the artist.
+     * @return The _id of the album.
+     * @exception SQLException On SQLite3 statement error.
+     */
+    private int insertAlbum(String albumName, int artistId) throws SQLException {
+
+        // PreparedStatement that replaces the ? with parameter
+        queryAlbums.setString(1, albumName);
+
+        // use query PreparedStatement to validate if data is already present
+        ResultSet results = queryAlbums.executeQuery();
+        if(results.next()) {
+            return results.getInt(1);
+        } else {
+            // insert album because SQL query PreparedStatement returned null
+            insertIntoAlbums.setString(1, albumName);
+            insertIntoAlbums.setInt(2, artistId);
+
+            // check if number of rows affected match expectation of 1 row created with PreparedStatement.executeUpdate()
+            int numRowsAffected = insertIntoAlbums.executeUpdate();
+            if(numRowsAffected != 1) {
+                throw new SQLException("insertAlbum() failed to insert an album");
+            }
+
+            // on successful insert, get _id from newly created row in table
+            ResultSet generatedKeys = insertIntoAlbums.getGeneratedKeys();
+            if(generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Couldn't get _id for album");
+            }
+        }
+    }
+
+    /**
+     * This is the public method which inserts a song into the Songs table if missing.
+     *
+     * SQL statement:
+     *         INSERT INTO   albums(name, artistId)
+     *         VALUES(?, ?);
+     *
+     * @param artist The id of the artist.
+     * @param album The id of the album.
+     * @param title The name of the album.
+     * @param track The name of the album.
+     * @return Nothing.
+     * @exception SQLException On SQLite3 statement error.
+     */
+    public void insertSong(String album, String artist, String title, int track) {
+
+        try {
+            // set JDBC auto-commit to false to avoid db locks and allow for multi-statement transaction
+            connection.setAutoCommit(false);
+
+            int artistId = insertArtist(artist);
+            int albumId = insertAlbum(album, artistId);
+
+            insertIntoSongs.setInt(1, track);
+            insertIntoSongs.setString(2, title);
+            insertIntoSongs.setInt(3, albumId);
+
+            // check if number of rows affected match expectation of 1 row created with PreparedStatement.executeUpdate()
+            int numRowsAffected = insertIntoAlbums.executeUpdate();
+            if(numRowsAffected == 1) {
+                connection.commit();
+            } else {
+                throw new SQLException("insertSong() failed");
+            }
+
+        } catch(SQLException e) {
+            System.out.println("InsertSong() failed: " + e.getMessage());
+            e.printStackTrace();
+
+            try {
+                System.out.println("Performing rollback");
+                connection.rollback();
+
+            } catch(Exception e2) {
+                // catch all Exceptions, not just SQL exceptions to ensure a rollback
+                System.out.println("Rollback to previous state failed: " + e.getMessage());
+                e.printStackTrace();
+
+            }
+
+        } finally {
+
+            try {
+                System.out.println("Reset AutoCommit back to true regardless if transaction successful or failed");
+                connection.setAutoCommit(true);
+
+            } catch (Exception e) {
+                System.out.println("Reset AutoCommit failed: " + e.getMessage());
+            }
+        }
+    }
 
 }
