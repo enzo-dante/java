@@ -125,6 +125,10 @@ public class DataSource {
             "SELECT " + COLUMN_ALBUMS_ID +
                     " FROM " + TABLE_ALBUMS +
                     " WHERE " + COLUMN_ALBUMS_NAME + " = ?";
+    public static final String QUERY_SONGS =
+            "SELECT " + COLUMN_SONGS_ID +
+                    " FROM " + TABLE_SONGS +
+                    " WHERE " + COLUMN_SONGS_TITLE + " = ?";
 
     // instance variable for PreparedStatement that is only pre-compiled only once
         // helpful for performance and protecting against SQL Injection Attacks
@@ -136,6 +140,7 @@ public class DataSource {
 
     private PreparedStatement queryArtists;
     private PreparedStatement queryAlbums;
+    private PreparedStatement querySongs;
 
     private Connection connection;
 
@@ -158,6 +163,7 @@ public class DataSource {
 
             queryArtists = connection.prepareStatement(QUERY_ARTISTS);
             queryAlbums = connection.prepareStatement(QUERY_ALBUMS);
+            querySongs = connection.prepareStatement(QUERY_SONGS);
 
             return true;
 
@@ -197,6 +203,10 @@ public class DataSource {
 
             if(queryAlbums != null) {
                 queryAlbums.close();
+            }
+
+            if(querySongs != null) {
+                querySongs.close();
             }
 
             if(connection != null) {
@@ -637,6 +647,7 @@ public class DataSource {
         // use query PreparedStatement to validate if data is already present
         ResultSet results = queryArtists.executeQuery();
         if(results.next()) {
+            System.out.println("The artist is already in the db");
             return results.getInt(1);
         } else {
             // insert artist because SQL query PreparedStatement returned null
@@ -646,6 +657,8 @@ public class DataSource {
             int numRowsAffected = insertIntoArtists.executeUpdate();
             if(numRowsAffected != 1) {
                 throw new SQLException("insertArtist() failed to insert an artist");
+            } else {
+                System.out.println(artistName + " was added to the db table Artists");
             }
 
             // on successful insert, get _id from newly created row in table
@@ -678,6 +691,7 @@ public class DataSource {
         // use query PreparedStatement to validate if data is already present
         ResultSet results = queryAlbums.executeQuery();
         if(results.next()) {
+            System.out.println("The album is already in the db");
             return results.getInt(1);
         } else {
             // insert album because SQL query PreparedStatement returned null
@@ -688,6 +702,8 @@ public class DataSource {
             int numRowsAffected = insertIntoAlbums.executeUpdate();
             if(numRowsAffected != 1) {
                 throw new SQLException("insertAlbum() failed to insert an album");
+            } else {
+                System.out.println(albumName + " added to the db table Albums");
             }
 
             // on successful insert, get _id from newly created row in table
@@ -704,8 +720,8 @@ public class DataSource {
      * This is the public method which inserts a song into the Songs table if missing.
      *
      * SQL statement:
-     *         INSERT INTO   albums(name, artistId)
-     *         VALUES(?, ?);
+     *         INSERT INTO   songs(track, title, album)
+     *         VALUES(?, ?, ?);
      *
      * @param artist The id of the artist.
      * @param album The id of the album.
@@ -728,35 +744,35 @@ public class DataSource {
             insertIntoSongs.setInt(3, albumId);
 
             // check if number of rows affected match expectation of 1 row created with PreparedStatement.executeUpdate()
-            int numRowsAffected = insertIntoAlbums.executeUpdate();
+            int numRowsAffected = insertIntoSongs.executeUpdate();
             if(numRowsAffected == 1) {
+                System.out.println(title + " was added to the Songs table");
                 connection.commit();
             } else {
                 throw new SQLException("insertSong() failed");
             }
 
-        } catch(SQLException e) {
-            System.out.println("InsertSong() failed: " + e.getMessage());
+        } catch(Exception e) {
+            System.out.println("InsertSong() exception: " + e.getMessage());
             e.printStackTrace();
 
             try {
                 System.out.println("Performing rollback");
                 connection.rollback();
 
-            } catch(Exception e2) {
+            } catch(SQLException e2) {
                 // catch all Exceptions, not just SQL exceptions to ensure a rollback
                 System.out.println("Rollback to previous state failed: " + e.getMessage());
                 e.printStackTrace();
-
             }
 
         } finally {
 
             try {
-                System.out.println("Reset AutoCommit back to true regardless if transaction successful or failed");
+                System.out.println("\nReset AutoCommit back to true regardless if transaction successful or failed");
                 connection.setAutoCommit(true);
 
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 System.out.println("Reset AutoCommit failed: " + e.getMessage());
             }
         }

@@ -79,42 +79,47 @@ public class Main {
 
         datasource.createViewArtistList();
 
-        System.out.println("\n---SQL injection attack vulnerability test---\n");
-        System.out.println(
-                """
-                    __vulnerable StringBuilder__
-                    SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
-                                            
-                    __protected PreparedStatement__
-                    SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
-                """
-        );
+//        System.out.println("\n---SQL injection attack vulnerability test---\n");
+//        System.out.println(
+//                """
+//                    __vulnerable StringBuilder__
+//                    SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
+//
+//                    __protected PreparedStatement__
+//                    SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
+//                """
+//        );
+//
+//        // define scanner for user input prompt
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("Please enter a song title: ");
+//
+//        // capture user input with scanner
+//        String userInput = scanner.nextLine();
+//
+//        // make SQLite query with userInput as title for WHERE clause
+//        // SQL injection test as userInput: Heartless' OR 1=1 OR '
+//            // the WHERE clause is using single quotes instead of double quotes,
+//            // logic: since 1=1 will always be true, every record would be returned
+//        List<SongArtist> songInfoArtists= datasource.querySongInfoView(userInput);
+//
+//        // .isEmpty() will validate if there is a return of list values
+//        if(songInfoArtists.isEmpty()) {
+//            System.out.println("Could not find the artist for the song!");
+//            return;
+//        } else {
+//            for(SongArtist artist : songInfoArtists) {
+//                System.out.println("\nartist: " + artist.getArtistName() +
+//                        "\nalbum: " + artist.getAlbumName() +
+//                        "\ntrack number: " + artist.getTrack());
+//            }
+//        }
 
-        // define scanner for user input prompt
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("---");
 
-        System.out.println("Please enter a song title: ");
-
-        // capture user input with scanner
-        String userInput = scanner.nextLine();
-
-        // make SQLite query with userInput as title for WHERE clause
-        // SQL injection test as userInput: Heartless' OR 1=1 OR '
-            // the WHERE clause is using single quotes instead of double quotes,
-            // logic: since 1=1 will always be true, every record would be returned
-        List<SongArtist> songInfoArtists= datasource.querySongInfoView(userInput);
-
-        // .isEmpty() will validate if there is a return of list values
-        if(songInfoArtists.isEmpty()) {
-            System.out.println("Could not find the artist for the song!");
-            return;
-        } else {
-            for(SongArtist artist : songInfoArtists) {
-                System.out.println("\nartist: " + artist.getArtistName() +
-                        "\nalbum: " + artist.getAlbumName() +
-                        "\ntrack number: " + artist.getTrack());
-            }
-        }
+//        datasource.insertSong("Touch of Grey", "Grateful Dead", "In the Dark", 1);
+        datasource.insertSong("Bob Dylan's Greatest Hits", "Bob Dylan", "Like a Rolling Stone", 5);
 
         datasource.close();
     }
