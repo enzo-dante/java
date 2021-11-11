@@ -134,6 +134,11 @@ public class DataSource {
             "SELECT * FROM " + TABLE_ALBUMS +
                     " WHERE " + COLUMN_ALBUMS_ARTIST + " = ? ORDER BY " + COLUMN_ALBUMS_NAME + " COLLATE NOCASE";
 
+    public static final String UPDATE_ARTIST_NAME =
+            "UPDATE " + TABLE_ARTISTS +
+            " SET " + COLUMN_ARTISTS_NAME +
+            " = ? WHERE " + COLUMN_ARTISTS_ID + " = ?";
+
     // instance variable for PreparedStatement that is only pre-compiled only once
         // helpful for performance and protecting against SQL Injection Attacks
     // PreparedStatement is a subclass of Statement
@@ -146,6 +151,7 @@ public class DataSource {
     private PreparedStatement queryAlbums;
     private PreparedStatement querySongs;
     private PreparedStatement queryAlbumsByArtistId;
+    private PreparedStatement updateArtistName;
 
     // singleton pattern: ensures that only one object of its kind exists and provides a single point of access to it for any other code
     // validate only 1 instance of DataSource class is being used and thread safe if multiple threads are running
@@ -184,6 +190,7 @@ public class DataSource {
             queryAlbums = connection.prepareStatement(QUERY_ALBUMS);
             querySongs = connection.prepareStatement(QUERY_SONGS);
             queryAlbumsByArtistId = connection.prepareStatement(QUERY_ALBUMS_BY_ARTIST_ID);
+            updateArtistName = connection.prepareStatement(UPDATE_ARTIST_NAME);
 
             return true;
 
@@ -231,6 +238,10 @@ public class DataSource {
 
             if(queryAlbumsByArtistId != null) {
                 queryAlbumsByArtistId.close();
+            }
+
+            if(updateArtistName != null) {
+                updateArtistName.close();
             }
 
             if(connection != null) {
@@ -335,6 +346,36 @@ public class DataSource {
             } catch(SQLException e) {
                 System.out.println("Error closing Artists Statement query: " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * This is the method which updates the name of a specific artist.
+     *
+     * SQL statement:
+     *         UPDATE artists
+     *          SET name = ?
+     *          WHERE _id = ?;
+     *
+     * @param artist_id The id of the artist.
+     * @param newArtistName The user-provided artist name.
+     * @return A boolean variable that indicates update success or failure.
+     * @exception SQLException On SQLite3 statement error.
+     */
+    public boolean updateArtistName(int artist_id, String newArtistName) {
+
+        try {
+            updateArtistName.setString(1, newArtistName);
+            updateArtistName.setInt(2, artist_id);
+
+            int updatedRecords = updateArtistName.executeUpdate();
+
+            return updatedRecords == 1;
+
+        } catch(SQLException e) {
+            System.out.println("updateArtistName() failed: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
 
