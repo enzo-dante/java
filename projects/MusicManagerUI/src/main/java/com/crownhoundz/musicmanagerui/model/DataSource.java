@@ -293,6 +293,13 @@ public class DataSource {
             while(results.next()) {
                 Artist artist = new Artist();
 
+                // forcing query to slow down to test progress bar visibility
+                try {
+                    Thread.sleep(10);
+                } catch(InterruptedException e) {
+                    System.out.println("Interrupted: " + e.getMessage());
+                }
+
                 // overloaded method type cast SQL return values
                 // since result is only querying a single table that is not JOINED,
                 // ResultSet and table column index are identical
