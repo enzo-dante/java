@@ -14,6 +14,9 @@ import javafx.scene.control.TableView;
 // when ready to update UI, update using the JavaFX UI Thread: data binding automatically uses JavaFX UI Thread
 public class Controller {
 
+    // for testing purposes, the updated method currently only supports updating the artist AC/DC
+    private static final String UPDATED_ARTIST_NAME = "AC/DC (updated artist name)";
+
     // these @FXML variables need to have a matching fx:id in the main.fxml file
     @FXML
     private TableView artistsTable;
@@ -88,7 +91,7 @@ public class Controller {
             @Override
             protected Boolean call() throws Exception {
                 return DataSource.getDataSourceInstance()
-                        .updateArtistName(artist.get_id(), "AC/DC");
+                        .updateArtistName(artist.get_id(), UPDATED_ARTIST_NAME);
 
             }
         };
@@ -96,7 +99,7 @@ public class Controller {
         // if task succeeds, then update UI to match updated record in the db on it's own thread
         task.setOnSucceeded(event -> {
             if(task.valueProperty().get()) {
-                artist.setName("AC/DC");
+                artist.setName(UPDATED_ARTIST_NAME);
                 // refresh() forces table to re-draw UI rows for proper table alignment with new db data
                 artistsTable.refresh();
             }
