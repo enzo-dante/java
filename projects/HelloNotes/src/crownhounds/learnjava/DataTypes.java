@@ -1,6 +1,8 @@
 // learnjava is a subfolder of crownhounds for organization
 package crownhounds.learnjava;
 
+import java.util.Locale;
+
 public class DataTypes {
 
     public static void main(String[] args) {
@@ -8,23 +10,36 @@ public class DataTypes {
         // CERTAIN DATA TYPES TAKE MORE SPACE IN MEMORY THAN OTHERS
 
         /*
-        wrapper class for all 8 primitive data types
-            Integer is used to perform operations on an int
+        wrapper class for all Java 8 primitive data types
+            byte, short, int, long, float, double, char, boolean
          */
-        int myMinInt = Integer.MIN_VALUE;
-        int myMaxInt = Integer.MAX_VALUE;
-        System.out.println("INT MIN: " + myMinInt);
-        System.out.println("INT MAX: " + myMaxInt);
+
+//        integers();
 
         /*
         overflow & underflow = value exceeds memory allocated by computer
+            Integer is used to perform operations on an int
          */
-        System.out.println("BUSTED UNDERFLOW MIN: " + (myMinInt - 1));
-        System.out.println("BUSTED OVERFLOW MAX: " + (myMaxInt + 1));
 
-        // ints can have underscores in them to denote size
-        // an int occupies 32 bits/ a width of 32
-        int myIntTest = 2_155_200;
+//        int myMinInt = Integer.MIN_VALUE;
+//        int myMaxInt = Integer.MAX_VALUE;
+//        System.out.println("BUSTED UNDERFLOW MIN: " + (myMinInt - 1));
+//        System.out.println("BUSTED OVERFLOW MAX: " + (myMaxInt + 1));
+
+//        byteShortAndLongs();
+
+//        floatingPointNumbers();
+
+//        casting();
+
+//        booleansCharsAndStrings();
+
+        operatorsAndExpressions();
+    }
+
+    private static void byteShortAndLongs() {
+
+        System.out.println("\nbyte Short And Longs\n".toUpperCase());
 
         // a byte occupies 8 bits/ a width of 8
         byte myMinByte = Byte.MIN_VALUE;
@@ -46,8 +61,73 @@ public class DataTypes {
         System.out.println("Long value: " + myLongValue);
         System.out.println("Long min: " + myMinLong);
         System.out.println("Long max: " + myMaxLong);
+    }
 
-        int myIntTotal = (myMinInt / 2);
+    private static void booleansCharsAndStrings() {
+
+        System.out.println("\nbooleans chars and strings\n".toUpperCase());
+
+        // conventional to name booleans starting with verbs as a question
+        boolean isCustomerOver21 = true;
+        System.out.println("isCustomerOver21: " + isCustomerOver21);
+
+        // 16-bit chars are single unicode character that uses single quotes
+            // https://unicode-table.com/en/
+        char myChar = 'D';
+        char myUnicodeChar = '\u0044'; // 'D'
+        char myUnicodeCopyright = '\u00A9';
+
+        System.out.println("myChar: " + myChar);
+        System.out.println("myUnicodeChar: " + myUnicodeChar);
+        System.out.println("myUnicodeCopyright: " + myUnicodeCopyright);
+
+        // Strings can store multiple characters that use double quotes
+            // Strings are immutable and can only be recreated via re-assignment
+        String myString = "This is an IMMUTABLE string of characters";
+        System.out.println("sentence 1: ".toUpperCase() + myString);
+
+        System.out.println("\nuse StringBuffer (mutable),\n\t'appending values'/re-creating an immutable string with additional data is inefficient");
+
+        myString += "!!!! ";
+        System.out.println("sentence 2: ".toUpperCase() + myString);
+
+        myString += (myUnicodeCopyright + "2019");
+        System.out.println("sentence 3: ".toUpperCase() + myString);
+
+        // String that have numbers will NOT run calculations
+            // but simply be joined as a single string with a plus operator
+        String numString = "250.55";
+        numString += numString + "49.95";
+        System.out.println("numString error: " + numString);
+
+        String lastString = "10";
+        int myInt = 50;
+        double myDouble = 120.45d;
+        lastString += myInt;
+        lastString += myDouble;
+        System.out.println("lastString error: " + lastString);
+    }
+
+    private static void casting() {
+
+        System.out.println("\ncasting\n".toUpperCase());
+
+        // CASTING is converting one datatype to another by prefacing with parenthesis with desired data type
+            // JAVA uses int data type by default
+
+        byte myMinByte = Byte.MIN_VALUE;
+        short myMinShort = Short.MIN_VALUE;
+
+        // error because defined as byte but int provided
+        byte myByteTotal = (byte) (myMinByte/2);
+        short myShortTotal = (short) (myMinShort / 2);
+        System.out.println("CASTING myByteTotal: " + myByteTotal);
+        System.out.println("CASTING myShortTotal: " + myShortTotal);
+    }
+
+    private static void floatingPointNumbers() {
+
+        System.out.println("\nfloating point numbers\n".toUpperCase());
 
         // FLOATING POINT NUMBERS are numbers with a fraction for precision that express a decimal point
             // precision = format & amount of spaced occupied by the space
@@ -77,14 +157,73 @@ public class DataTypes {
         System.out.println("myIntValue " + myIntValue);
         System.out.println("myFloatValue " + myFloatValue);
         System.out.println("myDoubleValue " + myDoubleValue);
+    }
 
-        // error because defined as byte but int provided
-//        byte myByteTotal = (myMinByte / 2);
+    private static void integers() {
 
-        // JAVA uses int data type by default
-        // CASTING is converting one datatype to another by prefacing with parenthesis with desired data type
-        byte myByteTotal = (byte) (myMinByte/2);
-        short myShortTotal = (short) (myMinShort / 2);
+        System.out.println("\nintegers\n".toUpperCase());
+
+        // an int occupies 32 bits/ a width of 32
+
+        // ints can have underscores in them to denote size
+        int myIntTest = 2_155_200;
+
+        int myMinInt = Integer.MIN_VALUE;
+        int myMaxInt = Integer.MAX_VALUE;
+        System.out.println("INT MIN: " + myMinInt);
+        System.out.println("INT MAX: " + myMaxInt);
+
+        int myIntTotal = (myMinInt / 2);
+
+    }
+
+    private static void operatorsAndExpressions() {
+
+        System.out.println("\noperators and expressions\n".toUpperCase());
+
+        /*
+            operators are special symbols that perform specific operations on 1 or multiple operands (manipulated obj)
+            = equals
+            + = addition
+            - = subtraction
+            * = multiplication
+            / = division
+            % = remainder of 2 operands
+
+            ++ = add 1
+            -- = subtract 1
+            ** = power of
+
+
+            expressions are the combination of values and operators
+         */
+
+        // 15 & 12 operands
+        // + and = symbols are operators
+        // 15 + 12 is the expression
+        int result = 15 + 12; // 15 & 12 operands; + symbol is the operator
+        System.out.println("15 + 12 = " + result);
+
+        int previousResult = result;
+        result -= 3;
+        System.out.println("previousResult: " + previousResult);
+        System.out.println("Result: " + result);
+
+        result *= 10;
+        System.out.println("24 * 10 = " + result);
+
+        result /= 5;
+        System.out.println("240/5 = " + result);
+
+        result %= 5;
+        System.out.println("48 % 5 has a remainder of " + result);
+
+        int myNum = 1;
+        myNum++;
+        System.out.println("1 + 1 = " + myNum);
+
+        myNum--;
+        System.out.println("2 - 1 = " + myNum);
 
     }
 }
