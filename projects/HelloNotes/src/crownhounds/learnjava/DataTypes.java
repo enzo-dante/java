@@ -34,7 +34,6 @@ public class DataTypes {
 
 //        booleansCharsAndStrings();
 
-        operatorsAndExpressions();
     }
 
     private static void byteShortAndLongs() {
@@ -177,53 +176,5 @@ public class DataTypes {
 
     }
 
-    private static void operatorsAndExpressions() {
 
-        System.out.println("\noperators and expressions\n".toUpperCase());
-
-        /*
-            operators are special symbols that perform specific operations on 1 or multiple operands (manipulated obj)
-            = equals
-            + = addition
-            - = subtraction
-            * = multiplication
-            / = division
-            % = remainder of 2 operands
-
-            ++ = add 1
-            -- = subtract 1
-            ** = power of
-
-
-            expressions are the combination of values and operators
-         */
-
-        // 15 & 12 operands
-        // + and = symbols are operators
-        // 15 + 12 is the expression
-        int result = 15 + 12; // 15 & 12 operands; + symbol is the operator
-        System.out.println("15 + 12 = " + result);
-
-        int previousResult = result;
-        result -= 3;
-        System.out.println("previousResult: " + previousResult);
-        System.out.println("Result: " + result);
-
-        result *= 10;
-        System.out.println("24 * 10 = " + result);
-
-        result /= 5;
-        System.out.println("240/5 = " + result);
-
-        result %= 5;
-        System.out.println("48 % 5 has a remainder of " + result);
-
-        int myNum = 1;
-        myNum++;
-        System.out.println("1 + 1 = " + myNum);
-
-        myNum--;
-        System.out.println("2 - 1 = " + myNum);
-
-    }
 }

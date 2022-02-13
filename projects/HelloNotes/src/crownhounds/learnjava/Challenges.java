@@ -1,20 +1,19 @@
 package crownhounds.learnjava;
 
+import java.util.Locale;
+
 public class Challenges {
 
     public static void main(String[] args) {
 
 //        challengeOne();
 //        challengeTwo();
-        challengeThree();
-
-
-
+//        challengeThree();
+        challengeFour();
 
     }
 
     public static void challengeOne() {
-
          /*
             create a byte variable and set it to a valid byte number
             create a short variable and set it to a valid short number
@@ -50,7 +49,6 @@ public class Challenges {
         float myFloatValue2 = 5.25f;
 
         System.out.println("CHALLENGE TWO \nmyFloatValue1: " + myFloatValue1);
-
     }
 
     private static void challengeThree() {
@@ -68,6 +66,38 @@ public class Challenges {
 
         double calculatedKilos = numPounds * poundsToKiloRatio;
         System.out.println("CHALLENGE 3 \ncalculatedKilos: " + calculatedKilos);
-
     }
+
+    private static void challengeFour() {
+        /*
+            1. create a double var w/ a value of 20.00
+            2. create a double var w/ a value of 80.00
+            3. add both numbers together & multiply by 100.00
+            4. get remainder value from the division of step 3 value and 40.00
+            5. create a boolean variable that assigns the value true if the remainder in step 4 is 0, or false if it's not zero
+            6. output the boolean variable
+            7. write if-else statement that displays 'Got some remainder' if the boolean in step 5 is not true.
+         */
+
+        // step 1
+        double var1 = 20.00d;
+        // step 2
+        double var2 = 80.00d;
+        // step 3: use parenthesis to handle operator precedence
+        double var3 = (var1 + var2) * 100d;
+        System.out.println("var3: " + var3);
+        // step 4
+        double remainder = var3 % 40.00d;
+        // step 5: use ternary operator
+        boolean isZeroRemainder = (remainder == 0d) ? true : false;
+        // step 7: don't expect remainder msg
+        if (!isZeroRemainder) {
+            System.out.println("got some remainder...".toUpperCase());
+            System.out.println("Remainder: " + remainder);
+        } else {
+            // step 6
+            System.out.println("isZeroRemainder: " + isZeroRemainder);
+        }
+    }
+
 }
