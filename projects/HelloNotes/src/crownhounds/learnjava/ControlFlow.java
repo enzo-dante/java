@@ -5,12 +5,12 @@ public class ControlFlow {
     public static void main(String[] args) {
 
 //        operatorsAndExpressions();
-//        ifThenConditionalLogic();
-        ternaryOperator();
+//        ifElseConditionalLogic();
+//        ternaryOperator();
+        conditionalGameMethod();
     }
 
-    private static void ifThenConditionalLogic() {
-
+    private static void ifElseConditionalLogic() {
         /*
             if-then statements tell the program to execute a certain section of code only
                 if expression evaluates true
@@ -61,6 +61,35 @@ public class ControlFlow {
         if ((topScore > 90) || (secondTopScore <= 90)) {
             System.out.println("Either or both of the conditions are true.");
         }
+
+        boolean gameOver = true;
+        int score = 5000;
+        int levelCompleted = 5;
+        int bonus = 100;
+
+        if(score <= 5000 && score > 1000) {
+            System.out.println("your score was less than 5k but greater than 1k.");
+        } else if(score <= 1000) {
+            System.out.println("your score was less than or equal to 1k.");
+        } else {
+            System.out.println("Got here.");
+        }
+    }
+
+    private static void conditionalGameMethod() {
+
+        boolean gameOver = true;
+        int score = 5000;
+        int levelCompleted = 5;
+        int bonus = 100;
+
+        if(gameOver) {
+            // the finalScore variable defined in this code block is limited by the scope
+                // meaning finalScore cannot be accessed by variables defined in the parent scope of this code block
+                // finalScore can access defined variables in the parent scope though
+            int finalScore = score + (levelCompleted * bonus);
+            System.out.println("final score: ".toUpperCase() + finalScore);
+        }
     }
 
     private static void operatorsAndExpressions() {
@@ -94,6 +123,10 @@ public class ControlFlow {
             && and
             || or
 
+        statements are the entire line including the datatype and semicolon
+        which means that statements includes expressions
+           int result = 15 + 12;
+
          */
 
         // 15 & 12 operands
@@ -125,7 +158,6 @@ public class ControlFlow {
     }
 
     private static void ternaryOperator() {
-
         /*
             ternary operator is a single line if-else statement
 
@@ -140,6 +172,4 @@ public class ControlFlow {
             System.out.println("wasCar is true");
         }
     }
-
-
 }

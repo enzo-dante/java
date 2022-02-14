@@ -9,7 +9,8 @@ public class Challenges {
 //        challengeOne();
 //        challengeTwo();
 //        challengeThree();
-        challengeFour();
+//        challengeFour();
+        challengeFive();
 
     }
 
@@ -100,4 +101,44 @@ public class Challenges {
         }
     }
 
+    private static void challengeFive() {
+        /*
+            print out a second score on the screen with the following:
+                gameOver = true;
+                score set to 1000
+                levelCompleted set to 8
+                bonus set to 200
+
+            but make sure a first score is still displayed on the screen too
+         */
+        boolean gameOver = true;
+        int score = 5000;
+        int levelCompleted = 5;
+        int bonus = 100;
+        int firstScore = 0;
+        int secondScore = 0;
+
+        if(firstScore <= 0) {
+            firstScore = calculateScore(bonus, levelCompleted, score, gameOver);
+            System.out.println("GAME OVER first score: " + firstScore);
+        }
+
+        score = 10000;
+        levelCompleted = 8;
+        bonus = 200;
+
+        if(firstScore > 0) {
+            secondScore = calculateScore(bonus, levelCompleted, score, gameOver);
+            System.out.println("GAME OVER second score: " + secondScore);
+        }
+    }
+
+    private static int calculateScore(int bonus, int levelCompleted, int score, boolean gameOver) {
+
+        if(gameOver) {
+            return score + (levelCompleted * bonus);
+        }
+
+        return -1;
+    }
 }
