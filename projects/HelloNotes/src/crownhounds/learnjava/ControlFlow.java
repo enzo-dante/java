@@ -7,7 +7,7 @@ public class ControlFlow {
 //        operatorsAndExpressions();
 //        ifElseConditionalLogic();
 //        ternaryOperator();
-        conditionalGameMethod();
+        int finalScore = conditionalGameMethod();
     }
 
     private static void ifElseConditionalLogic() {
@@ -76,7 +76,13 @@ public class ControlFlow {
         }
     }
 
-    private static void conditionalGameMethod() {
+    /*
+        private = only accessible by this class
+        static = not an instance of another class
+        int = expected returned data type
+            if the method returned void, it can be called a 'procedure'
+     */
+    private static int conditionalGameMethod() {
 
         boolean gameOver = true;
         int score = 5000;
@@ -89,7 +95,12 @@ public class ControlFlow {
                 // finalScore can access defined variables in the parent scope though
             int finalScore = score + (levelCompleted * bonus);
             System.out.println("final score: ".toUpperCase() + finalScore);
+            return finalScore;
         }
+
+        // method must always return an int
+        // -1 is a best practice to signify an error
+        return -1;
     }
 
     private static void operatorsAndExpressions() {
