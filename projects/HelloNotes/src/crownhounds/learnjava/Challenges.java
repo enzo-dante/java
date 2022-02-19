@@ -1,6 +1,8 @@
 package crownhounds.learnjava;
 
 
+import java.util.Locale;
+
 public class Challenges {
 
     public static void main(String[] args) {
@@ -15,6 +17,9 @@ public class Challenges {
 //        challengeEight();
 //        challengeNine();
 //        challengeTen();
+//        challengeEleven();
+        challengeTwelve();
+//        challengeThirteen();
 
     }
 
@@ -94,7 +99,7 @@ public class Challenges {
         // step 4
         double remainder = var3 % 40.00d;
         // step 5: use ternary operator
-        boolean isZeroRemainder = (remainder == 0d) ? true : false;
+        boolean isZeroRemainder = remainder == 0d;
         // step 7: don't expect remainder msg
         if (!isZeroRemainder) {
             System.out.println("got some remainder...".toUpperCase());
@@ -321,10 +326,143 @@ public class Challenges {
          /*
             1. Write a LeapYearCalculator class
 
+            2. Write a method isLeapYear with a parameter of type int named year.
+
+                The parameter needs to be greater than or equal to 1 and less than or equal to 9999.
+                    If the parameter is not in that range return false.
+
+                Otherwise, if it is in the valid range,
+                    calculate if the year is a leap year and return true if it is a leap year, otherwise return false.
+
+                To determine whether a year is a leap year, follow these steps:
+                    1. If the year is evenly divisible by 4, go to step 2.
+
+                        Otherwise, go to step 5 if NOT evenly divisible by 4.
+
+                    2. If the year is evenly divisible by 100, go to step 3.
+                        Otherwise, go to step 4.
+
+                    3. If the year is evenly divisible by 400, go to step 4.
+                        Otherwise, go to step 5.
+
+                    4. The year is a leap year (it has 366 days).
+                        The method isLeapYear needs to return true.
+
+                    5. The year is not a leap year (it has 365 days).
+                        The method isLeapYear needs to return false.
+
+            3. TEST divisibility by 100 BUT_NOT/AND 400
+
+                1. The following years are NOT leap years:
+
+                This is because they are evenly divisible by 100 but NOT by 400.
+                    1700, 1800, 1900, 2100, 2200, 2300, 2500, 2600
+
+                2. The following years ARE leap years:
+
+                This is because they are evenly divisible by both 100 AND 400.
+                    1600, 2000, 2400
 
          */
 
-        // REFERENCE LeapYearCalculator class
+//         REFERENCE LeapYearCalculator class
+        boolean yearN1600 = LeapYearCalculator.isLeapYear(-1600);
+        System.out.println("yearN1600: " + yearN1600);
+        boolean year1600 = LeapYearCalculator.isLeapYear(1600);
+        System.out.println("year1600: " + year1600);
+        boolean year2017 = LeapYearCalculator.isLeapYear(2017);
+        System.out.println("year2017: " + year2017);
+        boolean year2000 = LeapYearCalculator.isLeapYear(2000);
+        System.out.println("year2000: " + year2000);
 
+        // TEST numbers in range(1,100)
+        boolean year4 = LeapYearCalculator.isLeapYear(4);
+        System.out.println("year4: " + year4);
+
+        // TEST divisibility by 100 AND 4 BUT_NOT 400
+        boolean year1800 = LeapYearCalculator.isLeapYear(1800);
+        System.out.println("year1800: " + year1800);
+        boolean year1900 = LeapYearCalculator.isLeapYear(1900);
+        System.out.println("year1900: " + year1900);
+
+        // TEST divisibility by 100 AND 400 AND 4
+        boolean year1924 = LeapYearCalculator.isLeapYear(1924);
+        System.out.println("year1924: " + year1924);
+
+    }
+
+    private static void challengeEleven() {
+
+        /*
+            1. Write a DecimalComparator class
+
+            2. Write a method areEqualByThreeDecimalPlaces with two parameters of type  double.
+                use CASTING
+
+            3.  The method should return boolean, and it needs to return true if two double numbers are the same up to three decimal places.
+                Otherwise, return false .
+         */
+
+        boolean test1 = DecimalComparator.areEqualByThreeDecimalPlaces(-3.1756, -3.175); // true
+        System.out.println(test1);
+        boolean test2 = DecimalComparator.areEqualByThreeDecimalPlaces(-3.1756, -3.176); // false
+        System.out.println(test2);
+        boolean test3 = DecimalComparator.areEqualByThreeDecimalPlaces(3.0, 3.0); // true
+        System.out.println(test3);
+        boolean test4 = DecimalComparator.areEqualByThreeDecimalPlaces(-3.123, 3.123); // false
+        System.out.println(test4);
+
+    }
+
+    private static void challengeTwelve() {
+        /*
+            1. Write EqualSumChecker class
+
+            2. Write a method hasEqualSum with 3 parameters of type int.
+
+                The method should return boolean, and it needs to return true
+
+            3. if the sum of the first and second parameter is equal to the third parameter.
+                    Otherwise, return false.
+            
+         */
+
+        boolean check1 = EqualSumChecker.hasEqualSum(1,1,1); // false
+        System.out.println("eCheck1: " + check1);
+        boolean check2 = EqualSumChecker.hasEqualSum(1,1,2); // true
+        System.out.println("eCheck2: " + check2);
+        boolean check3 = EqualSumChecker.hasEqualSum(1,-1,0); // true
+        System.out.println("eCheck3: " + check3);
+    }
+
+    private static void challengeThirteen() {
+        /*
+            We'll say that a number is "teen" if it is in the range 13 -19 (inclusive).
+
+                1. Write a method named hasTeen with 3 parameters of type int.
+
+                    The method should return boolean
+                        it needs to return true if one of the parameters is in range 13(inclusive) - 19 (inclusive).
+                        Otherwise return false.
+
+                2. Write another method named isTeen with 1 parameter of type int.
+                    The method should return boolean
+                        it needs to return true if the parameter is in range 13(inclusive) - 19 (inclusive).
+                            Otherwise return false.
+         */
+
+        System.out.println("\nhasTeen");
+        boolean teenCheck1 = TeenNumberChecker.hasTeen(9, 99, 19); // true
+        System.out.println("teenCheck1: " + teenCheck1);
+        boolean teenCheck2 = TeenNumberChecker.hasTeen(23, 15, 42); // true
+        System.out.println("teenCheck2: " + teenCheck2);
+        boolean teenCheck3 = TeenNumberChecker.hasTeen(22, 23, 34); // false
+        System.out.println("teenCheck3: " + teenCheck3);
+
+        System.out.println("\nisTeen");
+        boolean teenCheck4 = TeenNumberChecker.isTeen(9); // false
+        System.out.println("teenCheck4: " + teenCheck4);
+        boolean teenCheck5 = TeenNumberChecker.isTeen(13); // true
+        System.out.println("teenCheck5: " + teenCheck5);
     }
 }

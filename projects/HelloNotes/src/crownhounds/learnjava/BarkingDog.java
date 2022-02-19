@@ -14,6 +14,5 @@ public class BarkingDog {
         }
 
         return isAwake;
-
     }
 }
