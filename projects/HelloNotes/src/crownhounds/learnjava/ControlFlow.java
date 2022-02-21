@@ -2,6 +2,12 @@ package crownhounds.learnjava;
 
 public class ControlFlow {
 
+    /* a constant value that
+            cannot be changed due to the 'final' keyword
+            cannot be accessed outside of this class scope due to the 'private' keyword
+     */
+    private static final String INVALID_VALUE_MESSAGE = "Invalid value";
+
     public static void main(String[] args) {
 
 //        operatorsAndExpressions();

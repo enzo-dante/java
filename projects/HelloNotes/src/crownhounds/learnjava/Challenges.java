@@ -18,8 +18,10 @@ public class Challenges {
 //        challengeNine();
 //        challengeTen();
 //        challengeEleven();
-        challengeTwelve();
+//        challengeTwelve();
 //        challengeThirteen();
+//        challengeFourteen();
+        challengeFifteen();
 
     }
 
@@ -464,5 +466,160 @@ public class Challenges {
         System.out.println("teenCheck4: " + teenCheck4);
         boolean teenCheck5 = TeenNumberChecker.isTeen(13); // true
         System.out.println("teenCheck5: " + teenCheck5);
+    }
+
+    private static void challengeFourteen() {
+        /*
+            1. create a method: calcFeetAndInchesToCentimeters
+                2 parameters: double feet, double inches
+
+            validate feet is greater than or equal to 0
+            validate inches is greater than or equal to 0, validate inches is less than or equal to 12
+            if any false, return -1
+
+            if params valid, calculate number of centimeters passes to method based on params
+                1 foot = 12 inches
+                1 in = 2.54cm
+
+            2. create 2nd method with same name but only 1 param: double inches
+
+            validate that inches >= 0
+                return -1 if false
+                calculate how many feet are in the inches param
+                    1 foot = 12 inches
+
+            CALLING another overloaded method just requires you to use the right number of parameters
+
+         */
+
+        double twoParams = calcFeetAndInchesToCentimeters(6, 0);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams + "cm");
+        double twoParams1 = calcFeetAndInchesToCentimeters(0, 9);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams1 + "cm");
+        double twoParams2 = calcFeetAndInchesToCentimeters(7, 5);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams2 + "cm");
+        double twoParams3 = calcFeetAndInchesToCentimeters(-20, 1);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams3 + "cm");
+        double twoParams4 = calcFeetAndInchesToCentimeters(20, -4);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams4 + "cm");
+        double twoParams5 = calcFeetAndInchesToCentimeters(-9, -4);
+        System.out.println("calcFeetAndInchesToCentimeters(2 params): " + twoParams5 + "cm");
+
+        System.out.println("\n***\n");
+        double oneParam = calcFeetAndInchesToCentimeters(100);
+        System.out.println("calcFeetAndInchesToCentimeters(1 params): " + oneParam + "cm");
+        double oneParam2 = calcFeetAndInchesToCentimeters(-3);
+        System.out.println("calcFeetAndInchesToCentimeters(1 params): " + oneParam2 + "cm");
+
+    }
+
+    public static double calcFeetAndInchesToCentimeters(double feet, double inches) {
+
+        if(feet >= 0 && (inches >= 0 && inches <= 12)) {
+            return (feet * 12 * 2.54) + (inches * 2.54);
+        }
+
+        System.out.println("\ninvalid feet or inches". toUpperCase());
+        return -1;
+    }
+
+    public static double calcFeetAndInchesToCentimeters(double inches) {
+
+        if(inches < 0) {
+            System.out.println("\ninvalid inches". toUpperCase());
+            return -1;
+        }
+
+        double feet = (int) inches / 12;
+        double remainingInches = (int) inches % 12;
+        
+        // the return statement will return the calculated double from the 1st overloaded method
+        return calcFeetAndInchesToCentimeters(feet, remainingInches);
+    }
+
+    private static void challengeFifteen() {
+        /*
+            NOTE: use int or long for num data types
+            BONUS: for input 61 minutes = '01h 01m 00s' || '1h 1m 0s'
+
+            1. create a SecondsAndMinutes class
+
+                1. create a method called getDurationString that returns a String
+                    first parameter = minutes
+                    second parameter = seconds
+
+                2. validate params:
+                    valid if minutes is greater than or equal to 0
+                    valid if seconds is greater than or equal to 0 and less than or equal to 59
+
+                3. getDurationString returns 'Invalid value' if either param validation fails
+
+                4. if params valid,
+                    calculate how many hours, minutes, and seconds equal the minutes and seconds passed to this method
+
+                        1 minute = 60 seconds
+                        1 hour = 60 minutes || 3600 seconds
+
+                    return that value as a string in format "XXh YYm ZZs"
+
+            2. method overload getDurationString with only 1 param: seconds
+
+                1. validate seconds is greater than or equal to 0 and return 'invalid value' if it is not true
+
+                2. if params valid,
+                    calculate how many minutes are in the seconds value
+
+                        1 minute = 60 seconds
+                        1 hour = 60 minutes || 3600 seconds
+
+                    then call the other overloaded method with the minutes and seconds parameters
+         */
+
+        // TEST CASES
+
+        String bonus = SecondsAndMinutes.getDurationString(61, 0);
+        System.out.println(bonus + "\n");
+
+        String ds0 = SecondsAndMinutes.getDurationString(126, 34);
+        System.out.println(ds0 + "\n");
+
+        String ds1 = SecondsAndMinutes.getDurationString(62, 3);
+        System.out.println(ds1 + "\n");
+
+        String ds2 = SecondsAndMinutes.getDurationString(44, 19);
+        System.out.println(ds2 + "\n");
+
+        String ds3 = SecondsAndMinutes.getDurationString(0, 25);
+        System.out.println(ds3 + "\n");
+
+        String ds4 = SecondsAndMinutes.getDurationString(11, 0);
+        System.out.println(ds4 + "\n");
+
+        String ds5 = SecondsAndMinutes.getDurationString(0, 0);
+        System.out.println(ds5 + "\n");
+
+        String ds6 = SecondsAndMinutes.getDurationString(-30, 18);
+        System.out.println(ds6 + "\n");
+
+        String ds7 = SecondsAndMinutes.getDurationString(40, -23);
+        System.out.println(ds7 + "\n");
+
+        String ds8 = SecondsAndMinutes.getDurationString(-20, -20);
+        System.out.println(ds8 + "\n");
+
+        String ds9 = SecondsAndMinutes.getDurationString(10, 88);
+        System.out.println(ds9 + "\n");
+
+        System.out.println("***overloaded method***\n".toUpperCase());
+
+        String ds10 = SecondsAndMinutes.getDurationString(7594);
+        System.out.println(ds10 + "\n");
+
+        String ds11= SecondsAndMinutes.getDurationString(9);
+        System.out.println(ds11 + "\n");
+
+        String ds12 = SecondsAndMinutes.getDurationString(-15);
+        System.out.println(ds12 + "\n");
+
     }
 }
