@@ -21,7 +21,9 @@ public class Challenges {
 //        challengeTwelve();
 //        challengeThirteen();
 //        challengeFourteen();
-        challengeFifteen();
+//        challengeFifteen();
+//        challengeSixteen();
+        challengeSeventeen();
 
     }
 
@@ -622,4 +624,64 @@ public class Challenges {
         System.out.println(ds12 + "\n");
 
     }
+
+    private static void challengeSixteen() {
+
+        /*
+            Write a class called areaCalculator
+
+            Write a method called area with 1 double parameter named radius
+                return -1 if radius is negative
+
+                return a double value that represents the area of a circle
+                    area_circle = radius * radius * Math.PI
+
+
+            Write an overloaded method with 2 parameters x & y (both doubles & a side of a rectangle)
+                return -1 if either or both parameters are negative
+
+                the method returns the area of a rectangle
+                    area_rectangle = x * y
+
+         */
+
+        double circle1 = AreaCalculator.area(5.0); // 78.53975
+        System.out.println("circle1 " + circle1);
+        double circle2 = AreaCalculator.area(-22); // -1
+        System.out.println("circle2 " + circle2);
+        double rectangle1 = AreaCalculator.area(5, 4); // 20.0
+        System.out.println("rectangle1 " + rectangle1);
+        double rectangle2 = AreaCalculator.area(-4, 6); // -1
+        System.out.println("rectangle2 " + rectangle2);
+    }
+
+    private static void challengeSeventeen() {
+
+        /*
+            Write a class called MinutesToYearsDaysCalculator
+
+            Write a method called printYearsAndDays with 1 long parameter named minutes
+                the method should return void
+
+                print "Invalid Value" if radius is negative
+
+                the method needs to calculate years and days from the minutes
+                    "XX min = YY y and ZZ d";
+                    XX = minutes
+                    YY = years
+                    ZZ = days
+
+                    TIP: use remainder/modulus operator
+                    1 hour = 60 min
+                    1 day = 24 hours
+                    1 year = 365 days
+         */
+
+        MinutesToYearsDaysCalculator.printYearsAndDays(525600);
+        MinutesToYearsDaysCalculator.printYearsAndDays(-12);
+        MinutesToYearsDaysCalculator.printYearsAndDays(1051200);
+        MinutesToYearsDaysCalculator.printYearsAndDays(561600);
+
+    }
+
 }
