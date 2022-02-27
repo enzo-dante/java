@@ -1,11 +1,16 @@
 package crownhounds.learnjava;
 
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Challenges {
 
     public static void main(String[] args) {
+
+        /*
+            Java Programming Masterclass
+         */
 
 //        challengeOne();
 //        challengeTwo();
@@ -23,7 +28,27 @@ public class Challenges {
 //        challengeFourteen();
 //        challengeFifteen();
 //        challengeSixteen();
-        challengeSeventeen();
+//        challengeSeventeen();
+//        challengeEighteen();
+//        challengeNineteen();
+//        challengeTwenty();
+//        challengeTwentyOne();
+//        challengeTwentyTwo();
+//        challengeTwentyThree();
+//        challengeTwentyFour();
+//        challengeTwentyFive();
+        challengeTwentySix();
+
+        /*
+            LeetCode Java Challenges
+         */
+
+//        LeetCode.challenge9();
+//        LeetCode.challenge412();
+//        LeetCode.challenge172();
+//        LeetCode.challenge344();
+//        LeetCode.challenge50();
+//        LeetCode.challenge151();
 
     }
 
@@ -681,7 +706,350 @@ public class Challenges {
         MinutesToYearsDaysCalculator.printYearsAndDays(-12);
         MinutesToYearsDaysCalculator.printYearsAndDays(1051200);
         MinutesToYearsDaysCalculator.printYearsAndDays(561600);
+    }
+
+    private static void challengeEighteen() {
+        /*
+            Write a class called IntEqualityPrinter
+
+            Write a method called printEqual with 3 parameters of type int
+                the method should return void
+
+                print "Invalid Value" if one of the parameters is less than 0
+
+                if all numbers are equal, the method should print
+                    "All numbers are equal"
+                 if all numbers are different, the method should print
+                    "All numbers are different"
+                otherwise, print
+                    "Neither all are equal or different"
+         */
+
+        IntEqualityPrinter.printEqual(1,1,1);
+        IntEqualityPrinter.printEqual(1,1,2);
+        IntEqualityPrinter.printEqual(-1,-1,-1);
+        IntEqualityPrinter.printEqual(1,2,3);
+    }
+
+    private static void challengeNineteen() {
+        /*
+            Write a class called PlayingCat
+
+            Write a method called isCatPlaying with 2 parameters:
+                boolean (if it is summer): summer
+                int: temperature
+
+                if !summer, cats play if temperature >= 25 AND temperature <= 35
+                if summer, cats play if temperature >= 25 AND temperature <= 45
+
+                the method should return a boolean depending on if cat is playing
+         */
+
+        boolean cat1 = PlayingCat.isCatPlaying(true, 10);
+        System.out.println(cat1);
+        boolean cat2 = PlayingCat.isCatPlaying(false, 36);
+        System.out.println(cat2);
+        boolean cat3 = PlayingCat.isCatPlaying(false, 35);
+        System.out.println(cat3);
 
     }
 
+    private static void challengeTwenty() {
+        /*
+            Write a new switch statement use char instead of int
+            create a new char variable
+            create a new switch statement testing for
+                a, b, c, d, e
+            display a msg if any of these letters are found & then break
+            default to msg 'not found'
+         */
+
+        char letter = 'c';
+        String msg = " was found";
+
+        switch (letter) {
+            case 'a': case 'b': case 'c': case 'd': case 'e':
+                System.out.println(letter + msg);
+                break;
+            default:
+                System.out.println("not found");
+                break;
+        }
+
+        String month = "Nov";
+
+        switch (month.toLowerCase()) {
+            case "dec":
+                System.out.println("the month was " + month);
+                break;
+            case "nov":
+                System.out.println("the month was " + month);
+                break;
+            default:
+                System.out.println("the default");
+                break;
+        }
+    }
+
+    private static void challengeTwentyOne() {
+        /*
+            1. write the method printDayOfTheWeek has 1 parameter name 'day' of type int
+                returns void
+            use a switch statement to represent the string of the day of the week
+                0 - "Sunday"
+            else print "Invalid Day"
+
+            2. write a separate method that uses if-else instead of switch statement
+
+            TIP: overload the method
+         */
+
+        printDayOfTheWeek(3);
+        printDayOfTheWeek(9);
+        printDayOfTheWeek(6, true);
+        printDayOfTheWeek(10, false);
+
+    }
+
+    private static void printDayOfTheWeek(int day) {
+        switch (day) {
+            case 0:
+                System.out.println("Sunday");
+                break;
+            case 1:
+                System.out.println("Monday");
+                break;
+            case 2:
+                System.out.println("Tuesday");
+                break;
+            case 3:
+                System.out.println("Wednesday");
+                break;
+            case 4:
+                System.out.println("Thursday");
+                break;
+            case 5:
+                System.out.println("Friday");
+                break;
+            case 6:
+                System.out.println("Saturday");
+            default:
+                System.out.println("Invalid day");
+                break;
+        }
+    }
+
+    private static void printDayOfTheWeek(int day, boolean hasIf) {
+        if(day == 0) {
+            System.out.println("Sunday");
+        } else if(day == 1) {
+            System.out.println("Monday");
+        } else if(day == 2) {
+            System.out.println("Tuesday");
+        } else if(day == 3) {
+            System.out.println("Wednesday");
+        } else if(day == 4) {
+            System.out.println("Thursday");
+        } else if(day == 5) {
+            System.out.println("Friday");
+        } else if(day == 6) {
+            System.out.println("Saturday");
+        } else {
+            System.out.println("Invalid value");
+        }
+    }
+
+    private static void challengeTwentyTwo() {
+        /*
+            0. write a class called NumberInWord
+
+            1. write the method printNumberInWord
+                has 1 parameter name 'num' of type int
+                returns void because it uses print extensively
+
+            use a switch statement to print the string of the spelled out num parameter
+            only numbers 0-9 are printed
+            note capitalization
+                0 - "ZERO"
+            else print "OTHER" for nums outside of range including negative numbers
+
+            2. write a separate method that uses if-else instead of switch statement
+
+            TIP: overload the method
+         */
+
+        NumberInWord.printNumberInWord(0);
+        NumberInWord.printNumberInWord(-14);
+        NumberInWord.printNumberInWord(6);
+        NumberInWord.printNumberInWord(100);
+
+        System.out.println("\n*** OVERLOADED ***\n".toLowerCase());
+
+        ArrayList<String> wordNums = new ArrayList<String>();
+        wordNums.add("zero".toUpperCase());
+        wordNums.add("one".toUpperCase());
+        wordNums.add("two".toUpperCase());
+        wordNums.add("three".toUpperCase());
+        wordNums.add("four".toUpperCase());
+        wordNums.add("five".toUpperCase());
+        wordNums.add("six".toUpperCase());
+        wordNums.add("seven".toUpperCase());
+        wordNums.add("eight".toUpperCase());
+        wordNums.add("nine".toUpperCase());
+
+        NumberInWord.printNumberInWord(0, wordNums);
+        NumberInWord.printNumberInWord(-14, wordNums);
+        NumberInWord.printNumberInWord(6, wordNums);
+        NumberInWord.printNumberInWord(100, wordNums);
+
+
+    }
+
+    private static void challengeTwentyThree() {
+         /*
+            1. Write a NumberOfDaysInMonth class
+
+            2. Write a method isLeapYear with a parameter of type int named year.
+                the method returns a boolean
+
+                The parameter needs to be
+                    greater than or equal to 1 and less than or equal to 9999.
+                    If the parameter is not in that range return false.
+
+                Otherwise, if it is in the valid range,
+                    calculate if the year is a leap year
+                    and return true if it is a leap year, otherwise return false.
+
+                To determine whether a year is a leap year, follow these steps:
+                    1. If the year is evenly divisible by 4, go to step 2.
+
+                        Otherwise, go to step 5 if NOT evenly divisible by 4.
+
+                    2. If the year is evenly divisible by 100, go to step 3.
+                        Otherwise, go to step 4.
+
+                    3. If the year is evenly divisible by 400, go to step 4.
+                        Otherwise, go to step 5.
+
+                    4. The year is a leap year (it has 366 days).
+                        The method isLeapYear needs to return true.
+
+                    5. The year is not a leap year (it has 365 days).
+                        The method isLeapYear needs to return false.
+
+            3. TEST divisibility by 100 BUT_NOT/AND 400
+
+                1. The following years are NOT leap years:
+
+                This is because they are evenly divisible by 100 but NOT by 400.
+                    1700, 1800, 1900, 2100, 2200, 2300, 2500, 2600
+
+                2. The following years ARE leap years:
+
+                This is because they are evenly divisible by both 100 AND 400.
+                    1600, 2000, 2400
+
+            4. write another method called getDaysInMonth with 2 int parameters
+                month and year
+
+                if month is < 1 || month > 12 return -1
+                if year is < 1 || year > 9999 return -1
+
+                the method needs to return the number of days in a month
+                NOTE: leap years have 29 days in the second month (February)
+
+            TIP: use a switch statement
+         */
+
+//         REFERENCE NumberOfDaysInMonth class
+        boolean yearN1600 = LeapYearCalculator.isLeapYear(-1600);
+        System.out.println("yearN1600: " + yearN1600);
+        boolean year1600 = LeapYearCalculator.isLeapYear(1600);
+        System.out.println("year1600: " + year1600);
+        boolean year2017 = LeapYearCalculator.isLeapYear(2017);
+        System.out.println("year2017: " + year2017);
+        boolean year2000 = LeapYearCalculator.isLeapYear(2000);
+        System.out.println("year2000: " + year2000);
+
+        // TEST numbers in range(1,100)
+        boolean year4 = LeapYearCalculator.isLeapYear(4);
+        System.out.println("year4: " + year4);
+
+        // TEST divisibility by 100 AND 4 BUT_NOT 400
+        boolean year1800 = LeapYearCalculator.isLeapYear(1800);
+        System.out.println("year1800: " + year1800);
+        boolean year1900 = LeapYearCalculator.isLeapYear(1900);
+        System.out.println("year1900: " + year1900);
+
+        // TEST divisibility by 100 AND 400 AND 4
+        boolean year1924 = LeapYearCalculator.isLeapYear(1924);
+        System.out.println("year1924: " + year1924);
+
+        System.out.println("\ngetDaysInMonth\n");
+
+        int daysInMonth1 = NumberOfDaysInMonth.getDaysInMonth(1, 2020);
+        System.out.println("should be 31 since leap year: " + daysInMonth1);
+        int daysInMonth2 = NumberOfDaysInMonth.getDaysInMonth(2, 2020);
+        System.out.println("should be 29 since leap year: " + daysInMonth2);
+        int daysInMonth3 = NumberOfDaysInMonth.getDaysInMonth(2, 2018);
+        System.out.println("should be 28 since not leap year: " + daysInMonth3);
+        int daysInMonth4 = NumberOfDaysInMonth.getDaysInMonth(-1, 2020);
+        System.out.println("should be -1 since invalid input: " + daysInMonth4);
+        int daysInMonth5 = NumberOfDaysInMonth.getDaysInMonth(2, -2020);
+        System.out.println("should be -1 since invalid input: " + daysInMonth5);
+    }
+
+    private static void challengeTwentyFour() {
+        /**
+         * using the for statement, call the calculateInterest method with
+         * the amount of 10000 with an interest rate of 2,3,4,5,6,7, and 8
+         * and print result to the console below
+         */
+
+        System.out.println("\n\t challenge 24\n");
+        Loops.forLoops(10000, 9);
+    }
+
+    private static void challengeTwentyFive() {
+        /**
+         * using the for statement, call the calculateInterest method with
+         * the amount of 10000 with an interest rate of 2,3,4,5,6,7, and 8
+         * and print result BACKWARDS to the console below
+         */
+
+        System.out.println("\n\t challenge 25\n");
+        Loops.forLoops(8);
+
+    }
+
+    private static void challengeTwentySix() {
+        /**
+         * create a for statement using any range of numbers
+         * determine if the number is a prime number using the isPrime method
+         * if it is a prime number, print it out
+         * AND increment the count of the number of prime numbers found
+         * if that count is 3: exit the loop
+         *
+         * HINT: use the break statement to exit
+         */
+
+        int startIndex = 10;
+        int numLoops = 50;
+        int maxPrimeNums = 10;
+        int totalPrimeFound = 0;
+
+        for(int i = startIndex; i < numLoops; i++) {
+
+            boolean isPrime = Loops.isPrime(i);
+
+            if(isPrime) {
+                totalPrimeFound++;
+                System.out.println(i + " is a prime number");
+            } else if(totalPrimeFound == maxPrimeNums) {
+                System.out.println("\nmax prime nums found: " + totalPrimeFound + "\nexiting for loop");
+                // break out of the for loop
+                break;
+            }
+        }
+    }
 }

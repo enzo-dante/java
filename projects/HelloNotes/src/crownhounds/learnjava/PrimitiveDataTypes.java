@@ -1,9 +1,7 @@
 // learnjava is a subfolder of crownhounds for organization
 package crownhounds.learnjava;
 
-import java.util.Locale;
-
-public class DataTypes {
+public class PrimitiveDataTypes {
 
     public static void main(String[] args) {
 

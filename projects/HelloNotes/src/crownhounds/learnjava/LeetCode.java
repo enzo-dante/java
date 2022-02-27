@@ -2,25 +2,16 @@ package crownhounds.learnjava;
 
 import java.util.ArrayList;
 
-public class ChallengesLeetCode {
+public class LeetCode {
 
     private static final String INVALID_MESSAGE = "Invalid Value";
 
-    public static void main(String[] args) {
-
-
-//        leetCode412();
-//        leetCode9();
-//        leetCode172();
-        leetCode50();
-    }
-
-//    private static void leetCodeTemplate() {
+//    public static void challenge() {
 //        System.out.println("\n\tleet code NUMBER".toUpperCase());
 //
 //    }
 
-    private static void leetCode412() {
+    public static void challenge412() {
         System.out.println("\n\tleet code 412".toUpperCase());
         fizzBuzz(5);
         fizzBuzz(-10);
@@ -65,7 +56,7 @@ public class ChallengesLeetCode {
         return myArr;
     }
 
-    private static void leetCode9() {
+    public static void challenge9() {
         System.out.println("\n\tleet code 9".toUpperCase());
         palindromeNumber(121);
         palindromeNumber(123);
@@ -103,7 +94,7 @@ public class ChallengesLeetCode {
         return isPal;
     }
 
-    private static void leetCode172() {
+    public static void challenge172() {
         System.out.println("\n\tleet code 172".toUpperCase());
         int numZeroes1 = factorialTrailingZeroes(5);
         int numZeroes2 = factorialTrailingZeroes(-7);
@@ -162,7 +153,7 @@ public class ChallengesLeetCode {
         return numTrailingZeroes;
     }
 
-    private static void leetCode50() {
+    public static void challenge50() {
         System.out.println("\n\tleet code 50".toUpperCase());
         power(2, 14);
         power(2, -2);
@@ -214,6 +205,80 @@ public class ChallengesLeetCode {
         // time complexity of log2(n)
         System.out.println("\n"+x + " to the power of " + n + ":\n" + product);
         return product;
+    }
+
+    public static void challenge344() {
+        System.out.println("\n\tleet code 344".toUpperCase());
+        reverseString("hello");
+
+    }
+
+    public static void reverseString(String input) {
+        /*
+            Write a function that reverses a String.
+            The input String is given an array of characters.
+         */
+
+        char letter = ' ';
+        String reversed = "";
+        for (int i = 0; i < input.length(); i++) {
+            letter = input.charAt(i);
+            reversed = letter + reversed;
+        }
+
+        // space complexity: o(1) since it's happening in place
+        // time complexity: o(n) where n is the length of the given array
+        System.out.println(input);
+        System.out.println(reversed);
+    }
+
+    public static void challenge14() {
+        System.out.println("\n\tleet code 14".toUpperCase());
+        ArrayList<String> test = new ArrayList<>();
+        test.add("leetcode");
+        test.add("lead");
+        test.add("leet");
+        longestCommonPrefix(test);
+
+    }
+
+    public static String longestCommonPrefix(ArrayList<String> stringsArr) {
+        /*
+            Write a function to find the longest common prefix (beginning of a word) string amongst an array of strings
+            if there is no common prefix, return empty string
+         */
+
+        if(stringsArr.isEmpty()) {
+            return "";
+        }
+        String prefix = stringsArr.get(0);
+        String word = "";
+
+        // loop will validate first string as prefix and then continuously remove last letter
+        for(int i = 0; i < stringsArr.size(); i++) {
+            word = stringsArr.get(i);
+            // search for prefix substring in word with indexOf
+            while(word.indexOf(prefix) != 0) {
+                // remove last letter to create a new comparison substring
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if(prefix.isEmpty()) {
+                    return "";
+                }
+            }
+        }
+
+        // linear time complexity = o(n) where n is the sum of all string lengths in a given array
+        // constant space complexity = o(1)
+        System.out.println(prefix);
+        return prefix;
+    }
+
+
+    public static void challenge151() {
+        System.out.println("\n\tleet code 151".toUpperCase());
+        String test = "the sky is blue";
+        String test2 = " a good    example ";
+
     }
 
 }

@@ -13,7 +13,9 @@ public class ControlFlow {
 //        operatorsAndExpressions();
 //        ifElseConditionalLogic();
 //        ternaryOperator();
-        int finalScore = conditionalGameMethod();
+//        int finalScore = conditionalGameMethod();
+//        switchStatement();
+        Loops.forLoops();
     }
 
     private static void ifElseConditionalLogic() {
@@ -187,6 +189,34 @@ public class ControlFlow {
 
         if (wasCar) {
             System.out.println("wasCar is true");
+        }
+    }
+
+    private static void switchStatement() {
+        /*
+            the switch statement is a superior alternative to using a lot of if-else statements
+                use 'case' to handle if: test against the provided expression to return true
+                use 'break' to handle else-if: exit a switch code block and continue on
+                use 'default' to handle else
+
+            The below switch statement = if(1 == 1) execute
+                switch(1) {
+                    case 1:
+                }
+         */
+
+        int switchValue = 1;
+
+        switch (switchValue) {
+            case 1:
+                System.out.println("Value was 1");
+                break;
+            case 2:
+                System.out.println("Value was 2");
+                break;
+            default:
+                System.out.println("Default return value not handled by switch other cases");
+                break;
         }
     }
 }
