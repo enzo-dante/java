@@ -37,7 +37,16 @@ public class Challenges {
 //        challengeTwentyThree();
 //        challengeTwentyFour();
 //        challengeTwentyFive();
-        challengeTwentySix();
+//        challengeTwentySix();
+//        challengeTwentySeven();
+//        challengeTwentyEight();
+//        challengeTwentyNine();
+//        challengeThirty();
+//        challengeThirtyOne();
+//        challengeThirtyTwo();
+//        challengeThirtyThree();
+//        challengeThirtyFour();
+        challengeThirtyFive();
 
         /*
             LeetCode Java Challenges
@@ -49,6 +58,14 @@ public class Challenges {
 //        LeetCode.challenge344();
 //        LeetCode.challenge50();
 //        LeetCode.challenge151();
+
+        /*
+           Amazon Challenges
+         */
+
+//        AmazonChallenges.arrays();
+
+
 
     }
 
@@ -1051,5 +1068,224 @@ public class Challenges {
                 break;
             }
         }
+    }
+
+    private static void challengeTwentySeven() {
+        /*
+            create a for statement using a range of numbers from 1 to 1000 inclusive
+
+            sum all numbers that can be divided by 3 and 5, also print the number
+
+            break out of loop once you have found a total of 5 numbers
+                print sum after breaking out of loop
+         */
+
+        System.out.println("\tChallenge 27".toUpperCase());
+
+        int count = 0;
+        int sum = 0;
+
+        for(int i = 1; i <= 1000; i++) {
+
+            if(count >= 5) {
+                break;
+            } else if((i % 3 == 0) && (i % 5 == 0)) {
+                sum += i;
+                count ++;
+
+                System.out.println(i);
+            }
+        }
+
+        System.out.println("sum: " + sum);
+    }
+
+    private static void challengeTwentyEight() {
+        /*
+            Write a class SumOddRange
+
+            Write a method called isOdd with an int parameter called number
+                returns a boolean
+
+            validate parameter is greater than 0, return false otherwise
+                return true if num is odd, else return false
+
+            Write sumOdd method that has 2 int params: start and end (range of numbers)
+                use a for loop to sum all odd numbers in that range including the end
+                    return the int sum
+                sumOdd should call isOdd
+
+                end >= start and both start and end need to be greater than 0
+                if param validation false, return -1
+
+            HINT: use modulo/remainder operator
+         */
+
+        System.out.println("\tChallenge 28".toUpperCase());
+
+        SumOddRange.sumOdd(1, 100);
+        SumOddRange.sumOdd(-1, 100);
+        SumOddRange.sumOdd(100, 100);
+        SumOddRange.sumOdd(13, 13);
+        SumOddRange.sumOdd(100, -100);
+        SumOddRange.sumOdd(100, 1000);
+    }
+
+    public static void challengeTwentyNine() {
+        /*
+            create a method isEvenNumber with int param
+                return true if even, else return false
+
+            implement isEvenNumber in while loop that prints only even numbers
+                check edge case: infinite loop
+
+            record total number of even numbers found
+                break out of loop on 5 and print the five even numbers
+
+            HINT: use modulo/remainder operator
+         */
+
+        int count = 0;
+        int num = 4;
+        int finNum = 20;
+
+        while(num <= finNum) {
+            num++;
+
+            if(count >= 5) {
+                break;
+            }
+
+            if(!isEvenNumber(num)) {
+                // bypass print statement
+                continue;
+            }
+
+            count++;
+            System.out.println(num + " is even");
+        }
+
+        System.out.println("evenNum count: " + count);
+    }
+
+    private static boolean isEvenNumber(int num) {
+        return num % 2 == 0;
+    }
+
+    private static void challengeThirty() {
+        /*
+            write a method called sumDigits with 1 int param
+
+            validate param is >=10 and return -1 if fail
+
+            return the sum of the all digits in the number.
+                numbers 0-9 have 1 digit so don't have to process them
+                negative number don't get processed so return -1
+
+                ex:
+                    sumDigits(125) returns 8
+                        1 + 2 + 5 = 8
+
+                    sumDigits(1) returns -1
+
+            HINTS:
+                use n % 10 to extract the least significant digit
+                use n / 10 to discard the least significant digit
+
+         */
+
+        System.out.println("the sum: " + DigitalSum.sumDigits(125));
+        System.out.println("the sum: " + DigitalSum.sumDigits(780));
+        System.out.println("the sum: " + DigitalSum.sumDigits(9));
+        System.out.println("the sum: " + DigitalSum.sumDigits(-1));
+    }
+
+    private static void challengeThirtyOne() {
+        /*
+            write a class NumberPalindrome
+            write the method isPalindrome with 1 int parameter called number
+                returns a boolean based on if parameter is a palindrome
+
+         */
+
+        NumberPalindrome.isPalindrome(125);
+        NumberPalindrome.isPalindrome(101);
+        NumberPalindrome.isPalindrome(-6);
+        NumberPalindrome.isPalindrome(-303);
+        NumberPalindrome.isPalindrome(-411);
+        NumberPalindrome.isPalindrome(3);
+    }
+
+    private static void challengeThirtyTwo() {
+        /*
+            write a class FirstLastDigitSum
+            write the method sumFirstAndLastDigit with 1 int parameter called number
+                returns -1 if param is negative
+
+                the method needs to find the first and last digit of the parameter number passed to the method
+                use a loop and return the sum of the first and last digit
+         */
+
+        System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(252));
+        System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(257));
+        System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(0));
+        System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(5));
+        System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(-10));
+
+    }
+
+    private static void challengeThirtyThree() {
+        /*
+            write a class EvenDigitSum
+
+            write the method getEvenDigitSum with 1 int parameter called number
+                returns -1 if param is negative
+
+                use a loop and return the sum of all even digits in the number
+         */
+
+        System.out.println("\n\tchallengeThirtyThree\n");
+
+        System.out.println(EvenDigitSum.getEvenDigitSum(123456789));
+        System.out.println(EvenDigitSum.getEvenDigitSum(252));
+        System.out.println(EvenDigitSum.getEvenDigitSum(-22));
+    }
+
+    private static void challengeThirtyFour() {
+       /*
+            write a class SharedDigit
+
+            write the method hasSharedDigit with 2 int parameters
+                each parameter should within 10-99 inclusive
+                returns false if one of the parameters is out of range
+
+            if both numbers share a common digit return true
+                ex: 25 and 58 share a five
+        */
+
+        System.out.println(SharedDigit.hasSharedDigit(12, 23));
+        System.out.println(SharedDigit.hasSharedDigit(9, 99));
+        System.out.println(SharedDigit.hasSharedDigit(15, 55));
+
+    }
+
+    private static void challengeThirtyFive() {
+        /*
+             write a class LastDigitChecker
+
+            write the method hasSameLastDigit with 3 int parameters
+                each parameter should within 10-1000 inclusive
+                returns false if one of the parameters is out of range
+
+            if at least 2 of the 3 numbers share the rightmost digit,
+                otherwise return false
+
+                ex: 25 and 58 share a five
+         */
+
+        System.out.println(LastDigitChecker.hasSameLastDigit(41, 22, 71));
+        System.out.println(LastDigitChecker.hasSameLastDigit(23, 32, 42));
+        System.out.println(LastDigitChecker.hasSameLastDigit(9, 99, 999));
+
     }
 }

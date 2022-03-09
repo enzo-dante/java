@@ -8,6 +8,52 @@ public class Loops {
 
     }
 
+    public static void whileLoops() {
+       int count = 0;
+
+       // while(isExpressionTrue) execute
+       while(count != 5) {
+//           System.out.println("count: " + count);
+           count++;
+       }
+
+       // common infinite loop that exits on break
+       while(true) {
+           if(count == 5) {
+               break;
+           }
+//           System.out.println("count: " + count);
+           count++;
+       }
+
+       count = 6;
+        // do while: always execute at least once
+            // could create an infinite loop
+       do {
+           System.out.println("count: " + count);
+           count++;
+
+           if(count > 100) {
+               break;
+           }
+       } while(count != 6);
+
+
+       // while loop that uses continue
+        int num = 4;
+        int finNum = 20;
+
+        while(num <= finNum) {
+            num++;
+
+            if(num % 2 != 0) {
+                // bypass print statement
+                continue;
+            }
+
+            System.out.println(num + " is even");
+        }
+    }
     public static void forLoops() {
 
         // (start; exit once condition is false; cycle increment)

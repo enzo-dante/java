@@ -12,29 +12,19 @@ public class PrimitiveDataTypes {
             byte, short, int, long, float, double, char, boolean
          */
 
-//        integers();
+        int myMinInt = Integer.MIN_VALUE;
+        int myMaxInt = Integer.MAX_VALUE;
 
         /*
         overflow & underflow = value exceeds memory allocated by computer
             Integer is used to perform operations on an int
          */
 
-//        int myMinInt = Integer.MIN_VALUE;
-//        int myMaxInt = Integer.MAX_VALUE;
-//        System.out.println("BUSTED UNDERFLOW MIN: " + (myMinInt - 1));
-//        System.out.println("BUSTED OVERFLOW MAX: " + (myMaxInt + 1));
-
-//        byteShortAndLongs();
-
-//        floatingPointNumbers();
-
-//        casting();
-
-//        booleansCharsAndStrings();
+        DataStructures.overAndUnderFlow();
 
     }
 
-    private static void byteShortAndLongs() {
+    public static void byteShortAndLongs() {
 
         System.out.println("\nbyte Short And Longs\n".toUpperCase());
 
@@ -60,7 +50,7 @@ public class PrimitiveDataTypes {
         System.out.println("Long max: " + myMaxLong);
     }
 
-    private static void booleansCharsAndStrings() {
+    public static void booleansCharsAndStrings() {
 
         System.out.println("\nbooleans chars and strings\n".toUpperCase());
 
@@ -105,7 +95,7 @@ public class PrimitiveDataTypes {
         System.out.println("lastString error: " + lastString);
     }
 
-    private static void casting() {
+    public static void casting() {
 
         System.out.println("\ncasting\n".toUpperCase());
 
@@ -122,7 +112,7 @@ public class PrimitiveDataTypes {
         System.out.println("CASTING myShortTotal: " + myShortTotal);
     }
 
-    private static void floatingPointNumbers() {
+    public static void floatingPointNumbers() {
 
         System.out.println("\nfloating point numbers\n".toUpperCase());
 
@@ -156,7 +146,7 @@ public class PrimitiveDataTypes {
         System.out.println("myDoubleValue " + myDoubleValue);
     }
 
-    private static void integers() {
+    public static void integers() {
 
         System.out.println("\nintegers\n".toUpperCase());
 

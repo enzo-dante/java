@@ -15,7 +15,8 @@ public class ControlFlow {
 //        ternaryOperator();
 //        int finalScore = conditionalGameMethod();
 //        switchStatement();
-        Loops.forLoops();
+//        Loops.forLoops();
+        Loops.whileLoops();
     }
 
     private static void ifElseConditionalLogic() {
