@@ -3,8 +3,11 @@ package crownhounds.learnjava;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Challenges {
+
+    private static final String INVALID_NUMBER = "Invalid number";
 
     public static void main(String[] args) {
 
@@ -46,7 +49,11 @@ public class Challenges {
 //        challengeThirtyTwo();
 //        challengeThirtyThree();
 //        challengeThirtyFour();
-        challengeThirtyFive();
+//        challengeThirtyFive();
+//        challengeThirtySix();
+//        challengeThirtySeven();
+//        challengeThirtyEight();
+        challengeThirtyNine();
 
         /*
             LeetCode Java Challenges
@@ -1287,5 +1294,192 @@ public class Challenges {
         System.out.println(LastDigitChecker.hasSameLastDigit(23, 32, 42));
         System.out.println(LastDigitChecker.hasSameLastDigit(9, 99, 999));
 
+    }
+
+    private static void challengeThirtySix() {
+        /*
+            write a class FlourPacker
+
+            write the method canPack with 3 int parameters
+                if params are negative, return false;
+
+                    bigCount: big flour bags (5 kilos each)
+                    smallCount: small flour bags (1 kilo each)
+                    goal: goal amount of kilos of flour needed to assemble a package
+
+                returns true
+                    if bigCount + smallCount must at least equal to the value of the goal
+
+                    if sum is greater than the goal, ensure only full bags are used toward the goal amount
+                        okay, if there are additional bags left over
+
+                        ex: goal = 9, bigCount = 2, smallCount = 0
+                            should return false since each big bag is 5 kilos and cannot be divided
+
+                        ex: goal = 9, bigCount = 1, smallCount = 5
+                            should return true since each big bag is 1 full bigCount bag and 4 full smallCount bags = goal
+         */
+
+        System.out.println(FlourPacker.canPack(1,0,4));
+        System.out.println(FlourPacker.canPack(1,0,5));
+
+        System.out.println(FlourPacker.canPack(0,5,4));
+        System.out.println(FlourPacker.canPack(2,2,11));
+        System.out.println(FlourPacker.canPack(-3,2,12));
+
+        System.out.println(FlourPacker.canPack(5,3,24));
+
+    }
+
+    private static void challengeThirtySeven() {
+        /*
+            read 10 numbers from the console entered by the user and print the sum of those 10 numbers
+
+            use input validation, if the input is not a number print the message 'Invalid Number'
+                continue reading until you have read 10 numbers
+         */
+
+        Scanner scanner = new Scanner(System.in);
+        int count = 0;
+        int sum = 0;
+        int userInput = 0;
+        boolean validInput = false;
+
+        while(true) {
+
+            System.out.println("Enter a number: ");
+            validInput = scanner.hasNextInt();
+
+            if(validInput) {
+
+                userInput = scanner.nextInt();
+                scanner.nextLine();
+
+                sum += userInput;
+                count++;
+
+                if(count >= 10) {
+                    System.out.println("\nsum: " + sum);
+                    scanner.close();
+                    break;
+                }
+
+            } else {
+                System.out.println(INVALID_NUMBER.toUpperCase());
+            }
+
+            System.out.println("\nvalid count: " + count);
+            scanner = new Scanner(System.in);
+        }
+    }
+
+    private static void challengeThirtyEight() {
+        /*
+            read the numbers from console entered by the user and print the min and max
+            prompt: "Enter number: "
+
+            if user input is an invalid number break out of the loop and print the min and max
+         */
+
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = false;
+        long min = Long.MAX_VALUE;
+        long max = Long.MIN_VALUE;
+        long userInput = 0L;
+
+        while(true) {
+
+            System.out.println("\nEnter number: ");
+            validInput = scanner.hasNextLong();
+
+            if(validInput) {
+                // capture valid user input, handle next line issue
+                userInput = scanner.nextLong();
+                scanner.nextLine();
+
+                if(min == Long.MAX_VALUE || max == Long.MIN_VALUE) {
+
+                    min = userInput;
+                    max = userInput;
+
+                    System.out.println("initialized min & max: " + userInput);
+
+                } else if(userInput > max) {
+
+                    max = userInput;
+                    System.out.println("new max: " + max);
+
+                } else if(userInput < min) {
+
+                    min = userInput;
+                    System.out.println("new min: " + min);
+
+                }
+
+            } else {
+
+                scanner.close();
+                System.out.println("min: " + min);
+                System.out.println("max: " + max);
+                break;
+
+            }
+        }
+    }
+
+    private static void challengeThirtyNine() {
+        /*
+
+            write a class SimpleCalculator
+                it has 2 double member variables/fields:
+                    firstNumber & secondNumber
+
+            ? 8 total methods
+
+            write the class method getFirstNumber
+                that returns class current field state for firstNumber
+
+            write the class method getSecondNumber
+                that returns class current field state for secondNumber
+
+            write the class method setFirstNumber with 1 double parameter:
+                set class field state for firstNumber
+
+            write the class method setSecondNumber with 1 double parameter:
+                set class field state for secondNumber
+
+            write the class method getAdditionResult
+                that returns firstNumber + secondNumber
+
+            write the class method getSubtractionResult
+                that returns firstNumber - secondNumber
+
+            write the class method getMultiplicationResult
+                that returns firstNumber * secondNumber
+
+            write the class method getDivisionResult
+                that returns firstNumber / secondNumber
+                if secondNumber is 0, return 0
+
+            ? instantiate and test methods
+         */
+
+        // need to initialize instance of class object into unique place in memory
+        SimpleCalculator simpleCalculator = new SimpleCalculator();
+
+        simpleCalculator.setFirstNumber(5d);
+        simpleCalculator.setSecondNumber(4d);
+
+//        System.out.println(simpleCalculator.getFirstNumber());
+//        System.out.println(simpleCalculator.getSecondNumber());
+
+        System.out.println(simpleCalculator.getAdditionResult());
+        System.out.println(simpleCalculator.getSubtractionResult());
+
+        simpleCalculator.setFirstNumber(5.25d);
+        simpleCalculator.setSecondNumber(0);
+
+        System.out.println(simpleCalculator.getMultiplicationResult());
+        System.out.println(simpleCalculator.getDivisionResult());
     }
 }

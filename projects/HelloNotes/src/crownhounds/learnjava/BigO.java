@@ -16,6 +16,7 @@ public class BigO {
 //        timeComplexity("bubble sort algorithm");
 //        timeComplexity("selection sort algorithm");
         timeComplexity("insertion sort algorithm");
+//        timeComplexity("shell sort algorithm");
 
     }
 
@@ -67,6 +68,9 @@ public class BigO {
                 break;
             case "INSERTION SORT ALGORITHM":
                 Algorithms.insertionSort();
+                break;
+            case "SHELL SORT ALGORITHM":
+                Algorithms.shellSort();
                 break;
         }
 

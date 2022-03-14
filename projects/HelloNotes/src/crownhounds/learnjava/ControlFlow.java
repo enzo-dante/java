@@ -16,7 +16,11 @@ public class ControlFlow {
 //        int finalScore = conditionalGameMethod();
 //        switchStatement();
 //        Loops.forLoops();
-        Loops.whileLoops();
+//        Loops.whileLoops();
+//        ReadingInput.ParseValues();
+//        ReadingInput.scanConsoleForUserString();
+        ReadingInput.scanConsoleAndParseUserNumber();
+
     }
 
     private static void ifElseConditionalLogic() {

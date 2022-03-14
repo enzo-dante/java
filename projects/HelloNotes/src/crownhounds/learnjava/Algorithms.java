@@ -139,45 +139,119 @@ public class Algorithms {
 
             insertion sort with O(N^2) breaks the array into 2 partitions:
                 sorted and unsorted
-                insertion sort partition grows the sorted partition from left-to-right
-                    but the sorted partition compares elements right-to-left by looking for a value that is less than or equal to the inserted value
+                NOTE: each loop corresponds to n in Big-O notation, thus O(n^2)
 
                 NOTE: no swapping, we shift
+                NOTE: the inserting work is done in the SORTED partition
 
                 insertion sort starts with
                     sorted partition of 1 element array index 0
                     unsorted partition starting at index 1
 
-                each iteration takes 1 element from unsorted partition insert it into the sorted partition
-                after the comparison, the sorted partition is grown by 1 and the index in the unsorted partition is incremented by 1
-                if the comparison finds a larger value in the sorted partition,
-                you shift the larger value to the right until you arrive at the beginning of the sorted partition
-
-                NOTE: each loop corresponds to n in Big-O notation, thus O(n^2)
+                on 1st iteration, take first element in the unsorted partition (index 1), save it, and then "insert" it into the sorted partition
+                    by comparing if it is greater than or equal to the value in the sorted partition
+                    if sorted partition value is less than or equal to the unsorted inserting value, than the inserting value is inserted at the index above the sorted partition value
+                    if the sorted partition value is greater than the unsorted inserting value, than you shift the sorted partition value up 1 and then compare unsorted inserting value to the next decremented index value
+                    you repeat this process until you find the correct index for the unsorted inserting value or you reach the beginning of the array, index 0
+                after the comparison(s) & inserting of the unsorted inserting value, the sorted partition is grown by 1 and the index in the unsorted partition is incremented by 1
+                repeat this process until the entire array is sorted
          */
 
+        System.out.println("on 1st iteration, take first element in the unsorted partition (index 1), save it, and then insert it into the sorted partition\n" +
+                "                    by comparing if it is greater than or equal to the value in the sorted partition\n" +
+                "                    if sorted partition value is less than or equal to the unsorted inserting value, than the inserting value is inserted at the index above the sorted partition value\n" +
+                "                    if the sorted partition value is greater than the unsorted inserting value, than you shift the sorted partition value up 1 and then compare unsorted inserting value to the next decremented index value\n" +
+                "                    you repeat this process until you find the correct index for the unsorted inserting value or you reach the beginning of the array, index 0\n" +
+                "                after the comparison(s) & inserting of the unsorted inserting value, the sorted partition is grown by 1 and the index in the unsorted partition is incremented by 1\n" +
+                "                repeat this process until the entire array is sorted" +
+                "\nNOTE: each loop corresponds to n in Big-O notation, thus O(n^2)\n");
+
         int[] insertionArray = {20, 35, -15, 7, 55, 1, -22};
-        int unsortedCompValue = 0;
-        int i = 0;
+        int unsortedInsertingValue = 0;
 
         printResults(insertionArray);
 
-        // outer loop is growing the sorted partition by 1
+        // unsorted partition
         for(int unsortedIndex = 1; unsortedIndex < insertionArray.length; unsortedIndex++) {
-            unsortedCompValue = insertionArray[unsortedIndex];
 
-            // inner loop looking for correct position to insert each element
-            for(i = unsortedIndex; i > 0 && insertionArray[i-1] > unsortedCompValue; i--) {
+            // save unsorted inserting value
+            unsortedInsertingValue = insertionArray[unsortedIndex];
 
-                // shift left-to-right sorted partition value to the right because the sorted value is greater than the unsorted comp value
-                insertionArray[i] = insertionArray[i-1];
+            // sorted partition
+            for(int sortedIndex = unsortedIndex - 1; sortedIndex >= 0; sortedIndex--) {
 
+                if(unsortedInsertingValue <= insertionArray[sortedIndex]) {
+                    // shift up sorted value
+                    insertionArray[sortedIndex + 1] = insertionArray[sortedIndex];
+                    // shift down unsorted value
+                    insertionArray[sortedIndex] = unsortedInsertingValue;
+                }
             }
-
-            // by the end, entire array is the sorted partition
-            insertionArray[i] = unsortedCompValue;
         }
 
         printResults(insertionArray);
+    }
+
+    public static void shellSort() {
+         /*
+            in-place algorithm that doesn't use extra memory
+
+            unstable algorithm: if there are duplicate elements, the original order of these elements will NOT always be preserved
+
+
+            gap value influences time complexity
+
+            Shell sort is a variation of insertion sort
+                if majority array is mostly in correct order, no need to shift every element like insertion sort
+
+                the goal of shell sort:
+                    continuously reduce the gap value of shifting by
+                        starting with a larger gap value than 1 (insertion sort uses a gap of 1)
+
+                    do preliminary work by starting with large gap value
+                    when the gap value is 1 (the last iteration),
+                    the array has been partially sorted and no longer requires extensive shifting,
+                    then insertion sort is applied
+
+            Gap Value Strategy #1:
+
+                 gap value is calculated using:
+
+                    array.length / 2
+
+                 each iteration, we will divide the gap value by 2 to get the next gap value
+
+                 for our array, the gap will be initialized to 3
+
+                    [20,35,-15,7,55,1,-22]
+
+                 on the next iteration, it will be 1 - insertion sort
+
+            Gap Value Strategy #2: Knuth Sequence
+
+                gap value is calculated using:
+
+                    (3^k - 1) / 2
+
+                k = length of the array
+                    we want the gap value to be as close to the length of array to be sorted without being greater than the length
+         */
+
+        System.out.println("SHELL SORT with O(n^2)" +
+                "\n\tbreaks the array into 2 partitions: " +
+                "\n\t\tsorted and unsorted (the entire array starts as unsorted)" +
+                "\n\tselection sort looks for the largest element in the unsorted partition " +
+                "\n\tselect the largest element found and swap it with last element in the unsorted partition via respective index " +
+                "\n\tthen decrement the lastUnsortedIndex var by 1 and repeat the process " +
+
+                "\nNOTE: each loop corresponds to n in Big-O notation, thus O(n^2)\n");
+
+
+        int[] shellSortArray = {20,35,-15,7,55,1,-22};
+
+        int gapValue = 3;
+        int comparedValue = 0;
+        int insertingElement = 0;
+
     }
 }
