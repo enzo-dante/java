@@ -1,12 +1,12 @@
 package crownhounds.learnjava;
 
-
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Challenges {
 
+    // CONSTANTS
+    private static final String INVALID_VALUE = "Invalid Value";
     private static final String INVALID_NUMBER = "Invalid number";
 
     public static void main(String[] args) {
@@ -53,7 +53,16 @@ public class Challenges {
 //        challengeThirtySix();
 //        challengeThirtySeven();
 //        challengeThirtyEight();
-        challengeThirtyNine();
+//        challengeThirtyNine();
+//        challengeForty();
+//        challengeFortyOne();
+//        challengeFortyTwo();
+//        challengeFortyThree();
+//        challengeFortyFour();
+//        challengeFortyFive();
+//        challengeFortySix();
+//        challengeFortySeven();
+        challengeFortyEight();
 
         /*
             LeetCode Java Challenges
@@ -1430,7 +1439,7 @@ public class Challenges {
     private static void challengeThirtyNine() {
         /*
 
-            write a class SimpleCalculator
+            ? write a class SimpleCalculator
                 it has 2 double member variables/fields:
                     firstNumber & secondNumber
 
@@ -1482,4 +1491,272 @@ public class Challenges {
         System.out.println(simpleCalculator.getMultiplicationResult());
         System.out.println(simpleCalculator.getDivisionResult());
     }
+
+    private static void challengeForty() {
+        /*
+             ? write a class Person
+                it has 3 double member variables/fields:
+                   firstName & lastName = String
+                   age = int
+
+             ? 8 total methods
+
+            write the class method getFirstName
+                that returns class current field state for firstName
+
+            write the class method getLastName
+                that returns class current field state for lastName
+
+            write the class method getAge
+                that returns class current field state for age
+
+            write the class method setFirstName with 1 String parameter:
+                set class field state for firstName
+
+            write the class method setLastName with 1 String parameter:
+                set class field state for lastName
+
+            write the class method setAge with 1 int parameter:
+                set class field state for age
+                    if parameter is less than 0 or greater than 100, it needs to set field to 0
+
+            write the class method isTeen
+                returns true if age is greater than 12 or less than 20, else false
+
+            write the class method getFullName
+                returns firstName + lastName of the person,
+                    if firstName & lastName are empty, return empty string
+                    if one of the fields are empty, only return the field that has a value
+                        * HINT: use .isEmpty() that returns
+
+            ? instantiate and test methods
+
+         */
+
+        OOP_Person person = new OOP_Person();
+        person.setFirstName("");
+        person.setLastName("");
+        person.setAge(10);
+        System.out.println(person.getFullName());
+        System.out.println(person.isTeen());
+
+        person.setFirstName("John");
+        person.setAge(18);
+        System.out.println(person.getFullName());
+        System.out.println(person.isTeen());
+
+        person.setLastName("Smith");
+        System.out.println(person.getFullName());
+    }
+
+    private static void challengeFortyOne() {
+        /*
+            create a bank account class
+                with fields:
+                    account number, balance, customer name, email and phone number
+
+            create getters & setters for each field
+            create deposit funds method that increments balance field
+            create withdraw funds method that deducts from balance field
+                only allow withdraws if there are sufficient funds
+         */
+
+        OOP_BankAccount testAccount = new OOP_BankAccount();
+        double amount = testAccount.withdrawFunds(100d);
+        testAccount.depositFunds(50d);
+        amount = testAccount.withdrawFunds(100d);
+        testAccount.depositFunds(51d);
+        amount = testAccount.withdrawFunds(100d);
+
+        testAccount.setBalance(400d);
+        System.out.println(testAccount.getBalance());
+    }
+
+    private static void challengeFortyTwo() {
+
+        /*
+            create a new class VipCustomer
+
+            it should have 3 fields: name, credit limit, and email address
+
+            create 3 constructors
+
+                1st: empty constructor should call the constructor with 3 params with default values
+                2nd: constructor should pass on the 2 values it receives and add a default value for the 3rd
+                3rd: constructor should save all fields
+
+            create getters only for this using code generation of intellij as setters won't be needed
+            test and confirm it works
+         */
+
+        OOP_VipCustomer vip1 = new OOP_VipCustomer();
+        System.out.println(vip1.getName());
+
+        OOP_VipCustomer vip2 = new OOP_VipCustomer("Test", 50000L);
+        System.out.println(vip2.getName());
+
+        OOP_VipCustomer vip3 = new OOP_VipCustomer("Tim", 100L, "tim@gmail.com");
+        System.out.println(vip3.getName());
+    }
+
+    private static void challengeFortyThree() {
+        /*
+            create a new class Wall
+
+            it should have 2 instance members/fields of type double: width and height
+
+            create 2 constructors
+
+                1st: empty constructor should call the constructor with 2 params with default values
+                2nd: constructor should pass on the 2 values it receives and initialize the fields
+
+                    if width < 0, set to 0
+                    if height < 0, set to 0
+
+            create getters & setters only for this using code generation of intellij as setters won't be needed
+
+            write method getArea() without any parameters that returns the area
+
+            test and confirm it works
+         */
+
+        OOP_Wall w1 = new OOP_Wall();
+        System.out.println(w1.getArea());
+
+        OOP_Wall w2 = new OOP_Wall(6d, 7d);
+        System.out.println(w2.getArea());
+    }
+
+    private static void challengeFortyFour() {
+        /*
+            write a method getGreatestCommonDivisor with two params of type int named first and second
+
+                if one of the params < 10, return -1
+
+                the method should return the greatest common divisor of the 2 numbers (int)
+
+                HINT: greatest common divisor is the largest positive integer that can fully divide each of the integers (no remainder)
+
+                    12 = [12, 1], [6, 2], [4,3]
+                    GCF/GCD = 6
+
+         */
+
+        System.out.println(getGreatestCommonDivisor(2, 40));
+        System.out.println(getGreatestCommonDivisor(35, -14));
+        System.out.println(getGreatestCommonDivisor(12, 30));
+    }
+
+    public static int getGreatestCommonDivisor(int num1, int num2) {
+
+        // divide by 2 to optimize performance
+        int endLoop = Math.max(num1, num2) / 2;
+        int gcf = 1;
+
+        if(num1 >= 10 && num2 >= 10) {
+
+            // loop from 1 => largest parameter
+            for(int factor = 1; factor <= endLoop; factor++) {
+
+                if((num1 % factor == 0) && (num2 % factor == 0)) {
+                    gcf = factor;
+                }
+            }
+
+            return gcf;
+        }
+
+        return -1;
+    }
+
+    private static void challengeFortyFive() {
+        /*
+            Create Vehicle class
+            Create Car class that inherits from Vehicle class
+            Create specific model class that inherits from Car class
+
+            in conjunction with state, the shared vehicle behaviors have:
+
+                hand steering,
+
+                changing gears,
+                    changing gears, increasing/decreasing speeding should be included
+
+                moving with speed
+
+            specific model class should have unique behavior
+         */
+
+        Inheritance_Ferrari ferrari = new Inheritance_Ferrari(36);
+        ferrari.steer(45);
+        ferrari.accelerate(30);
+        ferrari.accelerate(20);
+        ferrari.accelerate(-42);
+    }
+
+    private static void challengeFortySix() {
+        /*
+            write FactorPrinter class
+            write the printFactors method with 1 int parameter called number
+
+                that returns nothing, but prints all the factors of a number
+
+            if number is less than 1, print 'Invalid Value'
+
+            * HINT: a factor is an integer that divides that number wholly (no remainder)
+         */
+
+        FactorPrinter.printFactors(6);
+    }
+
+    private static void challengeFortySeven() {
+        /*
+            create a bedroom that 'has' stuff using COMPOSITION
+
+            add at least one method to access an object via a getter and then that objects public method
+
+            add at least one method to hide the object e.g. not using a getter
+                but to access the object used in composition within the main class
+         */
+
+        Composition_Wall wall1 = new Composition_Wall("West");
+        Composition_Wall wall2 = new Composition_Wall("East");
+        Composition_Wall wall3 = new Composition_Wall("South");
+        Composition_Wall wall4 = new Composition_Wall("North");
+
+        Composition_Ceiling ceiling = new Composition_Ceiling(12, 55);
+
+        Composition_Bed bed = new Composition_Bed("Modern", 4, 3, 2, 1);
+        Composition_Lamp lamp = new Composition_Lamp("classic", false, 75);
+
+        Composition_Bedroom bedroom = new Composition_Bedroom("Enzo's", wall1, wall2, wall3, wall4, ceiling, bed, lamp);
+
+        bedroom.makeBed();
+        bedroom.getLamp().turningOn();
+    }
+
+    private static void challengeFortyEight() {
+        /*
+            create a Printer class that uses ENCAPSULATION: enables restricting access to certain components
+                    !READ: protect object instance members/class fields from external access for direct inappropriate update
+
+                Printer class fields: tonerLevel, numPages, isDuplexPrinter (capable of both-side printing)
+
+                Printer methods:
+                    set toner level up to a max 100%
+                    printPage() which increases the number of pages printed
+         */
+
+//        Encapsulation_Printer printer = new Encapsulation_Printer(50, true);
+        Encapsulation_Printer printer = new Encapsulation_Printer(50, false);
+        System.out.println("initial page count: " + printer.getNumPagesPrinted());
+
+        int pagesPrinted = printer.printPages(4);
+        System.out.println("pages printed: " + pagesPrinted + "; new print total: " + printer.getNumPagesPrinted());
+
+        pagesPrinted = printer.printPages(2);
+        System.out.println("pages printed: " + pagesPrinted + "; new print total: " + printer.getNumPagesPrinted());
+    }
+
+
 }

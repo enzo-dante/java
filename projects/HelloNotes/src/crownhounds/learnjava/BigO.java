@@ -1,9 +1,8 @@
 package crownhounds.learnjava;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class BigO {
+
+    private static final String DATA_STRUCTURE_AND_ALGORITHM = "DATA STRUCTURE & ALGORITHM: \n\t";
 
     public static void main(String[] args) {
 
@@ -15,8 +14,8 @@ public class BigO {
          */
 //        timeComplexity("bubble sort algorithm");
 //        timeComplexity("selection sort algorithm");
-        timeComplexity("insertion sort algorithm");
-//        timeComplexity("shell sort algorithm");
+//        timeComplexity("insertion sort algorithm");
+        timeComplexity("shell sort algorithm");
 
     }
 
@@ -54,7 +53,7 @@ public class BigO {
                 does it degrade over time?
          */
 
-        System.out.println("\ttime complexity: ".toUpperCase() + dataStructure + "\n");
+        System.out.println(DATA_STRUCTURE_AND_ALGORITHM + dataStructure);
 
         switch (dataStructure.toUpperCase()) {
             case "ARRAY":
