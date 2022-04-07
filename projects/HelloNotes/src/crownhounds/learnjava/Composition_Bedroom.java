@@ -96,3 +96,162 @@ public class Composition_Bedroom {
         this.lamp = lamp;
     }
 }
+
+class Composition_Bed {
+
+    // object instance members/class fields
+    private String style;
+    private int pillows;
+    private int height;
+    private int sheets;
+    private int quilt;
+
+    // constructor that initializes the fields on class instantiation
+    public Composition_Bed(String style, int pillows, int height, int sheets, int quilt) {
+        this.style = style;
+        this.pillows = pillows;
+        this.height = height;
+        this.sheets = sheets;
+        this.quilt = quilt;
+    }
+
+    // unique behaviors/class methods
+    public void make() {
+        System.out.println("Bed.make() was called");
+    }
+
+    // getters & setters
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public int getPillows() {
+        return pillows;
+    }
+
+    public void setPillows(int pillows) {
+        this.pillows = pillows;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getSheets() {
+        return sheets;
+    }
+
+    public void setSheets(int sheets) {
+        this.sheets = sheets;
+    }
+
+    public int getQuilt() {
+        return quilt;
+    }
+
+    public void setQuilt(int quilt) {
+        this.quilt = quilt;
+    }
+}
+
+class Composition_Ceiling {
+
+    // class fields
+    private int height;
+    private int paintedColor;
+
+    // constructor
+    public Composition_Ceiling(int height, int paintedColor) {
+        this.height = height;
+        this.paintedColor = paintedColor;
+    }
+
+    // getters & setters
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getPaintedColor() {
+        return paintedColor;
+    }
+
+    public void setPaintedColor(int paintedColor) {
+        this.paintedColor = paintedColor;
+    }
+}
+
+class Composition_Lamp {
+
+    // class fields
+    private String style;
+    private boolean hasBattery;
+    private int globeRating;
+
+    // constructor
+    public Composition_Lamp(String style, boolean hasBattery, int globeRating) {
+        this.style = style;
+        this.hasBattery = hasBattery;
+        this.globeRating = globeRating;
+    }
+
+    // unique behavior/class methods
+    public void turningOn() {
+        System.out.println("Lamp.turningOn() was called");
+    }
+
+    // getters & setters
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public boolean isHasBattery() {
+        return hasBattery;
+    }
+
+    public void setHasBattery(boolean hasBattery) {
+        this.hasBattery = hasBattery;
+    }
+
+    public int getGlobeRating() {
+        return globeRating;
+    }
+
+    public void setGlobeRating(int globeRating) {
+        this.globeRating = globeRating;
+    }
+}
+
+class Composition_Wall {
+    // object instance members/class fields
+    private String direction;
+
+    // constructor
+    public Composition_Wall(String direction) {
+        this.direction = direction;
+    }
+
+    // getters & setters
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+}

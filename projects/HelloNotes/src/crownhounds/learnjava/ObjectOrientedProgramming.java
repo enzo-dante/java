@@ -173,7 +173,7 @@ public class ObjectOrientedProgramming {
     private static void polymorphism() {
        /*
             POLYMORPHISM is the mechanism in OOP that enables methods
-                to function differently based on the object that is executing the method
+                to function differently based on the type of object that is executing the method
         */
 
         for(int i = 1; i < 11; i++) {
@@ -181,6 +181,7 @@ public class ObjectOrientedProgramming {
             Movie movie = getRandomMovie();
 
             // ! assigning different method functionality depending on the type of object we created, even though we inherited from same base class
+            // * given that ForgettableMovie does NOT have a getPlot(), it inherits the getPlot() from the extended Movie class
             System.out.println("Movie #" + i + ": " + movie.getName() +
                     "\nPlot: " + movie.getPlot() + "\n");
         }
@@ -215,95 +216,3 @@ public class ObjectOrientedProgramming {
         }
     }
 }
-
-
-
-// ! POLYMORPHISM with INHERITANCE
-class Movie {
-
-    // private class fields/object instance members
-    private String name;
-
-    // constructor that initializes the class fields on class instantiation
-    public Movie(String name) {
-        this.name = name;
-    }
-
-    // unique behaviors/class methods
-    public String getPlot() {
-        return "no plot here";
-    }
-
-    // getters & setters
-    public String getName() {
-        return this.name;
-    }
-}
-
-class Jaws extends Movie {
-
-    // constructor that initializes the class fields on class instantiation
-    //      using 'super' to inherit from base class Movie
-    public Jaws() {
-        super("Jaws");
-    }
-
-    // OVERLOAD method for unique behaviors/class methods
-    public String getPlot() {
-        return "A shark eats lots of people";
-    }
-}
-
-class IndependenceDay extends Movie {
-
-    // constructor that initializes the class fields on class instantiation
-    //      using 'super' to inherit from base class Movie
-    public IndependenceDay() {
-        super("Independence Day");
-    }
-
-    // OVERLOAD method for unique behaviors/class methods
-    public String getPlot() {
-        return "Aliens attempt to take over planet earth";
-    }
-}
-
-class MazeRunner extends Movie {
-
-    // constructor that initializes the class fields on class instantiation
-    //      using 'super' to inherit from base class Movie
-    public MazeRunner() {
-        super("Maze Runner");
-    }
-
-    @Override
-    public String getPlot() {
-        return "Kids try and escape a maze";
-    }
-}
-
-class StarWars extends Movie {
-
-    // constructor that initializes the class fields on class instantiation
-    //      using 'super' to inherit from base class Movie
-    public StarWars() {
-        super("Star Wars");
-    }
-
-    @Override
-    public String getPlot() {
-        return "Imperial forces try to take over the universe";
-    }
-}
-
-class ForgettableMovie extends Movie {
-
-    // constructor that initializes the class fields on class instantiation
-    //      using 'super' to inherit from base class Movie
-    public ForgettableMovie() {
-        super("Forgettable Movie");
-    }
-
-    // ! NO getPlot() method to demonstrate polymorphism
-}
-

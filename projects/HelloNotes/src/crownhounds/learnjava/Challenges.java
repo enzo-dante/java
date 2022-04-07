@@ -62,7 +62,10 @@ public class Challenges {
 //        challengeFortyFive();
 //        challengeFortySix();
 //        challengeFortySeven();
-        challengeFortyEight();
+//        challengeFortyEight();
+        challengeFortyNine();
+//        challengeFifty();
+
 
         /*
             LeetCode Java Challenges
@@ -1756,6 +1759,72 @@ public class Challenges {
 
         pagesPrinted = printer.printPages(2);
         System.out.println("pages printed: " + pagesPrinted + "; new print total: " + printer.getNumPagesPrinted());
+    }
+
+    private static void challengeFortyNine() {
+        /*
+            create a base class called Car that has attributes:
+                engine, cylinder, name, wheels
+
+            define a constructor that only has 2 passed parameters
+                initialize cylinders(number of), name, set wheels to 4, and engine to true
+
+            define getters & setters
+
+            create methods: show a msg for each in the base class
+
+                startEngine, accelerate, and brake
+
+            create 3 subclasses for your favorite vehicles
+            ! @Override the appropriate methods in the subclasses to demonstrate POLYMORPHISM
+
+            * uses a single java file
+         */
+
+        Polymorphism_Car car = new Polymorphism_Car(8, "Base Car");
+        Polymorphism_Ferrari ferrari = new Polymorphism_Ferrari();
+        Polymorphism_Ford ford = new Polymorphism_Ford();
+        Polymorphism_Porsche porsche = new Polymorphism_Porsche();
+
+        System.out.println(car.startEngine());
+        System.out.println(car.accelerate());
+        System.out.println(car.brake());
+
+        System.out.println("\n------------\n");
+
+        System.out.println(ferrari.startEngine());
+        System.out.println(ferrari.accelerate());
+        System.out.println(ferrari.brake());
+
+        System.out.println("\n------------\n");
+
+        System.out.println(ford.startEngine());
+        System.out.println(ford.accelerate());
+        System.out.println(ford.brake());
+
+        System.out.println("\n------------\n");
+
+        System.out.println(porsche.startEngine());
+        System.out.println(porsche.accelerate());
+        System.out.println(porsche.brake());
+    }
+
+    private static void challengeFifty() {
+        /*
+            create LargestPrime class
+
+            define getLargestPrime() with int parameter named 'number'
+
+                should calculate the largest prime factor of a given number and return it
+
+                return -1 if number is negative or does NOT have any prime numbers
+
+            * HINT: since 0 and 1 are not considered prime numbers, they cannot contain prime numbers
+         */
+
+        System.out.println("getLargestPrime(): " + LargestPrime.getLargestPrime(21));
+        System.out.println("getLargestPrime(): " + LargestPrime.getLargestPrime(7));
+        System.out.println("getLargestPrime(): " + LargestPrime.getLargestPrime(16));
     }
 
 
