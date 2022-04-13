@@ -1,6 +1,8 @@
 package crownhounds.learnjava;
 
-// ! POLYMORPHISM with INHERITANCE
+/**
+ * Please refer to ObjectOrientedProgramming class
+ */
 public class Polymorphism {
        /*
             POLYMORPHISM is the mechanism in OOP that enables methods
@@ -8,6 +10,7 @@ public class Polymorphism {
         */
 }
 
+// ! POLYMORPHISM with INHERITANCE
 class Movie {
 
     // private class fields/object instance members

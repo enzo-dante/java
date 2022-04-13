@@ -2,7 +2,7 @@ package crownhounds.learnjava;
 
 import java.util.ArrayList;
 
-public class LeetCode {
+public class ChallengesLeetCode {
 
     private static final String INVALID_MESSAGE = "Invalid Value";
 
@@ -282,3 +282,4 @@ public class LeetCode {
     }
 
 }
+

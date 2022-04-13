@@ -1,6 +1,6 @@
 package crownhounds.learnjava;
 
-public class ObjectOrientedProgramming {
+public class OOP_ObjectOrientedProgramming {
 
     public static void main(String[] args) {
 

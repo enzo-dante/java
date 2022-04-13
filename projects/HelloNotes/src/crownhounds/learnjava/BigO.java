@@ -2,7 +2,7 @@ package crownhounds.learnjava;
 
 public class BigO {
 
-    private static final String DATA_STRUCTURE_AND_ALGORITHM = "DATA STRUCTURE & ALGORITHM: \n\t";
+    private static final String DATA_STRUCTURE_AND_ALGORITHM = "DATA STRUCTURE & ALGORITHM: \n\n\t";
 
     public static void main(String[] args) {
 
@@ -15,7 +15,8 @@ public class BigO {
 //        timeComplexity("bubble sort algorithm");
 //        timeComplexity("selection sort algorithm");
 //        timeComplexity("insertion sort algorithm");
-        timeComplexity("shell sort algorithm");
+//        timeComplexity("shell sort algorithm");
+        timeComplexity("quick sort algorithm");
 
     }
 
@@ -71,8 +72,10 @@ public class BigO {
             case "SHELL SORT ALGORITHM":
                 Algorithms.shellSort();
                 break;
+            case "QUICK SORT ALGORITHM":
+                Algorithms.quickSort();
+                break;
         }
-
     }
 
     public static void spaceComplexity() {

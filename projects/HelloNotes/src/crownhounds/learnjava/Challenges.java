@@ -1,6 +1,8 @@
 package crownhounds.learnjava;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 public class Challenges {
@@ -63,26 +65,27 @@ public class Challenges {
 //        challengeFortySix();
 //        challengeFortySeven();
 //        challengeFortyEight();
-        challengeFortyNine();
+//        challengeFortyNine();
 //        challengeFifty();
-
+//        challengeFiftyOne();
+        challengeFiftyTwo();
 
         /*
             LeetCode Java Challenges
          */
 
-//        LeetCode.challenge9();
-//        LeetCode.challenge412();
-//        LeetCode.challenge172();
-//        LeetCode.challenge344();
-//        LeetCode.challenge50();
-//        LeetCode.challenge151();
+//        ChallengesLeetCode.challenge9();
+//        ChallengesLeetCode.challenge412();
+//        ChallengesLeetCode.challenge172();
+//        ChallengesLeetCode.challenge344();
+//        ChallengesLeetCode.challenge50();
+//        ChallengesLeetCode.challenge151();
 
         /*
            Amazon Challenges
          */
 
-//        AmazonChallenges.arrays();
+//        ChallengesAmazon.arrays();
 
 
 
@@ -1477,7 +1480,7 @@ public class Challenges {
          */
 
         // need to initialize instance of class object into unique place in memory
-        SimpleCalculator simpleCalculator = new SimpleCalculator();
+        OOP_SimpleCalculator simpleCalculator = new OOP_SimpleCalculator();
 
         simpleCalculator.setFirstNumber(5d);
         simpleCalculator.setSecondNumber(4d);
@@ -1827,5 +1830,46 @@ public class Challenges {
         System.out.println("getLargestPrime(): " + LargestPrime.getLargestPrime(16));
     }
 
+    private static void challengeFiftyOne() {
+        /*
+            create a program using arrays that sort a list of integers in descending order (highest-to-lowest)
 
+            capture the values from console based on user input
+
+            * will have to copy array elements from argument into a new array, sort them, and return new sorted array
+
+            methods:
+                getIntegers: returns an array
+                printArray: print content of array
+                sortIntegers: sort array and return a new array containing the sorted numbers
+         */
+
+        ArraySorter arraySorter = new ArraySorter();
+        int[] userArray = arraySorter.getIntegers(5);
+        arraySorter.printArray(userArray);
+    }
+
+    private static void challengeFiftyTwo() {
+        /*
+            write a class MinElement
+
+            write a method called readIntegers with int parameter named 'count'
+                count represents number of integers user need to enter
+
+                returns an array containing the numbers the user enters
+
+            write a method called findMin with the user-generated array as a parameter
+                returns minimum value in the array
+
+            print the minimum element in the array
+
+            * implementation uses selection sort algorithm
+         */
+
+        MinElement minElement = new MinElement();
+        int[] userIntegers = minElement.readIntegers(3);
+        System.out.println("\nMin value of " + Arrays.toString(userIntegers) + ":\n"
+                + minElement.findMin(userIntegers));
+    }
 }
+
