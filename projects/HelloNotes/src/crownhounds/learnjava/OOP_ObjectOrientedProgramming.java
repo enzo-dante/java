@@ -101,7 +101,7 @@ public class OOP_ObjectOrientedProgramming {
 
     private static void composition() {
         /*
-            Composition refers to an Object 'having' components or mini-Objects that make up the larger Object
+            OOP_Composition refers to an Object 'having' components or mini-Objects that make up the larger Object
 
             ex: A Computer has a motherboard, a monitor, and a case
                 each component (motherboard, monitor, and case are their classes/objects)

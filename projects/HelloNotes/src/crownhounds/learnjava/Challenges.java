@@ -1,15 +1,17 @@
 package crownhounds.learnjava;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.OptionalInt;
-import java.util.Scanner;
+import java.util.*;
 
 public class Challenges {
 
-    // CONSTANTS
-    private static final String INVALID_VALUE = "Invalid Value";
-    private static final String INVALID_NUMBER = "Invalid number";
+    /*
+            ? write a class called CLASS_NAME
+
+            ? write a method called METHOD_NAME with DATATYPE parameter(s) called PARAM_NAME
+
+                returns
+
+     */
 
     public static void main(String[] args) {
 
@@ -68,7 +70,10 @@ public class Challenges {
 //        challengeFortyNine();
 //        challengeFifty();
 //        challengeFiftyOne();
-        challengeFiftyTwo();
+//        challengeFiftyTwo();
+//        challengeFiftyThree();
+        challengeFiftyFour();
+//        challengeFiftyFive();
 
         /*
             LeetCode Java Challenges
@@ -236,11 +241,6 @@ public class Challenges {
              call both methods and display the results with a 3rd method with the following
                 a score of 1500, 900, 400, and 50
          */
-
-//        handleHighScore("gary", 900);
-//        handleHighScore("lara", 50);
-//        handleHighScore("susan", 400);
-//        handleHighScore("ben", 1500);
 
         // test all numbers, including if-else limits , are covered by logic
         handleHighScore("gary", 1000);
@@ -1046,7 +1046,7 @@ public class Challenges {
          */
 
         System.out.println("\n\t challenge 24\n");
-        Loops.forLoops(10000, 9);
+        ControlFlow_Loops.forLoops(10000, 9);
     }
 
     private static void challengeTwentyFive() {
@@ -1057,7 +1057,7 @@ public class Challenges {
          */
 
         System.out.println("\n\t challenge 25\n");
-        Loops.forLoops(8);
+        ControlFlow_Loops.forLoops(8);
 
     }
 
@@ -1079,7 +1079,7 @@ public class Challenges {
 
         for(int i = startIndex; i < numLoops; i++) {
 
-            boolean isPrime = Loops.isPrime(i);
+            boolean isPrime = ControlFlow_Loops.isPrime(i);
 
             if(isPrime) {
                 totalPrimeFound++;
@@ -1380,7 +1380,7 @@ public class Challenges {
                 }
 
             } else {
-                System.out.println(INVALID_NUMBER.toUpperCase());
+                System.out.println(Challenges_Utility.INVALID_VALUE.toUpperCase());
             }
 
             System.out.println("\nvalid count: " + count);
@@ -1870,6 +1870,302 @@ public class Challenges {
         int[] userIntegers = minElement.readIntegers(3);
         System.out.println("\nMin value of " + Arrays.toString(userIntegers) + ":\n"
                 + minElement.findMin(userIntegers));
+    }
+
+    private static void challengeFiftyThree() {
+        /*
+            create an application that builds a grocery list
+
+            use a scanner to capture user input
+
+            write CRUD+ methods:
+                create a grocery list
+                read the grocery list
+                update items on the grocery list
+                delete items on the grocery list
+
+                that can query the grocery list for specific items
+         */
+
+        Scanner scanner = new Scanner(System.in);
+        GroceryList groceryList = new GroceryList();
+        boolean quit = false;
+
+        groceryList.printGroceryListInstructions();
+
+        while(!quit) {
+
+            System.out.println(GroceryList.PLEASE_ENTER_VALID_CHOICE);
+
+            if(scanner.hasNextInt()) {
+
+                int userInput = scanner.nextInt();
+
+                // to handle 'enter' key down
+                scanner.nextLine();
+
+                switch(userInput) {
+                    case 0:
+                        groceryList.printGroceryListInstructions();
+                        break;
+                    case 1:
+                        System.out.println("\nREAD:");
+                        groceryList.readGroceryList();
+                        break;
+                    case 2:
+                        System.out.println("\nCREATE: " + GroceryList.PLEASE_ENTER_ITEM_NAME);
+                        String addItem = scanner.nextLine();
+                        groceryList.addItemToGroceryList(addItem);
+                        break;
+                    case 3:
+                        if(groceryList.validateGroceryListSize()) {
+                            groceryList.readGroceryList();
+                            boolean isUpdating = true;
+
+                            while(isUpdating) {
+                                System.out.println("\nUPDATE: " + GroceryList.PLEASE_ENTER_ITEM_NUMBER);
+                                if(scanner.hasNextInt()) {
+
+                                    int updateIndex = scanner.nextInt() - 1;
+
+                                    if(updateIndex < 0) {
+                                        System.out.println(GroceryList.QUIT_UPDATE);
+                                        isUpdating = false;
+                                        break;
+
+                                    } else if(groceryList.validateGroceryListSize(updateIndex)) {
+                                        // handle 'enter' key down event
+                                        scanner.nextLine();
+
+                                        System.out.println(GroceryList.PLEASE_ENTER_ITEM_NAME +
+                                                "\ttype 'exit' to quit");
+                                        String newItem = scanner.nextLine().toLowerCase().strip();
+
+                                        if(Objects.equals(newItem, Challenges_Utility.EXIT)) {
+                                            System.out.println(GroceryList.QUIT_UPDATE);
+                                            isUpdating = false;
+                                            break;
+                                        } else {
+                                            groceryList.updateItemInGroceryList(updateIndex, newItem);
+                                            isUpdating = false;
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    System.out.println(Challenges_Utility.INVALID_INPUT + ": item number");
+                                    groceryList.readGroceryList();
+                                    scanner = new Scanner(System.in);
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                        if(groceryList.validateGroceryListSize()) {
+                            groceryList.readGroceryList();
+                            boolean isDeleting = true;
+
+                            while(isDeleting) {
+                                System.out.println("\nDELETE: "+ GroceryList.PLEASE_ENTER_ITEM_NUMBER);
+                                if(scanner.hasNextInt()) {
+
+                                    int removeIndex = scanner.nextInt() - 1;
+                                    // handle 'enter' key down event
+                                    scanner.nextLine();
+
+                                    if(removeIndex < 0) {
+                                        System.out.println(GroceryList.QUIT_DELETE);
+                                        isDeleting = false;
+                                    } else if(groceryList.validateGroceryListSize(removeIndex, true)) {
+                                        System.out.println(Challenges_Utility.INVALID_INPUT + ": item number");
+                                    } else {
+                                        groceryList.removeItemFromGroceryList(removeIndex);
+                                        isDeleting = false;
+                                    }
+                                } else {
+                                    System.out.println(Challenges_Utility.INVALID_INPUT + ": item number");
+                                    groceryList.readGroceryList();
+                                    scanner = new Scanner(System.in);
+                                }
+                            }
+                        }
+                        break;
+                    case 5:
+                        if(groceryList.validateGroceryListSize()) {
+                            System.out.println("\nQUERY: " + GroceryList.PLEASE_ENTER_ITEM_NAME);
+                            String queryItem = scanner.nextLine();
+                            String result = groceryList.queryGroceryList(queryItem);
+                            System.out.println(result + " was found");
+                        }
+                        break;
+                    case 6:
+                        quit = groceryList.quitGroceryListApp();
+                        break;
+                }
+            }
+            scanner = new Scanner(System.in);
+        }
+        // release resource in memory
+        scanner.close();
+    }
+
+    private static void challengeFiftyFour() {
+
+        /*
+             ! MUST USE AUTOBOXING and UNBOXING
+                transactions an ideal place for implementation requirement
+
+              Your job is to create a simple banking application.
+
+             ! OOP: Implement the following classes:
+              
+              ? Bank
+
+                It has two fields:
+                    String called name
+                    ArrayList that holds objects of type Branch called branches.
+
+                A constructor that takes a String (name of the bank).
+                    It initialises name and instantiates branches.
+
+                And five methods, they are (their functions are in their names):
+
+                    addBranch()
+                        has one parameter of type String (name of the branch) and returns a boolean.
+                        It returns true if the branch was added successfully or false otherwise.
+
+                    addCustomer()
+                        has three parameters:
+                            String (name of the branch),
+                            String (name of the customer),
+                            double (initial transaction)
+                        It returns true if the customer was added successfully or false otherwise.
+
+                    addCustomerTransaction()
+                        has three parameters:
+                            String (name of the branch),
+                            String (name of the customer),
+                            double (transaction)
+                        It returns true if the customers' transaction was added successfully or false otherwise.
+
+                    findBranch()
+                        has one parameter of type String (name of the Branch) and returns a Branch.
+                        Return the Branch if it exists or null otherwise.
+
+                    listCustomers()
+                        This method prints out a list of customers.
+                        has two parameters
+                            String (name of the Branch),
+                            boolean (print transactions)
+                        Return true if the branch exists or false otherwise.
+
+                    * TIP:  In Bank, use the findBranch() method in each of the other four methods to validate a branch.
+                                      * Do the same thing in Branch with findCustomer() except for the two getters.
+              ?  Branch
+
+                    It has two fields:
+                        String called name
+                        ArrayList that holds objects of type Customer called customers.
+
+                    A constructor that takes a String (name of the branch)
+                        It initialises name and instantiates customers.
+
+                    And five methods, they are (their functions are in their names):
+
+                        getName()
+                            getter for name.
+
+                        getCustomers()
+                            getter for customers.
+
+                        newCustomer()
+                            has two parameters of type String (name of customer), double (initial transaction) and returns a boolean.
+                            Returns true if the customer was added successfully or false otherwise.
+
+                        addCustomerTransaction()
+                            has two parameters of type String (name of customer), double (transaction) and returns a boolean.
+                            Returns true if the customers' transaction was added successfully or false otherwise.
+
+                        findCustomer()
+                            has one parameter of type String (name of customer) and returns a Customer.
+                            Return the Customer if they exist, null otherwise.
+
+              ?  Customer
+
+                    It has two fields:
+                        String called name
+                        ArrayList that holds objects of type Double called transactions.
+
+                    A constructor that takes a  String (name of customer) and a double (initial transaction).
+                        It initialises name and instantiates transactions.
+
+                    And three methods, they are (their functions are in their names):
+
+                        getName()
+                            getter for name.
+
+                        getTransactions()
+                            getter for transactions.
+
+                        addTransaction()
+                            has one parameter of type double (transaction)
+                            doesn't return anything.
+
+              ! COMPOSITION
+                    TIP:  In Customer, think about what else you need to do in the constructor when you instantiate a Customer object.
+                    TIP:  Think about what methods you need to call from another class when implementing a method.
+
+              NOTE:  All transactions are deposits (no withdraws/balances).
+
+              ! ENCAPSULATION
+                    NOTE:  All fields are private.
+                    NOTE:  All constructors are public.
+
+                    * NOTE:  All methods are public (except for findBranch() and findCustomer() which are private).
+
+
+              NOTE:  Be extremely careful with the spelling of the names of the fields, constructors and methods.
+              NOTE:  Be extremely careful about spaces and spelling in the printed output.
+              NOTE:  There are no static members.
+              NOTE:  Do not add a main method to the solution code.
+         */
+
+        Bank testBank = new Bank("testBank");
+        boolean hasTestBranch = testBank.addBranch("testBranch");
+        System.out.println(testBank.addCustomer("testBranch", "gary", 200));
+
+        System.out.println(testBank.addCustomerTransaction("testBranch", "gary", 500));
+        System.out.println(testBank.listCustomers("testBranch", true));
+
+    }
+
+    private static void challengeFiftyFive() {
+        /*
+            ? write a class called PerfectNumber
+
+            ? write a method called isPerfectNumber with int parameter(s) called number
+
+                if number < 1
+                    returns false
+
+                if number is perfect
+                    return true
+
+            perfect number:
+                ! A perfect number is a positive integer which is equal to the sum of its proper positive divisors.
+            Proper positive divisors:
+                ! positive integers that fully divide the perfect number without leaving a remainder and exclude the perfect number itself.
+
+                * For example, take the number 6:
+
+                    * Its proper divisors are 1, 2, and 3
+                        (since 6 is the value of the perfect number, it is excluded)
+
+                    * the sum of its proper divisors is 1 + 2 + 3 = 6.
+         */
+
+        System.out.println(PerfectNumber.isPerfectNumber(6)); // true
+        System.out.println(PerfectNumber.isPerfectNumber(7)); // false
+
     }
 }
 

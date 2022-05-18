@@ -1,18 +1,183 @@
 package crownhounds.learnjava;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Please refer to DataStructures class
  */
 public class DataStructures_Utility {
 
+    // CONSTANTS
+    public static final String DIVIDER = "\n-------------------------\n";
+
+    // overloaded method
+    public static void formatDivider() {
+
+        System.out.println(DIVIDER);
+
+    }
+
+    public static void formatDivider(String title) {
+
+        System.out.println("\n\t" + title.trim() + " notes\n");
+
+    }
+
+    public static void getLinkedListNotes() {
+        /*
+            ? LINKED LIST logic:
+                while current element in linkedList is pointing to a next valid element, show current element
+
+            * example:
+                element_a --> element_b --> element_c
+         */
+
+        ArrayList<Integer> intList = new ArrayList<Integer>();
+        intList.add(1);
+        intList.add(3);
+        intList.add(4);
+
+        System.out.println("\nset 1:");
+        for(int i = 0; i < intList.size(); i++) {
+            System.out.println("\t" + i + ":" + intList.get(i));
+        }
+
+        System.out.println("\neach element would be shifted down to correctly index the value 2" +
+                "\nprocessing these shifts can be computationally taxing at scale");
+
+        System.out.println("\nset 2:");
+        intList.add(1,2); // set value 2 at index 1
+
+        for(int i = 0; i < intList.size(); i++) {
+            System.out.println("\t" + i + ":" + intList.get(i));
+        }
+
+        DataStructures_Utility.formatDivider();
+
+        LinkedList<String> placesToVisit = new LinkedList<String>();
+        placesToVisit.add("LA");
+        placesToVisit.add("Phoenix");
+        placesToVisit.add("Austin");
+        placesToVisit.add("Atlanta");
+        placesToVisit.add("Jersey City");
+        placesToVisit.add("Manhattan");
+        placesToVisit.add("The Bronx");
+
+        DS_LinkedLists.printLinkedList(placesToVisit);
+
+        DataStructures_Utility.formatDivider();
+
+        System.out.println("LinkedList.add(index, value) was called and handled shifting of pointers" +
+                "\nelement Alice Springs was added\n");
+
+        placesToVisit.add(1, "Alice Springs");
+
+        DS_LinkedLists.printLinkedList(placesToVisit);
+
+        DataStructures_Utility.formatDivider();
+
+        System.out.println("LinkedList.remove(index) was called and handled shifting of pointers" +
+                "\nelement Atlanta was removed\n");
+
+        placesToVisit.remove(4);
+
+        DS_LinkedLists.printLinkedList(placesToVisit);
+
+        DataStructures_Utility.formatDivider();
+
+        LinkedList<String> texasTour = new LinkedList<String>();
+        DS_LinkedLists.addInAlphabeticalOrder(texasTour, "San Antonio");
+        DS_LinkedLists.addInAlphabeticalOrder(texasTour, "Austin");
+        DS_LinkedLists.addInAlphabeticalOrder(texasTour, "Dallas");
+
+        DS_LinkedLists.printLinkedList(texasTour);
+
+
+    }
+
+    public static void getPrimitiveDataTypeNotes() {
+
+        PrimitiveDataTypes.integers();
+
+        PrimitiveDataTypes.byteShortAndLongs();
+
+        PrimitiveDataTypes.floatingPointNumbers();
+
+        PrimitiveDataTypes.booleansCharsAndStrings();
+    }
+
+    public static void getReferencesAndValueNotes() {
+
+        DataStructures_Utility.formatDivider("references and values");
+
+        ReferencesAndValues.getValues();
+        ReferencesAndValues.getReferences();
+    }
+
+    public static void getArrayNotes() {
+
+        DataStructures_Utility.formatDivider("array");
+
+        DS_Array.createArray();
+
+        DataStructures_Utility.formatDivider();
+
+        DS_Array.getInputSum(5);
+
+        DataStructures_Utility.formatDivider();
+
+        DS_Array.getInputAverage(5);
+
+        DS_Array.resizeArray();
+
+        DataStructures_Utility.formatDivider();
+
+    }
+
+    public static void getArrayListNotes() {
+
+        DataStructures_Utility.formatDivider("arrayList");
+
+        DS_ArrayList.createArrayList();
+    }
+
+    public static void getCastingNotes() {
+
+        DataStructures_Utility.formatDivider("casting");
+
+        // CASTING is converting one datatype to another by prefacing with parenthesis with desired data type
+        // JAVA uses int data type by default
+
+        byte myMinByte = Byte.MIN_VALUE;
+        short myMinShort = Short.MIN_VALUE;
+
+        // error because defined as byte but int provided
+        byte myByteTotal = (byte) (myMinByte/2);
+        short myShortTotal = (short) (myMinShort / 2);
+        System.out.println("CASTING myByteTotal: " + myByteTotal);
+        System.out.println("CASTING myShortTotal: " + myShortTotal);
+    }
+
+    public static void overAndUnderFlow() {
+         /*
+        overflow & underflow = value exceeds memory allocated by computer
+            Integer is used to perform operations on an int
+         */
+
+        DataStructures_Utility.formatDivider("overflow & underflow");
+
+        int myMinInt = Integer.MIN_VALUE;
+        int myMaxInt = Integer.MAX_VALUE;
+        System.out.println("BUSTED UNDERFLOW MIN: " + (myMinInt - 1));
+        System.out.println("BUSTED OVERFLOW MAX: " + (myMaxInt + 1));
+
+    }
+
 }
 
 class ReferencesAndValues {
 
-    public static void values() {
+    public static void getValues() {
 
         int myIntValue = 10;
         int anotherIntValue = myIntValue;
@@ -23,7 +188,7 @@ class ReferencesAndValues {
                 "\tantherIntValue: " + anotherIntValue + "\n");
     }
 
-    public static void references() {
+    public static void getReferences() {
 
         // ! every time the 'new' keyword is used, an object is initialized in memory & referenced
         // * both array of strings below, are referencing the same object address stored in memory
@@ -71,8 +236,132 @@ class ReferencesAndValues {
     }
 }
 
+class DS_ArrayList {
 
-class Array{
+    public static void printArrayList(ArrayList<String> myArrayList) {
+
+        for(int i = 0; i < myArrayList.size(); i++) {
+            System.out.println((i + 1) + ": " + myArrayList.get(i));
+        }
+    }
+
+    public static void createArrayList() {
+        /*
+            ArrayList inherits from AbstractList
+                the List interface in java is a sequential ordered collection
+
+            ! the ArrayList is a resizeable array
+                you don't have to worry about adjusting the capacity in memory for an ArrayList object
+
+            * to initialize an ArrayList object/class
+
+                ArrayList<ELEMENTS_OF_DATATYPE> groceryList = new ArrayList<ELEMENTS_OF_DATATYPE>();
+         */
+
+        System.out.println("to initialize: new ArrayList<DATATYPE>()");
+
+        ArrayList<String> myArrayList = new ArrayList<>();
+
+        System.out.println(myArrayList.toString());
+
+        System.out.println("ArrayList<DATATYPE>.add(item) was called");
+
+        myArrayList.add("bread");
+        myArrayList.add("cheese");
+        myArrayList.add("wine");
+
+        System.out.println("ArrayList<DATATYPE>.get(index) was called, ArrayList<DATATYPE>.size: " + myArrayList.size());
+
+        printArrayList(myArrayList);
+
+        DataStructures_Utility.formatDivider();
+
+        String newItem = "diapers";
+        System.out.println("ArrayList<DATATYPE>.set(index, newItem) was called" +
+                "\nnewItem: " + newItem);
+
+        myArrayList.set(1, newItem);
+
+        System.out.println("ArrayList<DATATYPE>.get(index) was called" +
+                "\nArrayList<DATATYPE>.size(): " + myArrayList.size());
+
+        printArrayList(myArrayList);
+
+        DataStructures_Utility.formatDivider();
+
+        System.out.println("ArrayList<DATATYPE>.get(removingElementIndex) was called");
+
+        String removingItem = myArrayList.get(2);
+
+        System.out.println("ArrayList<DATATYPE>.remove(removingElementIndex) was called");
+
+        myArrayList.remove(removingItem);
+
+        System.out.println(removingItem + " was removed");
+        printArrayList(myArrayList);
+
+        DataStructures_Utility.formatDivider();
+
+        ArrayList<Integer> firstArrayList = new ArrayList<Integer>();
+        firstArrayList.add(1);
+        firstArrayList.add(2);
+        firstArrayList.add(3);
+        System.out.println("firstArrayList: " + firstArrayList);
+
+        ArrayList<Integer> secondArrayList = new ArrayList<Integer>();
+        secondArrayList.add(88);
+        secondArrayList.add(99);
+        secondArrayList.add(77);
+        System.out.println("secondArrayList: " + secondArrayList);
+
+        ArrayList<Integer> copyArrayList = new ArrayList<Integer>();
+        copyArrayList.addAll(firstArrayList);
+        copyArrayList.addAll(secondArrayList);
+        System.out.println("copyArrayList (firstArrayList + secondArrayList): " + copyArrayList);
+
+        System.out.println("Copy using arrayList.addAll(arrayListToAdd)\n" +
+                "\tcopyArrayList: " + copyArrayList);
+
+        ArrayList<Integer> thirdArrayList = new ArrayList<Integer>(copyArrayList);
+
+        System.out.println("Copy onInitialization\n" +
+                "\tthirdArrayList: " + thirdArrayList);
+
+        DataStructures_Utility.formatDivider();
+
+        String queryItem = "beer";
+        boolean hasQueryItem = myArrayList.contains(queryItem);
+        System.out.println("ArrayList<DATATYPE>.contains(queryItem) was called and returned boolean: " + hasQueryItem);
+
+        int indexOfQueryItem = myArrayList.indexOf(queryItem);
+        System.out.println("ArrayList<DATATYPE>.indexOf(queryItem) was called and returned int: " + indexOfQueryItem);
+
+        if(indexOfQueryItem >= 0) {
+
+            String foundItem = myArrayList.get(indexOfQueryItem);
+            System.out.println("ArrayList<DATATYPE>.get(indexOfQueryItem) was called because '" +
+                    foundItem + "' was in myArrayList");
+
+        } else {
+
+            System.out.println("myArrayList.get(myArrayList.indexOf(index)) returned null");
+
+        }
+
+        DataStructures_Utility.formatDivider();
+
+        ArrayList<String> myStringArrayList = new ArrayList<String>();
+        myStringArrayList.add("one");
+        myStringArrayList.add("two");
+
+        String[] myStringArray = new String[myStringArrayList.size()];
+        myStringArray = myStringArrayList.toArray(myStringArray);
+        System.out.println("Importing values into an array from an arrayList" +
+                "\nmyStringArray: " + Arrays.toString(myStringArray));
+    }
+}
+
+class DS_Array {
 
     public static void createArray() {
 
@@ -122,6 +411,15 @@ class Array{
 
         System.out.println("\nuse for loop to access each index in new float[5] array given floatArray.length & set the element: \n" +
                 Arrays.toString(floatArray));
+
+        ArrayList<String> myStringArrayList = new ArrayList<String>();
+        myStringArrayList.add("one");
+        myStringArrayList.add("two");
+
+        String[] myStringArray = new String[myStringArrayList.size()];
+        myStringArray = myStringArrayList.toArray(myStringArray);
+        System.out.println("myStringArray: " + Arrays.toString(myStringArray));
+
     }
 
     public static int getInputSum(int numElements) {
@@ -185,36 +483,28 @@ class Array{
 
         return userInputArray;
     }
-}
 
-// learnjava is a subfolder of crownhounds for organization
+    public static void resizeArray() {
+
+        int[] baseData = {1,2,3};
+        System.out.println("baseData " + Arrays.toString(baseData) + " of length: " + baseData.length);
+
+        int[] original = baseData;
+        baseData = new int[12];
+
+        for(int i = 0; i < original.length; i++) {
+            baseData[i] = original[i];
+        }
+
+        System.out.println("baseData " + Arrays.toString(baseData) + " of RESIZED length: " + baseData.length);
+    }
+}
 
 class PrimitiveDataTypes {
 
-    public static void main(String[] args) {
-
-        // CERTAIN DATA TYPES TAKE MORE SPACE IN MEMORY THAN OTHERS
-
-        /*
-        wrapper class for all Java 8 primitive data types
-            byte, short, int, long, float, double, char, boolean
-         */
-
-        int myMinInt = Integer.MIN_VALUE;
-        int myMaxInt = Integer.MAX_VALUE;
-
-        /*
-        overflow & underflow = value exceeds memory allocated by computer
-            Integer is used to perform operations on an int
-         */
-
-        DataStructures.overAndUnderFlow();
-
-    }
-
     public static void byteShortAndLongs() {
 
-        System.out.println("\nbyte Short And Longs\n".toUpperCase());
+        DataStructures_Utility.formatDivider("byte, short, and longs");
 
         // a byte occupies 8 bits/ a width of 8
         byte myMinByte = Byte.MIN_VALUE;
@@ -240,7 +530,7 @@ class PrimitiveDataTypes {
 
     public static void booleansCharsAndStrings() {
 
-        System.out.println("\nbooleans chars and strings\n".toUpperCase());
+        DataStructures_Utility.formatDivider("booleans, chars, and strings");
 
         // conventional to name booleans starting with verbs as a question
         boolean isCustomerOver21 = true;
@@ -256,18 +546,23 @@ class PrimitiveDataTypes {
         System.out.println("myUnicodeChar: " + myUnicodeChar);
         System.out.println("myUnicodeCopyright: " + myUnicodeCopyright);
 
+        DataStructures_Utility.formatDivider();
+
         // Strings can store multiple characters that use double quotes
         // Strings are immutable and can only be recreated via re-assignment
         String myString = "This is an IMMUTABLE string of characters";
         System.out.println("sentence 1: ".toUpperCase() + myString);
 
-        System.out.println("\nuse StringBuffer (mutable),\n\t'appending values'/re-creating an immutable string with additional data is inefficient");
+        System.out.println("\nuse StringBuffer (mutable)," +
+                "\n'appending values'/re-creating an immutable string with additional data is inefficient");
 
         myString += "!!!! ";
         System.out.println("sentence 2: ".toUpperCase() + myString);
 
         myString += (myUnicodeCopyright + "2019");
         System.out.println("sentence 3: ".toUpperCase() + myString);
+
+        DataStructures_Utility.formatDivider();
 
         // String that have numbers will NOT run calculations
         // but simply be joined as a single string with a plus operator
@@ -283,26 +578,9 @@ class PrimitiveDataTypes {
         System.out.println("lastString error: " + lastString);
     }
 
-    public static void casting() {
-
-        System.out.println("\ncasting\n".toUpperCase());
-
-        // CASTING is converting one datatype to another by prefacing with parenthesis with desired data type
-        // JAVA uses int data type by default
-
-        byte myMinByte = Byte.MIN_VALUE;
-        short myMinShort = Short.MIN_VALUE;
-
-        // error because defined as byte but int provided
-        byte myByteTotal = (byte) (myMinByte/2);
-        short myShortTotal = (short) (myMinShort / 2);
-        System.out.println("CASTING myByteTotal: " + myByteTotal);
-        System.out.println("CASTING myShortTotal: " + myShortTotal);
-    }
-
     public static void floatingPointNumbers() {
 
-        System.out.println("\nfloating point numbers\n".toUpperCase());
+        DataStructures_Utility.formatDivider("floating point numbers");
 
         // FLOATING POINT NUMBERS are numbers with a fraction for precision that express a decimal point
         // precision = format & amount of spaced occupied by the space
@@ -316,10 +594,14 @@ class PrimitiveDataTypes {
         System.out.println("myMinFloat: " + myMinFloat);
         System.out.println("myMaxFloat: " + myMaxFloat);
 
+        DataStructures_Utility.formatDivider();
+
         double myMinDouble = Double.MIN_VALUE; // 64 bit single precision number with a decimal
         double myMaxDouble = Double.MAX_VALUE; // 64 bit single precision number with a decimal
         System.out.println("myMinDouble: " + myMinDouble);
         System.out.println("myMaxDouble: " + myMaxDouble);
+
+        DataStructures_Utility.formatDivider();
 
         // ints don't handle remainders
         int myIntValue = 5/3;
@@ -336,7 +618,7 @@ class PrimitiveDataTypes {
 
     public static void integers() {
 
-        System.out.println("\nintegers\n".toUpperCase());
+        DataStructures_Utility.formatDivider("integers");
 
         // an int occupies 32 bits/ a width of 32
 
@@ -351,4 +633,130 @@ class PrimitiveDataTypes {
         int myIntTotal = (myMinInt / 2);
 
     }
+}
+
+class IntWrapperClass {
+    /*
+        Object WRAPPER:
+            ! a class that 'wraps' functionality for a private value
+     */
+
+    private int privateIntValue;
+
+    public IntWrapperClass(int privateIntValue) {
+        this.privateIntValue = privateIntValue;
+    }
+
+    public int getPrivateIntValue() {
+        return privateIntValue;
+    }
+
+    public void setPrivateIntValue(int privateIntValue) {
+        this.privateIntValue = privateIntValue;
+    }
+}
+
+class UnboxingAndAutoboxing {
+
+    public static void getUnboxingNotes() {
+
+        ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+
+        for(int i = 0; i <= 10; i++) {
+            /*
+
+                ! UNBOXING = more functional Object-Wrapper datatype -> primitive datatype
+
+                ? integerArrayList.get(i).intValue()
+
+                    use Integer wrapper class to convert Integer object back into a primitive int value
+             */
+
+            System.out.println(integerArrayList.get(i).intValue());
+        }
+
+        // Shortcut Compilation
+        /*
+            Integer myIntegerValue = 56;
+            Integer myIntegerValue = Integer.valueOf(56)
+         */
+
+        Integer myIntegerValue = 56;
+
+
+    }
+
+    public static void getBoxingNotes() {
+
+        ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+
+        for(int i = 0; i <= 10; i++) {
+            /*
+                ! AUTOBOXING = primitive datatype -> to more functional Object-Wrapper datatype
+
+                ? Integer.valueOf(x)
+
+                    use Integer wrapper class to convert primitive int i into an Integer class object
+             */
+
+            System.out.println(integerArrayList.add(Integer.valueOf(i)));
+        }
+    }
+}
+
+class DS_LinkedLists {
+
+    // class fields/object instance members
+
+    // constructor that initializes the fields on class instantiation
+
+    // unique behaviors
+    public static void printLinkedList(LinkedList<String> linkedList) {
+        /*
+            use an Iterator to access each element in a list-type data structure
+            ! equivalent of a for loop
+         */
+        Iterator<String> iterator = linkedList.iterator();
+
+        System.out.println("LINKED LIST LOGIC:" +
+                "\n\twhile element in linkedList is pointing to a next valid element, show current element\n");
+
+        // iterator.hasNext() = validates pointer to next element
+        while(iterator.hasNext()) {
+            // iterator.next() = returns current value & moves to next valid element
+            System.out.println("Now visiting: " + iterator.next());
+        }
+
+    }
+
+    public static boolean addInAlphabeticalOrder(LinkedList<String> linkedList, String newCity) {
+        /*
+            use an ListIterator to move forward and backward in a list-type data structure
+            ! equivalent of a for loop
+         */
+        ListIterator<String> listIterator = linkedList.listIterator();
+
+        System.out.println("addInAlphabeticalOrder() was called");
+
+        // listIterator.hasNext validates currentElement pointer is pointing to a valid nextElement
+        while(listIterator.hasNext()) {
+
+            int comparison = listIterator.next().compareTo(newCity);
+            if(comparison == 0) {
+
+            } else if() {
+
+            } else {
+                
+            }
+
+
+        }
+
+
+        listIterator.add(newCity);
+        return true;
+    }
+
+
 }

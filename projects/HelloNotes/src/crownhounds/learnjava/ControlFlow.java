@@ -19,7 +19,7 @@ public class ControlFlow {
 //        Loops.whileLoops();
 //        ReadingInput.ParseValues();
 //        ReadingInput.scanConsoleForUserString();
-        ReadingInput.scanConsoleAndParseUserNumber();
+        ControlFlow_ReadingInput.scanConsoleAndParseUserNumber();
 
     }
 
