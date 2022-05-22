@@ -742,13 +742,6 @@ class DS_LinkedLists {
         while(listIterator.hasNext()) {
 
             int comparison = listIterator.next().compareTo(newCity);
-            if(comparison == 0) {
-
-            } else if() {
-
-            } else {
-                
-            }
 
 
         }

@@ -90,7 +90,7 @@ public class Challenges {
            Amazon Challenges
          */
 
-//        ChallengesAmazon.arrays();
+        Challenges_Amazon.arrays();
 
 
 
@@ -2168,4 +2168,3 @@ public class Challenges {
 
     }
 }
-

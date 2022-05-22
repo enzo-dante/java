@@ -12,16 +12,55 @@ public class DataStructures {
 
     public static void main(String[] args) {
 
-        LinkedListNotes linkedListNotes = new LinkedListNotes();
+//        LinkedListNotes linkedListNotes = new LinkedListNotes();
+//
+//        ArrayListNotes arrayListNotes = new ArrayListNotes();
+//
+//        VectorNotes vectorNotes = new VectorNotes();
+//
+//        TreeNotes treeNotes = new TreeNotes();
 
-        ArrayListNotes arrayListNotes = new ArrayListNotes();
-
-        VectorNotes vectorNotes = new VectorNotes();
-
-        TreeNotes treeNotes = new TreeNotes();
+        Array2DNotes array2DNotes = new Array2DNotes();
 
     }
 
+}
+// ! ACCESS MODIFIER package-private: only visible within the scope of this package
+// ! OOP INHERITANCE: child subclass that inherits class fields & public methods from extending parent super-class
+class Array2DNotes extends Notes {
+
+    // OOP constructor that initializes class fields on class/object instantiation
+    public Array2DNotes() {
+        // ! OOP INHERITANCE: child subclass that inherits class fields & public methods from extending parent super-class
+        super("2D Array");
+
+        getNotes();
+    }
+
+    // ! INTERFACE + OOP POLYMORPHISM: must implement all publicly-shared methods for set of classes via @Override
+    @Override
+    public void getNotes() {
+        /*
+            ? 2D ARRAYS
+            Two Dimensional arrays are needed when data is formatted as TABLE or SPREADSHEET
+
+            * Example:
+                movie ratings by multiple reviewers
+                    Each row is a different reviewer
+                    Each column is a different movie
+
+                    ratings = [
+                        [4,6,2,5],
+                        [7,9,4,8],
+                        [6,9,3,7]
+                    ];
+
+                    ratings[1][3] = 8
+                        [1] = row
+                        [3] = column
+         */
+
+    }
 }
 
 /**
