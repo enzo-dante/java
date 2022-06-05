@@ -1,5 +1,8 @@
 package com.crownhounds.learnjava;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class ChallengesMaster {
 
     public static void main(String[] args) {
@@ -42,9 +45,39 @@ public class ChallengesMaster {
      */
     private static void playlistChallenge() {
 
+        // ! GENERICS CLASS: improve ENCAPSULATION by enforcing specific dataType parameter
+        ArrayList<PlayList.Album> albums = new ArrayList<PlayList.Album>();
+
         PlayList playList = new PlayList();
-        PlayList.Song song = playList.new Song();
-        PlayList.Album album = playList.new Album();
+
+        PlayList.Album album;
+
+        album = playList.new Album("Stormbringer", "Deep Purple");
+        album.addSong("Stormbringer", 4.6);
+        album.addSong("Love Doesn't Mean a Thing", 4.22);
+        album.addSong("Holy Man", 4.3);
+        albums.add(album);
+
+        album = playList.new Album("For Those About to Rock", "AC/DC");
+        album.addSong("For Those About to Rock", 5.44);
+        album.addSong("I Put the Finger on You", 3.25);
+        album.addSong("Lets Go", 3.45);
+        albums.add(album);
+
+        LinkedList<PlayList.Song> songLinkedList = new LinkedList<PlayList.Song>();
+
+        albums.get(0).addToPlayList("Holy Man", songLinkedList);
+        albums.get(1).addToPlayList("Lets Go", songLinkedList);
+
+        albums.get(0).addToPlayList(1, songLinkedList);
+        albums.get(1).addToPlayList(2, songLinkedList);
+
+        albums.get(0).addToPlayList("Speed King", songLinkedList); // does not exist
+        albums.get(1).addToPlayList(7, songLinkedList); // does not exist
+
+        Util.printSeparator();
+
+        playList.play(songLinkedList);
 
     }
 

@@ -6,7 +6,7 @@ public class Generics {
 
     public static void main(String[] args) {
         /*
-            ? GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take specific dataType parameter
+            ? GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
                 GENERICS make identifying bugs/code breaks faster throughout lifecycle (preferably before prod runtime & in compile time)
                     subsequently cheaper to fix due to less resources being exhausted
 
@@ -88,7 +88,7 @@ class GenericsClassNotes extends Notes {
 
         Util.printSeparator();
 
-        // ? GENERICS: improve OOP ENCAPSULATION by allowing us to create classes, interfaces, & methods that take DATA TYPES as parameters
+        // ? GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
         ArrayList<Integer> integerItems = new ArrayList<Integer>();
 
         integerItems.add(7);

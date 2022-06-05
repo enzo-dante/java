@@ -1,13 +1,40 @@
 package com.crownhounds.learnjava;
 
 public class Testing {
+    /*
+       ! Test Driven Development (TDD)
+            writing code that tests your other code to ensure a level of performance quality when your app is in production.
+            TDD makes refactoring and collaboration safer and bug-free
+
+            * 1. development BEGINS by writing RED failing tests
+
+            * 2. once tests are written, write the MINIMUM amount of GREEN code necessary to make tests pass
+
+            * 3. refactor = clean up the code, while ensuring that tests still pass
+
+            * 4. once tests pass, a feature is considered complete
+
+       ! TDD STEPS
+
+            ? JUnit TESTING step 1: setup
+
+            ? JUnit TESTING step 2: import method and unittest module you want to test into test.py
+
+            ? JUnit TESTING step 3: write tests that you expect to FAIL
+
+            ? JUnit TESTING step 4: run verbose FAILING tests in terminal
+
+            ? JUnit TESTING step 5: write method implementation in file.py
+
+            ? JUnit TESTING step 6: individually run implemented functions until all failing tests resolved in tests.py
+     */
 
     public static void main(String[] args) {
 
         // ! DEBUGGING: setting BREAKPOINTS & FIELD WATCHPOINTS to monitor, manipulate, & manage app state
 //        Debugging debugging = new Debugging();
 
-        JUnitTesting jUnitTesting = new JUnitTesting();
+        JUnitTesting jUnitTesting = new JUnitTesting("Eunice", "Iger", 1202.44, 1);
     }
 }
 
@@ -149,19 +176,19 @@ class Debugging extends Notes {
         }
 
         private void addChar(StringBuilder stringBuilder, char character) {
-             // ? JAVA DEBUGGING STEPS: 1. set a pre-line suspending red breakpoint(s) on the FIRST/target line in problematic method by clicking in left-gutter
+             // ? JAVA DEBUGGING step 1: set a pre-line suspending red breakpoint(s) on the FIRST/target line in problematic method by clicking in left-gutter
 //            this.stringBuilder.append(character);
 
-            // ? JAVA DEBUGGING STEP 2: select debugging icon in top-right corner of the app window (ladybug) to open Debugger
+            // ? JAVA DEBUGGING step 2: select debugging icon in top-right corner of the app window (ladybug) to open Debugger
 
             /*
-            ? JAVA DEBUGGING STEP 3: use debug buttons to review & identify issue
+            ? JAVA DEBUGGING step 3: use debug buttons to review & identify issue
                 debugger step over: shows that code is updating instance variable via 'this.stringBuilder' instead of the 'stringBuilder' argument
                     loop will never terminate, this.stringBuilder instance will continue to grow until memory-exception
 
                 debugger step out: debugger will run the rest of the method, return to the caller execution line, & suspend before line execution
 
-            ? JAVA DEBUGGING STEP 4: resume program to next breakpoint OR remove breakpoints & resume program in debugger
+            ? JAVA DEBUGGING step 4: resume program to next breakpoint OR remove breakpoints & resume program in debugger
              */
             stringBuilder.append(character);
             charsAdded++;
@@ -180,17 +207,138 @@ class Debugging extends Notes {
 
 // ! OOP INHERITANCE: child subclass inherits class fields & public methods from extending parent super-class
 class JUnitTesting extends Notes {
+    /*
+        ? JUnit TESTING:
+            JUnit is a Java built-in package/module
+            1 Unit = 1 Method
+
+            ! to create a test, the class needs to be independent (not an inner class)
+
+        ? JUnit PARAMETERIZED TESTS: run a test multiple times with different arguments
+            * https://mkyong.com/junit5/junit-5-parameterized-tests/
+
+                ! @ValueSource =  For a single argument test.
+
+                ! @EnumSource = Run tests that take Enum as an argument.
+
+                ! @MethodSource = Run tests that take a static method to generate arguments.
+
+                ! @CsvSource = Multiple arguments
+
+                ! @CsvFileSource = Run tests that take a comma-separated values (csv) as arguments.
+
+                ! @ArgumentsSource = Create a reusable argument provider.
+
+        ? JUnit TESTING step 1A: update project structure JUnit library dependency to compile
+            project structure -> Modules -> Dependencies Tab ->
+                Export window -> Junit ->
+                    open dropdown -> change "Test" to "Compile" -> Ok
+
+        ? JUnit TESTING step 2: create JUnit Test class & generate methods to test in root
+            ! click yellow light bulb onHover over independent class name
+            ! FIX if IDE is unable to identify built-in JUnit Test class
+            ! select specific methods to test
+
+        ? JUnit TESTING step 1B: add JUnit Library
+            ! right-click add "JUnit" to class path
+            ! select "Use JUnit from IntelliJ IDEA distribution"
+            ! click Ok
+
+        ? JUnit TESTING step 3: BEFORE running, add fail(NOT_IMPLEMENTED) to each Test class method stub
+
+        ? JUnit TESTING step 4: run expected failing tests suite
+
+        ? JUnit TESTING step 5: review run configuration for all tests
+            want to test class in application, NOT the application itself
+
+            ! right-click outside created Test class & select run Test class
+            ! right-click outside created Test class & select modify run configuration
+            ! review configurations & click Ok
+            ! review right-corner dropdown is respective Test suite
+
+        ? JUnit TESTING step 6: setup tests objects run before & after teardown every test run
+            ! @BeforeAll: STATIC execute only once before all test suit is run
+                example: read data from db for tests
+
+            ! @AfterAll: STATIC execute only once after all test suit is run
+
+            ! @BeforeEach: execute code in setup() before each test is run
+
+            ! @AfterEach: execute code in setup() after each test is run
+
+
+        ? JUnit TESTING step 7: write test method assertions that test against class functionality
+            in testSuite, click on green arrow/red x in gutter next to specific method to test
+
+            review only passing or only failing tests with toggle in top-left of Test window
+
+            ? JUnit TRY-CATCH: handle expected exceptions handing modify @Test annotation
+
+                try {
+                    double balance = checkingsAccount.withdraw(600.00, false);
+                    assertEquals(400.00, balance, 0);
+                } catch(IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+
+            * BEST PRACTICE:
+                write easily understood test method names
+
+                    getBalance_deposit()
+                    getBalance_withdraw()
+
+                write on 1 independent assertion for 1 independent test
+                setup any independent class instances that can be reused (without cross-pollination) on each test method
+
+            ! assertEquals(expectedValue, actualTestValue);
+            ! assertNotEquals(expectedValue, actualTestValue);
+
+            ! assertTrue(actualTestValue, failMsg);
+            ! assertFalse(actualTestValue, failMsg);
+
+            ! assertArrayEquals(expectedArray, actualTestArray);
+                consider two arrays equal if length & every element in order identical
+
+            ! assertNull(actualTestValue);
+            ! assertNotNull(actualTestValue);
+                easy-to-read check for null values
+
+            ! assertSame(expectedValue, actualTestValue);
+            ! assertNotSame(expectedValue, actualTestValue);
+                compares object references,
+                    unlike assertEquals that checks if instances are the same
+
+            ! assertThat(expectedValue, actualTestValue);
+                compare the actual value against a matcher range of values
+
+        ? JUnit TESTING step 5: write method implementation in file
+
+        ? JUnit TESTING step 6: individually run implemented functions until all failing tests resolved in test suite
+     */
 
     // CONSTANTS/static class variables assigned FINAL value before instantiation/compilation
     private static final String JUNIT_TESTING = "JUnit Testing";
+    private static final int CHECKING = 1;
+    private static final int SAVING = 2;
 
-    // ENCAPSULATION security access modifiers private class fields
+    // OOP ENCAPSULATION security access modifiers private class fields
+    private String firstName;
+    private String lastName;
+    private Double balance;
+    private int accountType;
 
     // OOP constructor that initializes class fields on class/object instantiation
-    public JUnitTesting() {
+    public JUnitTesting(String firstName, String lastName, double balance, int accountType) {
         // ! OOP INHERITANCE: child subclass inherits class fields & public methods from extending parent super-class
         super(JUNIT_TESTING);
         getNotes();
+
+        this.accountType = accountType;
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+        // ! AUTOBOXING: convert primitive dataType -> Wrapper Class dataType w/ greater functionality
+        this.balance = balance;
     }
 
     // non-static unique behavior/class methods
@@ -200,6 +348,59 @@ class JUnitTesting extends Notes {
 
     }
 
+    /**
+     * add an amount to the current balance for this specific instance of the BankAccount
+     * @param amount value to be added to a BankAccount instance balance
+     * @param branch is true if customer is performing the transaction at the branch w/ a teller, false if at ATM
+     * @return the running balance of this BankAccount instance
+     */
+    public Double deposit(double amount, boolean branch) {
+        // ! AUTOBOXING: convert primitive dataType -> Wrapper Class dataType w/ greater functionality
+        this.balance += amount;
+        return this.balance;
+    }
 
-    // getters & setters
+    /**
+     * remove an amount from the current balance for this specific instance of the BankAccount
+     * @param amount value to be added to a BankAccount instance balance
+     * @param branch is true if customer is performing the transaction at the branch w/ a teller, false if at ATM
+     * @return the running balance of this BankAccount instance
+     */
+    public Double withdraw(double amount, boolean branch) {
+        // ? JUnit TESTING parameter validation: check that withdraw is less than or equal to 500 at branch
+        if((amount > 500D) && !branch) {
+            throw new IllegalArgumentException();
+        }
+        // ! AUTOBOXING: convert primitive dataType -> Wrapper Class dataType w/ greater functionality
+        this.balance -= amount;
+        return this.balance;
+    }
+
+    public boolean isSavings() {
+        return accountType == SAVING;
+    }
+
+    public boolean isChecking() {
+        return accountType == CHECKING;
+    }
+
+    // OOP getters & setters
+
+    // static (class, no instance required) class methods
+    public static int setChecking() {
+        return 1;
+    }
+
+    // OOP getters & setters
+    public Double getBalance() {
+        return balance;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }

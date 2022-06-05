@@ -20,7 +20,11 @@ public class DataStructures {
 //
 //        TreeNotes treeNotes = new TreeNotes();
 
-        Array2DNotes array2DNotes = new Array2DNotes();
+//        Array2DNotes array2DNotes = new Array2DNotes();
+
+//        MapNotes mapNotes = new MapNotes();
+
+        SetNotes setNotes = new SetNotes();
 
     }
 
@@ -559,8 +563,7 @@ class VectorNotes extends Notes {
         }
     }
 
-    // getters & setters
-
+    // OOP ENCAPSULATION getters & setters
 
     // ! ENCAPSULATION + non-static INNER CLASS
     private class Employee {
@@ -611,13 +614,371 @@ class VectorNotes extends Notes {
     }
 }
 
+// ! OOP INHERITANCE: child subclass inherits class fields & methods from extending parent super-class
+class MapNotes extends Notes {
+    /*
+        ? MAPS INTERFACE: collection of key-value pair HASHMAP implementations that use GENERIC CLASS dataStructures w/ 2 parameters: UNIQUE key & value
+            GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
+
+        ? no-order HASHMAPS & LINKED HASHMAPS classes are the main implementations of the MAPS INTERFACE
+
+            Map<dataType, dataType> instance = new HashMap<>()
+
+        ? hashmapInstance.put(key, value) = add unique_key-value generics class pair into map collection
+
+            ! if you add the key again, the oldValue will be overridden in the map since map keys are unique
+                before overriding the value, .put() will return the previous value of the key-value pair
+                a value being added for the 1st time will initially return null before adding to the map collection
+
+        ? hashmapInstance.get(key) = retrieve record via key in map collection
+
+        ? hashmapInstance.containsKey(key) = validate key existence in map before adding/update key in map
+
+        ? hashmapInstance.putIfAbsent(key, value) = for CONCURRENCY, if key is not already present in map, than add key-value pair
+
+        ? use hashmapInstance.keySet() + hashmapInstance.get(key) = loop through map & return all key-value pairs
+
+        ? use hashmapInstance.remove(key) = remove key-value pair from map
+
+        ? use hashmapInstance.remove(key, specificValue) = ONLY IF key has specific value, THAN remove key-value pair from map
+
+        ? use hashmapInstance.replace(key, replaceValue) = IF key already exists, replace the key's value in the map
+
+        ? use hashmapInstance.replace(key, validationValue, replacingValue) = ONLY IF key has specific value, THAN replace key's value in map
+
+     */
+
+    // CONSTANTS/static class variables assigned FINAL values before compilation/instantiation
+    private static final String MAPS = "Maps";
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public MapNotes() {
+        // ! OOP INHERITANCE: child subclass inherits class fields & methods from extending parent super-class
+        super(MAPS);
+        getNotes();
+    }
+
+    // non-static unique object behavior/class methods
+    // ! INTERFACE + OOP POLYMORPHISM: must uniquely-implement/@Override all publicly-shared signatures for a set of classes
+    @Override
+    public void getNotes() {
+
+        // ? HASHMAP: collection of key-value pairs implementation of MAPS INTERFACE with GENERIC CLASS dataStructures that take 2 parameters: key & value
+        // <String, String> = key, value GENERIC CLASS parameters
+        Map<String, String> languages = new HashMap<>();
+
+        // ? COLLECTION MAP: hashmapInstance.put(key, value) = add key-value pair into map collection
+        languages.put("Java", "OOP independent compilation language");
+        languages.put("Python", "OOP independent interpreted language w/ dynamic semantics");
+        languages.put("BASIC", "Beginners All-purpose Symbolic Instruction Code");
+        languages.put("Lisp", "Therein lies madness");
+
+        // ? COLLECTION MAP: hashmapInstance.get(key) = retrieve record via key in map collection
+        System.out.println(
+                languages.get("Java")
+        );
+
+        // ! MAP KEY OVERRIDING: if you add the key again, the oldValue will be overridden in the map since map keys are unique
+        // before overriding the value, .put() will return the previous value of the key-value pair
+        // a value being added for the 1st time will initially return null before adding to the map collection
+        languages.put("Java", "The value associated with the 'Java' key has been overridden");
+
+        System.out.println(
+                languages.get("Java")
+        );
+
+        Util.printSeparator();
+
+        // ? COLLECTION MAP: hashmapInstance.containsKey(key) = validate key existence in map before adding/update key in map
+        if(languages.containsKey("Javascript")) {
+            System.out.println("'Javascript' key already in map");
+        } else {
+            languages.put("Javascript", "OOP independent compilation language w/ dynamic semantics");
+            System.out.println("'Javascript' keyword added successfully");
+        }
+
+        if(languages.containsKey("Javascript")) {
+            System.out.println("'Javascript' key already in map");
+        }
+
+        // ? COLLECTION MAP: hashmapInstance.putIfAbsent(key, value) = for CONCURRENCY, if key is not already present in map, than add key-value pair
+        languages.putIfAbsent("SQL", "Database query language");
+
+        Util.printSeparator();
+
+        // ? use hashmapInstance.keySet() + hashmapInstance.get(key) = loop through map & return all key-value pairs
+        for(String key: languages.keySet()) {
+            System.out.println(key + ":\n\t" + languages.get(key));
+        }
+
+        Util.printSeparator();
+
+        // ? use hashmapInstance.remove(key) = remove key-value pair from map
+        languages.remove("Lisp");
+        System.out.println("hashmapInstance.containsKey('Lisp'):\n" + languages.containsKey("Lisp"));
+
+        Util.printSeparator();
+
+        // ? use hashmapInstance.remove(key, specificValue) = ONLY IF key has specific value, THAN remove key-value pair from map
+        if(languages.remove("Java", "This should NOT be removed")) {
+            System.out.println("Java key-value pair was INCORRECTLY removed");
+        } else {
+            System.out.println("Java key-value pair was preserved");
+        }
+
+        for(String key: languages.keySet()) {
+            System.out.println(key + ":\n\t" + languages.get(key));
+        }
+
+        Util.printSeparator();
+
+        // ? use hashmapInstance.replace(key, replaceValue) = IF key already exists, replace the key's value in the map
+
+        languages.replace("SQL", "replace String value for pre-existing 'SQL' key in map");
+
+        languages.replace("Scala", "will NOT be added since 'Scala' key in not already in map");
+
+        for(String key: languages.keySet()) {
+            System.out.println(key + ":\n\t" + languages.get(key));
+        }
+
+        Util.printSeparator();
+
+        // ? use hashmapInstance.replace(key, validationValue, replacingValue) = ONLY IF key has specific value, THAN replace key's value in map
+        if(languages.replace("Java", "This should NOT be removed", "Validated String oldValue & replaced with newValue")) {
+            System.out.println(languages.get("Java"));
+        } else {
+            System.out.println("Java key-value pair was CORRECTLY preserved");
+        }
+
+        String oldValue = "The value associated with the 'Java' key has been overridden";
+
+        if(languages.replace("Java", oldValue, "Validated String oldValue & replaced with newValue")) {
+            System.out.println(languages.get("Java"));
+        } else {
+            System.out.println("Java key-value pair was CORRECTLY preserved");
+        }
+    }
+
+    // ! INNER CLASS + PACKAGE PRIVATE: a parent object has logically-grouped components within itself whose default visibility is limited to the package class SCOPE
+
+}
+
+// ! OOP INHERITANCE: child subclass inherits class fields & methods from extending parent super-class
+class SetNotes extends Notes {
+    /*
+        ? SETS INTERFACE: a computationally fast unordered collection without any duplicates implemented via HASHSET class
+
+        ? SET UNION: a no-duplicate set that contains all the elements of 2 or more sets via hashSet.addAll()
+     */
+
+    // CONSTANTS/static class fields assigned FINAL value before compilation/instantiation
+    private static final String SET = "Set";
+    private static final String PLANETS_LABEL = "Planets:";
+    private static final String MOONS_LABEL = "Moons of ";
+    private static final String MOONS_LIST = "All Moons";
+    private static final String PLANET_MERCURY = "Mercury";
+    private static final String PLANET_VENUS = "Venus";
+    private static final String PLANET_EARTH = "Earth";
+    private static final String PLANET_MARS = "Mars";
+    private static final String PLANET_JUPITER = "Jupiter";
+    private static final String PLANET_SATURN = "Saturn";
+    private static final String PLANET_NEPTUNE = "Neptune";
+    private static final String PLANET_URANUS = "Uranus";
+    private static final String PLANET_PLUTO = "Pluto";
+
+    // ? SETS INTERFACE: a computationally fast unordered collection without any duplicates implemented via HASHSET class
+    private Set<HeavenlyBody> planets;
+    private Set<HeavenlyBody> moons;
+
+    // ! MAPS INTERFACE: collection of key-value pair HASHMAP implementations that use GENERIC CLASS dataStructures w/ 2 parameters: UNIQUE key & value
+    private Map<String, HeavenlyBody> solarSystem;
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public SetNotes() {
+        super(SET);
+
+        // ! HASHMAP: collection of key-value pairs implementation of MAPS INTERFACE with GENERIC CLASS dataStructures that take 2 parameters: key & value
+        solarSystem = new HashMap<>();
+
+        // ? SETS INTERFACE: a computationally fast unordered collection without any duplicates implemented via HASHSET class
+        planets = new HashSet<>();
+
+        getNotes();
+    }
+
+    // OOP getters & setters
+    // ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override publicly-shared signatures for designated methods
+    public void getNotes() {
+
+        HeavenlyBody planet;
+        HeavenlyBody moon;
+
+        // ? SET UNION: a no-duplicate set that contains all the elements of 2 or more sets via hashSet.addAll()
+        moons = new HashSet<>();
+
+        planet = new HeavenlyBody(PLANET_MERCURY, 88);
+
+        // ! HASHMAP: hashmapInstance.put(key, value) = add key-value pair into map collection
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        planet = new HeavenlyBody(PLANET_VENUS, 225);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        planet = new HeavenlyBody(PLANET_EARTH, 365);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        moon = new HeavenlyBody("Moon", 27);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        planet = new HeavenlyBody(PLANET_MARS, 687);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        moon = new HeavenlyBody("Deimos", 1.3);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        moon = new HeavenlyBody("Phobos", 0.3);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        planet = new HeavenlyBody(PLANET_JUPITER, 4332);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        moon = new HeavenlyBody("Io", 1.5);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        moon = new HeavenlyBody("Europa", 3.5);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        moon = new HeavenlyBody("Ganymede", 7.1);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        moon = new HeavenlyBody("Callisto", 16.7);
+        solarSystem.put(moon.getName(), moon);
+        planet.addMoon(moon);
+
+        planet = new HeavenlyBody(PLANET_SATURN, 10759);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        planet = new HeavenlyBody(PLANET_URANUS, 30660);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        planet = new HeavenlyBody(PLANET_NEPTUNE, 165);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        planet = new HeavenlyBody(PLANET_PLUTO, 248);
+        solarSystem.put(planet.getName(), planet);
+        planets.add(planet);
+
+        getPlanets();
+        getAllMoons();
+    }
+
+    public Set<HeavenlyBody> getPlanets() {
+        System.out.println(PLANETS_LABEL);
+
+        // for HeavenlyBody element in HeavenlyBodyList
+        for (HeavenlyBody planet : this.planets) {
+            System.out.println("\t" + planet.getName());
+            getPlanetMoons(planet);
+        }
+        return this.planets;
+    }
+
+    public Set<HeavenlyBody> getPlanetMoons(HeavenlyBody planet) {
+
+        HeavenlyBody body = this.solarSystem.get(planet.getName());
+
+        System.out.println("\t\t" + MOONS_LABEL + body.getName());
+        for(HeavenlyBody planetMoon : body.getSatellites()) {
+            System.out.println("\t\t\t" + planetMoon.getName());
+
+        }
+
+        return body.getSatellites();
+    }
+
+    // ? SET UNION: a no-duplicate set that contains all the elements of 2 or more sets via hashSet.addAll()
+    public Set<HeavenlyBody> getAllMoons() {
+
+        for(HeavenlyBody planet : this.planets) {
+
+            // ? SET UNION: a no-duplicate set that contains all the elements of 2 or more sets via hashSet.addAll()
+            this.moons.addAll(planet.getSatellites());
+        }
+
+        System.out.println(MOONS_LIST);
+
+        for(HeavenlyBody moon : this.moons) {
+            System.out.println("\t" + moon.getName());
+        }
+
+        return this.moons;
+    }
+
+    // ! FINAL: assigned immutable value before compilation/instantiation
+    final class HeavenlyBody {
+
+        // ENCAPSULATION private class fields
+        private final String name;
+        private final Double orbitalPeriod;
+        private final Set<HeavenlyBody> satellites;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public HeavenlyBody(String name, double orbitalPeriod) {
+            this.name = name;
+            // ! AUTOBOXING: converting primitive dataType -> Wrapper class dataType w/ greater functionality
+            this.orbitalPeriod = orbitalPeriod;
+
+            // default values
+            this.satellites = new HashSet<>();
+        }
+
+        // OOP CLASS METHODS: non-static unique object behavior
+        public boolean addMoon(HeavenlyBody moon) {
+            return this.satellites.add(moon);
+        }
+
+        // OOP getter & setters
+        public String getName() {
+            return name;
+        }
+
+        public Double getOrbitalPeriod() {
+            return orbitalPeriod;
+        }
+
+        public Set<HeavenlyBody> getSatellites() {
+            // ! IMMUTABLE CLASSES: improve ENCAPSULATION because they cannot be changed once they are created from external modification
+            return new HashSet<HeavenlyBody>(this.satellites);
+        }
+    }
+
+}
+
 class TreeNotes extends Notes {
+
+    // CONSTANTS/static class fields assigned FINAL value before compilation/instantiation
+    private static final String TREE = "Tree";
 
     // ENCAPSULATION private class fields
 
     // OOP constructor that initializes the class fields on class/object instantiation
     public TreeNotes() {
-        super("Tree");
+        super(TREE);
         getNotes();
 
     }

@@ -695,7 +695,7 @@ class StaticStatement extends Notes {
         // ENCAPSULATION: secure access-modifier private class fields
         private String constructorMsg;
 
-        // ? STATIC INITIALIZATION BLOCKS: it's possible to assign values of a STATIC FINAL VARIABLE in a STATIC INITIALIZATION BLOCK
+        // ? STATIC INITIALIZATION BLOCKS: one-time on-initialization execution of 'static {}' and their assigned STATIC FINAL variables
         static {
             OWNER = "Tim";
             FIRST_STATIC_MSG = "STATIC INITIALIZATION BLOCKS: one-time on-initialization execution of 'static {}' and their assigned STATIC FINAL variables";
