@@ -4,8 +4,9 @@ import java.util.*;
 
 public class ChallengesMasterUtil {
 
-    // CONSTANTS
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
     public static final String INVALID_INPUT = "Invalid input";
+    public static final String INVALID_VALUE = "Invalid Value";
 
     public static void main(String[] args) {
 
@@ -35,6 +36,141 @@ abstract class Challenge implements IChallenge {
     @Override
     public void getName() {
         Util.printSeparator(this.title);
+    }
+}
+
+class NumberToWords extends ChallengesMasterUtil{
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+
+    // OOP ENCAPSULATION private class fields
+    private static Map<Integer, String> nums = new HashMap<>();
+
+    // ! STATIC: single class instance method shared in memory
+    public static void numberToWords(int number) {
+
+        // ? COLLECTION MAP hashMapInstance.put(key, value) = add key-value pair into map collection
+        nums.put(0, "Zero");
+        nums.put(1, "One");
+        nums.put(2, "Two");
+        nums.put(3, "Three");
+        nums.put(4, "Four");
+        nums.put(5, "Five");
+        nums.put(6, "Six");
+        nums.put(7, "Seven");
+        nums.put(8, "Eight");
+        nums.put(9, "Nine");
+
+        if (number >= 0) {
+            // reversing the number
+            int reversed = reverse(number);
+            // counts the number of digits of given number
+            int originalNumberDigits = getDigitCount(number);
+            // iterates till all digits will be printed
+            for (int i = 0; i < originalNumberDigits; i ++) {
+                // extracting digit of given number
+                int digit = reversed % 10;
+                // printing last digit in words
+                switch (digit) {
+                    case 0:
+                        System.out.print(nums.get(0) + " ");
+                        break;
+                    case 1:
+                        System.out.print(nums.get(1) + " ");
+                        break;
+                    case 2:
+                        System.out.print(nums.get(2) + " ");
+                        break;
+                    case 3:
+                        System.out.print(nums.get(3) + " ");
+                        break;
+                    case 4:
+                        System.out.print(nums.get(4) + " ");
+                        break;
+                    case 5:
+                        System.out.print(nums.get(5) + " ");
+                        break;
+                    case 6:
+                        System.out.print(nums.get(6) + " ");
+                        break;
+                    case 7:
+                        System.out.print(nums.get(7) + " ");
+                        break;
+                    case 8:
+                        System.out.print(nums.get(8) + " ");
+                        break;
+                    case 9:
+                        System.out.print(nums.get(9) + " ");
+                        break;
+                }
+                // removing digit from a number
+                reversed /= 10;
+            }
+        } else {
+            // prints "Invalid Value" when it is less than zero
+            System.out.println(INVALID_VALUE);
+        }
+        System.out.println();
+    }
+
+    /**
+     * reverses the given number
+     * @param number
+     * @return reversed number
+     */
+    public static int reverse(int number) {
+        int reversedNumber = 0;
+        int lastDigit = 0;
+        while (number != 0) {
+            lastDigit = number % 10;
+            reversedNumber = reversedNumber * 10 + lastDigit;
+            number /= 10;
+        }
+        return reversedNumber;
+    }
+
+    /**
+     * counts the number of digits
+     * @param number
+     * @return number of digits
+     */
+    public static int getDigitCount(int number) {
+        int sumOfDigits = 0;
+        if (number >= 0) {
+            if (number == 0) {
+                sumOfDigits = 1;
+            }
+            while (number > 0) {
+                int lastDigit = number % 10;
+                number /= 10;
+                sumOfDigits++;
+            }
+            return sumOfDigits;
+        }
+        return -1;
+    }
+}
+class AreaCalculator {
+
+    public Double area(double radius) {
+
+        if(radius < 0) {
+            return -1D;
+        }
+
+        // implied else-statement
+        // ! AUTOBOXING: converting primitive dataType to Wrapper Class dataType w/ greater functionality
+        return (radius * radius) * Math.PI;
+    }
+
+    public Double area(double x, double y) {
+
+        if((x < 0) || (y < 0)) {
+            return -1D;
+        }
+
+        // ! AUTOBOXING: converting primitive dataType to Wrapper Class dataType w/ greater functionality
+        return x * y;
     }
 }
 
@@ -371,6 +507,40 @@ class PlayList extends Challenge {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+}
+
+// ! ACCESS-MODIFIER package-private: default private limit visibility to scope of the package and class
+class SpeedConverter {
+
+    // CONSTANTS/static class variables assigned FINAL value before class compilation/instantiation
+    private static final String INVALID_VALUE = "Invalid value";
+
+    // ! OOP ENCAPSULATION + ACCESS-MODIFIER private: limit scope visibility for intended class use/protection
+    // private class fields
+    private String format = "XX km/h = YY mi/h";
+
+    public Long toMilesPerHour(double kilometersPerHour) {
+
+        if(kilometersPerHour < 0) {
+            return -1L;
+        }
+
+        // implied else-statement
+        return Math.round((1.609 * kilometersPerHour));
+    }
+
+    public void printConversion(double kilometersPerHour) {
+
+        Long result;
+
+        if(kilometersPerHour < 0) {
+            System.out.println(INVALID_VALUE);
+        } else {
+            result = toMilesPerHour(kilometersPerHour);
+            String formattedString = format.replace("XX", Double.toString(kilometersPerHour)).replace("YY", Long.toString(result));
+            System.out.println(formattedString);
         }
     }
 }

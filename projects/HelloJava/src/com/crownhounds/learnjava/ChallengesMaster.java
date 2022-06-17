@@ -7,7 +7,36 @@ public class ChallengesMaster {
 
     public static void main(String[] args) {
 
-        playlistChallenge();
+//        areaCalculatorChallenge();
+//        playlistChallenge();
+//        speedConverterChallenge();
+        numberToWordsChallenge();
+    }
+
+    /**
+     * ? Write a class called AreaCalculator
+     *
+     * ? Write a method called area with 1 double parameter named radius
+     *      return -1 if radius is negative
+     *      return a double value that represents the area of a circle
+     *
+     * * area_circle = radius * radius * Math.PI
+     *
+     * ? Write an overloaded method with 2 parameters x & y (both doubles & a side of a rectangle)
+     *      return -1 if either or both parameters are negative
+     *      the method returns the area of a rectangle
+     *
+     * * area_rectangle = x * y
+     */
+    private static void areaCalculatorChallenge() {
+        AreaCalculator areaCalculator = new AreaCalculator();
+
+        // ! AUTOBOXING: converting primitive dataType -> Wrapper Class dataType functionality
+        Double areaRadius = areaCalculator.area(10d);
+        System.out.println("radius: " + areaRadius);
+
+        Double areaRectangle = areaCalculator.area(7d, 2d);
+        System.out.println("rectangle: " + areaRectangle);
     }
 
     /**
@@ -79,6 +108,104 @@ public class ChallengesMaster {
 
         playList.play(songLinkedList);
 
+    }
+        /*
+            0. Write a speed converter class
+
+            1. Write a method called toMilesPerHour that has 1 parameter of type double with the name kilometersPerHour.
+                This method needs to return the rounded value of the calculation of type long
+
+                If the parameter kilometersPerHour is less than 0,
+                    the method toMilesPerHour needs to return -1 to indicate an invalid value.
+
+                Otherwise, if kilometersPerHour is positive,
+                    calculate the value of miles per hour, round it and return it.
+
+                    NOTE: 1.609 kilometers per hour is 1 mile per hour
+
+                        milesPerHour = kilometersPerHour / 1.609
+
+                    Use method Math.round to round the number of calculated miles per hour(double). The method round returns long.
+
+                        The Math.round() is a built-in math method which returns the closest long to the argument.
+                        The result is rounded to an integer by adding 1/2, taking the floor of the result after adding 1/2, and typecasting the result to type long.
+
+                        The method returns the value of the argument rounded to the nearest int value.
+
+            2. Write another method called printConversion with 1 parameter of type double with the name kilometersPerHour.
+
+                This method should not return anything (void) and it needs to calculate milesPerHour from the kilometersPerHour parameter.
+                    Then it needs to print a message in the format "XX km/h = YY mi/h".
+                        XX represents the original value kilometersPerHour.
+                        YY represents the rounded milesPerHour from the kilometersPerHour parameter.
+
+                If the parameter kilometersPerHour is < 0 then print the text "Invalid Value"
+         */
+
+    /**
+     * ? Write a speed converter class
+     *
+     * ? Write a method called toMilesPerHour that has 1 parameter of type double with the name kilometersPerHour.
+     *     This method needs to return the rounded value of the calculation of type long
+     *
+     *     If the parameter kilometersPerHour is less than 0,
+     *         the method toMilesPerHour needs to return -1 to indicate an invalid value.
+     *
+     *     Otherwise, if kilometersPerHour is positive,
+     *         calculate the value of miles per hour, round it and return it.
+     *
+     *         NOTE: 1.609 kilometers per hour is 1 mile per hour
+     *
+     *             milesPerHour = kilometersPerHour / 1.609
+     *
+     *         Use method Math.round to round the number of calculated miles per hour(double). The method round returns long.
+     *
+     *             The Math.round() is a built-in math method which returns the closest long to the argument.
+     *             The result is rounded to an integer by adding 1/2, taking the floor of the result after adding 1/2, and typecasting the result to type long.
+     *
+     *             The method returns the value of the argument rounded to the nearest int value.
+     *
+     * ? Write another method called printConversion with 1 parameter of type double with the name kilometersPerHour.
+     *     This method should not return anything (void) and it needs to calculate milesPerHour from the kilometersPerHour parameter.
+     *
+     *         Then it needs to print a message in the format "XX km/h = YY mi/h".
+     *             XX represents the original value kilometersPerHour.
+     *             YY represents the rounded milesPerHour from the kilometersPerHour parameter.
+     *
+     *     If the parameter kilometersPerHour is < 0 then print the text "Invalid Value"
+     */
+    private static void speedConverterChallenge() {
+        SpeedConverter speedConverter = new SpeedConverter();
+        speedConverter.printConversion(8);
+        speedConverter.printConversion(-44);
+    }
+    /**
+     * ? Write a NumberToWords class
+     *
+     * ? Write a method called numberToWords that has 1 parameter of type int with the name number.
+     *     This method should print out the passed number using words for the digits
+     *          Extract the last digit of the given number using the remainder operator.
+     *          Convert the value of the digit found in Step 1 into a word. There are 10 possible values for that digit, those being 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Print the corresponding word for each digit, e.g. print "Zero" if the digit is 0, "One" if the digit is 1, and so on.
+     *          Remove the last digit from the number.
+     *          Repeat Steps 2 through 4 until the number is 0.
+     *
+     *     if the number is negative, print "Invalid Value"
+     *
+     * ? Write a method called reverse that has 1 parameter of type int with the name number.
+     *     This method should return the reversed number and any negatives
+     *
+     * ? Write a method called getDigitCount that has 1 parameter of type int with the name number.
+     *     This method should return the count of the digits in that number
+     *     if number is negative, return -1
+     *
+     * ? use reverse in numberToWords
+     */
+    private static void numberToWordsChallenge() {
+
+        NumberToWords.numberToWords(123);
+        NumberToWords.numberToWords(1010);
+        NumberToWords.numberToWords(1000);
+        NumberToWords.numberToWords(-12);
     }
 
     /**

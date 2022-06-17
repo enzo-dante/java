@@ -34,7 +34,6 @@ public class Challenges {
 //        challengeThirteen();
 //        challengeFourteen();
 //        challengeFifteen();
-//        challengeSixteen();
 //        challengeSeventeen();
 //        challengeEighteen();
 //        challengeNineteen();
@@ -687,36 +686,6 @@ public class Challenges {
         String ds12 = SecondsAndMinutes.getDurationString(-15);
         System.out.println(ds12 + "\n");
 
-    }
-
-    private static void challengeSixteen() {
-
-        /*
-            Write a class called areaCalculator
-
-            Write a method called area with 1 double parameter named radius
-                return -1 if radius is negative
-
-                return a double value that represents the area of a circle
-                    area_circle = radius * radius * Math.PI
-
-
-            Write an overloaded method with 2 parameters x & y (both doubles & a side of a rectangle)
-                return -1 if either or both parameters are negative
-
-                the method returns the area of a rectangle
-                    area_rectangle = x * y
-
-         */
-
-        double circle1 = AreaCalculator.area(5.0); // 78.53975
-        System.out.println("circle1 " + circle1);
-        double circle2 = AreaCalculator.area(-22); // -1
-        System.out.println("circle2 " + circle2);
-        double rectangle1 = AreaCalculator.area(5, 4); // 20.0
-        System.out.println("rectangle1 " + rectangle1);
-        double rectangle2 = AreaCalculator.area(-4, 6); // -1
-        System.out.println("rectangle2 " + rectangle2);
     }
 
     private static void challengeSeventeen() {

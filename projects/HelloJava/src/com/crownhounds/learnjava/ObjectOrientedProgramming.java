@@ -4,8 +4,9 @@ public class ObjectOrientedProgramming {
 
     public static void main(String[] args) {
 
-        OOP oopNotes = new OOP();
-        InheritanceNotes inheritanceNotes = new InheritanceNotes();
+//        OOP oopNotes = new OOP();
+//        InheritanceNotes inheritanceNotes = new InheritanceNotes();
+        CompositionNotes compositionNotes = new CompositionNotes();
     }
 
 }
@@ -88,6 +89,235 @@ class InheritanceNotes extends Notes {
         System.out.println("Car.isConvertible(): " + porsche.isConvertable());
         porsche.speedUp(25);
         porsche.stop(20);
+    }
+}
+
+// ! OOP INHERITANCE: child subclass inherits class fields & methods from a parent super class
+class CompositionNotes extends Notes {
+    /*
+        OOP_Composition refers to an Object 'having' components or mini-Objects that make up the larger Object
+
+        ex: A Computer has a motherboard, a monitor, and a case
+            each component (motherboard, monitor, and case are their classes/objects)
+     */
+
+    // CONSTANTS/static class variables assign FINAL value before compilation/instantiation
+    private static final String COMPOSITION = "Composition";
+
+    // OOP ENCAPSULATION private class fields
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public CompositionNotes() {
+
+        // ! OOP INHERITANCE: child subclass inherits the class fields & methods from a parent super-class
+        super(COMPOSITION);
+
+        getNotes();
+    }
+
+    // OOP CLASS METHODS: non-static unique behavior
+    // ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared signatures for designated classes
+    @Override
+    public void getNotes() {
+
+        Case computerCase = new Case(new Dimensions(10, 10, 10), "Apple Air", "Apple Inc", "Intel");
+        Motherboard motherboard = new Motherboard("M2", "Apple Inc", 0, 2, "Top of the line quality assurance");
+
+        Resolution nativeResolution = new Resolution(256, 256);
+        Monitor monitor = new Monitor("MacBook Pro", "Apple Inc", 18, nativeResolution);
+
+        PC pc = new PC(computerCase, monitor, motherboard);
+
+        pc.powerOn();
+
+        pc.getMotherboard().loadProgram("Knights of the Old Republic", pc.getMonitor());
+
+    }
+
+    // OOP getter & setters
+
+    // ! INNER CLASS + OOP COMPOSITION: parent super-class has logically grouped components within itself
+    // ! ACCESS MODIFIER package-private: default visibility that limits the scope to this package
+    class PC {
+
+        // ? OOP ENCAPSULATION + COMPOSITION: object instance members/class fields that are each a class/object themselves
+        private Case computerCase;
+        private Monitor monitor;
+        private Motherboard motherboard;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public PC(Case computerCase, Monitor monitor, Motherboard motherboard) {
+            this.computerCase = computerCase;
+            this.monitor = monitor;
+            this.motherboard = motherboard;
+        }
+
+        // OOP CLASS METHOD: non-static unique class behavior
+        public void powerOn() {
+            System.out.println(getClass().getSimpleName() + ".powerOn() was called");
+            getComputerCase().pressPowerButton();
+            drawLogo();
+        }
+
+        public void drawLogo() {
+            System.out.println(getClass().getSimpleName() + ".drawLogo() was called");
+            getMonitor().drawPixel(20, 30, "Red");
+        }
+
+        // OOP getters & setters
+        public Case getComputerCase() {
+            return computerCase;
+        }
+
+        public Monitor getMonitor() {
+            return monitor;
+        }
+
+        public Motherboard getMotherboard() {
+            return motherboard;
+        }
+    }
+
+    // ! OOP ENCAPSULATION private class fields w/ limited scope visibility
+    private class Case {
+
+        // ? OOP ENCAPSULATION + COMPOSITION: object instance members/class fields that are each a class/object themselves
+        private Dimensions dimensions;
+        private String model;
+        private String manufacturer;
+        private String powerSupply;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public Case(Dimensions dimensions, String model, String manufacturer, String powerSupply) {
+            this.dimensions = dimensions;
+            this.model = model;
+            this.manufacturer = manufacturer;
+            this.powerSupply = powerSupply;
+        }
+
+        // OOP CLASS METHOD: non-static unique class behavior
+        public void pressPowerButton() {
+            System.out.println(getClass().getSimpleName() + ".pressPowerButton() was called");
+        }
+
+        // OOP getters & setters
+    }
+
+    private class Dimensions {
+
+        // OOP ENCAPSULATION private class fields/object instance members
+        private int height;
+        private int width;
+        private int depth;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public Dimensions(int height, int width, int depth) {
+            this.height = height;
+            this.width = width;
+            this.depth = depth;
+        }
+
+        // OOP getters & setters
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getDepth() {
+            return depth;
+        }
+    }
+
+    private class Monitor {
+
+        // OOP ENCAPSULATION private class fields/object instance members
+        private String model;
+        private String manufacturer;
+        private int size;
+
+        // ? OOP ENCAPSULATION + COMPOSITION: object instance members/class fields that are each a class/object themselves
+        private Resolution nativeResolution;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public Monitor(String model, String manufacturer, int size, Resolution nativeResolution) {
+            this.model = model;
+            this.manufacturer = manufacturer;
+            this.size = size;
+            this.nativeResolution = nativeResolution;
+        }
+
+        // OOP CLASS METHODS: non-static unique object behavior
+        public void drawPixel(int x, int y, String color) {
+            System.out.println("Drawing pixel at " + x + ", " + y + " in color " + color);
+        }
+
+        // OOP getters & setters
+    }
+
+    private class Motherboard {
+
+        // OOP ENCAPSULATION private class instance members/fields
+        private String model;
+        private String manufacturer;
+        private int ramSlots;
+        private int cardSlots;
+        private String bios;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public Motherboard(String model, String manufacturer, int ramSlots, int cardSlots, String bios) {
+            this.model = model;
+            this.manufacturer = manufacturer;
+            this.ramSlots = ramSlots;
+            this.cardSlots = cardSlots;
+            this.bios = bios;
+        }
+
+        // OOP CLASS METHOD: non-static unique object behavior
+        public void loadProgram(String programName, Monitor monitor) {
+            System.out.println("Program " + programName + " is now loading...");
+            monitor.drawPixel(5, 5, "White");
+        }
+
+        // OOP getters & setters
+        public int getRamSlots() {
+            return ramSlots;
+        }
+
+        public void setRamSlots(int ramSlots) {
+            this.ramSlots = ramSlots;
+        }
+
+        public int getCardSlots() {
+            return cardSlots;
+        }
+
+        public void setCardSlots(int cardSlots) {
+            this.cardSlots = cardSlots;
+        }
+
+        public String getBios() {
+            return bios;
+        }
+
+        public void setBios(String bios) {
+            this.bios = bios;
+        }
+    }
+
+    private class Resolution {
+
+        // OOP ENCAPSULATION private class fields
+        private int height;
+        private int width;
+
+        // OOP constructor that initializes the class fields on class/object instantiation
+        public Resolution(int height, int width) {
+            this.height = height;
+            this.width = width;
+        }
     }
 }
 

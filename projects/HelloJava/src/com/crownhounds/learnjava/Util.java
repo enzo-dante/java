@@ -1,6 +1,7 @@
 package com.crownhounds.learnjava;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Util<T> {
 
@@ -25,6 +26,17 @@ public class Util<T> {
         }
     }
 
+    public static void printSet(Set set){
+        System.out.println();
+
+        // forEach element in collection interface implementation
+        for(Object o : set) {
+            System.out.print("\t" + o + " ");
+        }
+
+        System.out.println();
+    }
+
 }
 
 // ! INTERFACE: define publicly-shared signatures for set of class that must implement all of them
@@ -35,6 +47,9 @@ interface INotes {
 }
 
 abstract class Notes implements INotes {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String INVALID_INPUT = "Invalid Input";
 
     // ENCAPSULATION private class fields
     private String title;
