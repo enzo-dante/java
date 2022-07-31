@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Montuno.iml" filepath="$PROJECT_DIR$/.idea/Montuno.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MontunoFrontend/MontunoFrontend.iml" filepath="$PROJECT_DIR$/MontunoFrontend/MontunoFrontend.iml" />
+    </modules>
+  </component>
+</project>

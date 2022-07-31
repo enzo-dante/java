@@ -29,26 +29,6 @@ public class Challenges_Utility {
     }
 }
 
-class AreaCalculator {
-
-    public static double area(double radius) {
-        if(radius < 0) {
-            return -1;
-        }
-        return radius * radius * Math.PI;
-    }
-
-    /*
-        2 parameters x & y (both doubles & a side of a rectangle)
-     */
-    public static double area(double x, double y) {
-        if((x < 0) || (y < 0)) {
-            return -1;
-        }
-        return x * y;
-    }
-}
-
 class BarkingDog {
 
     public static boolean shouldWakeUp(boolean barking, int hourOfDay) {
@@ -655,35 +635,6 @@ class SharedDigit {
         }
 
         return hasShared;
-    }
-}
-
-class SpeedConverter {
-
-    // changed from public to private for security
-    private static long toMilesPerHour(double kilometersPerHour) {
-
-        long result = 0L;
-        double kilometerToMileRatio = 1.609D;
-
-        if(kilometersPerHour >= 0) {
-            result = Math.round(kilometersPerHour / kilometerToMileRatio);
-        } else if(kilometersPerHour < 0) {
-            result = -1L;
-        }
-
-        return result;
-    }
-
-    public static void printConversion(double kilometersPerHour) {
-
-        long mph = toMilesPerHour(kilometersPerHour);
-
-        if(kilometersPerHour < 0) {
-            System.out.println(Challenges_Utility.INVALID_VALUE);
-        } else {
-            System.out.println(kilometersPerHour + " km/h = " + mph + " mi/h");
-        }
     }
 }
 
@@ -1377,6 +1328,3 @@ class Customer {
     }
 
 }
-
-
-
