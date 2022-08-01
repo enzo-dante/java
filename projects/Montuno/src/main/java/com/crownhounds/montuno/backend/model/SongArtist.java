@@ -2,12 +2,14 @@ package com.crownhounds.montuno.backend.model;
 
 public class SongArtist {
 
+    // OOP ENCAPSULATION private class fields
     private String artistName;
     private String albumName;
-    private int track;
+    private Integer track;
 
+    // OOP setters & getters
     public String getArtistName() {
-        return artistName;
+        return this.artistName;
     }
 
     public void setArtistName(String artistName) {
@@ -22,11 +24,11 @@ public class SongArtist {
         this.albumName = albumName;
     }
 
-    public int getTrack() {
+    public Integer getTrack() {
         return track;
     }
 
-    public void setTrack(int track) {
+    public void setTrack(Integer track) {
         this.track = track;
     }
 }

@@ -1,6 +1,6 @@
 package com.crownhounds.montuno.frontend;
 
-import com.crownhounds.montuno.backend.model.DataSource;
+import com.crownhounds.montuno.backend.model.Datasource;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,46 +9,60 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class Main extends Application {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String MONTUNO_TITLE = "Montuno";
+    private static final String MAIN_FILE = "main.fxml";
+    private static final String FATAL_ERROR = "FATAL ERROR: Couldn't connect to database";
+
+    /**
+     * validate UI has compiled successfully before querying and loading artists into table view
+     * @param stage
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
 
-        // compile and load UI with fxml file
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main.fxml"));
+        URL app = Main.class.getResource(MAIN_FILE);
+        FXMLLoader fxmlLoader = new FXMLLoader(app);
 
-        // validate UI has compiled successfully before querying and loading artists into table view
         Parent root = fxmlLoader.load();
         Controller controller = fxmlLoader.getController();
         controller.listArtists();
 
         Scene scene = new Scene(root, 800, 600);
-        stage.setTitle("Montuno");
+        stage.setTitle(MONTUNO_TITLE);
         stage.setScene(scene);
         stage.show();
     }
 
-    // use lifecycle methods to manage db connection
+    /**
+     * use lifecycle methods to manage db connection
+     * @throws Exception
+     */
     @Override
     public void init() throws Exception {
-        super.init();
+        Datasource.getDatasourceInstance().open();
 
-        DataSource.getDataSourceInstance().open();
-        if(!DataSource.getDataSourceInstance().open()) {
+        if(!Datasource.getDatasourceInstance().open()) {
             // implement popup dialog
-            System.out.println("FATAL ERROR: Couldn't connect to database");
+            System.out.println(FATAL_ERROR);
 
             // do not let user interact with application
             Platform.exit();
         }
     }
 
+    /**
+     * close db connection
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
-        super.stop();
-
-        // close db connection
-        DataSource.getDataSourceInstance().close();
+        Datasource.getDatasourceInstance().close();
     }
 
     public static void main(String[] args) {
