@@ -43,7 +43,7 @@ class ExceptionHandling extends Notes {
         int y = 0;
         int result;
 
-//        ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+          // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
 //        result = divideLBYL(x, y);
 //        System.out.println(LOOK_BEFORE_YOU_LEAP + result);
 //

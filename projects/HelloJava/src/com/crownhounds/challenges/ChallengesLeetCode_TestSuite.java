@@ -23,6 +23,90 @@ class ChallengesLeetCode_TestSuite {
     public static final String AFTER_EACH = "Test has been run, reset instance to null";
 }
 
+class LeetCodeIntegersTest extends ChallengesLeetCode_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+    LeetCodeIntegers leetCodeIntegers;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        leetCodeIntegers = new LeetCodeIntegers();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void singleNumber_alternating() {
+        int[] testInput = {4,1,2,1,2};
+        int expected = 4;
+        int actual = leetCodeIntegers.singleNumber(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singleNumber_singleInput() {
+        int[] testInput = {1};
+        int expected = 1;
+        int actual = leetCodeIntegers.singleNumber(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singleNumber_repeatingInput() {
+        int[] testInput = {2,2,1};
+        int expected = 1;
+        int actual = leetCodeIntegers.singleNumber(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singleNumber_badInput() {
+        int[] testInput = {};
+        int expected = -1;
+        int actual = leetCodeIntegers.singleNumber(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void reverseInteger_positiveInput() {
+        int testInput = 123;
+
+        int expected = 321;
+        int actual = leetCodeIntegers.reverseInteger(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void reverseInteger_negativeInput() {
+        int testInput = -123;
+
+        int expected = -321;
+        int actual = leetCodeIntegers.reverseInteger(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void reverseInteger_smallerOutput() {
+        int testInput = 120;
+
+        int expected = 21;
+        int actual = leetCodeIntegers.reverseInteger(testInput);
+        assertEquals(expected, actual);
+    }
+}
+
 class LeetCodeStringsTest extends ChallengesLeetCode_TestSuite {
 
     // OOP ENCAPSULATION private class fields
@@ -380,6 +464,69 @@ class LeetCodeStringsTest extends ChallengesLeetCode_TestSuite {
         Integer expectedResult = -1;
         Integer actualResult = leetCodeStrings.binarySearch(nums, target);
         assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void groupAnagrams_success() {
+        ArrayList<String> testInput = new ArrayList<>();
+        testInput.add("eat");
+        testInput.add("tea");
+        testInput.add("tan");
+        testInput.add("ate");
+        testInput.add("nat");
+        testInput.add("bat");
+
+        List<List<String>> expected = new ArrayList<>();
+        ArrayList<String> e1 = new ArrayList<>();
+        e1.add("eat");
+        e1.add("tea");
+        e1.add("ate");
+
+        ArrayList<String> e3 = new ArrayList<>();
+        e3.add("tan");
+        e3.add("nat");
+
+        ArrayList<String> e2 = new ArrayList<>();
+        e2.add("bat");
+
+        expected.add(e1);
+        expected.add(e2);
+        expected.add(e3);
+
+        List<List<String>> actual = leetCodeStrings.groupAnagrams(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void groupAnagrams_badInput() {
+        ArrayList<String> testInput = new ArrayList<>();
+
+        List<List<String>> actual = leetCodeStrings.groupAnagrams(testInput);
+        assertNull(actual);
+    }
+
+    @Test
+    void validParenthesis_success() {
+        String testInput = "()";
+        assertTrue(leetCodeStrings.validParenthesis(testInput));
+    }
+
+    @Test
+    void validParenthesis_fail() {
+        String testInput = "(}";
+        assertFalse(leetCodeStrings.validParenthesis(testInput));
+    }
+
+    @Test
+    void validParenthesis_different() {
+        String testInput = "()[]{}";
+        assertTrue(leetCodeStrings.validParenthesis(testInput));
+    }
+
+    @Test
+    void validParenthesis_badInput() {
+        String testInput = "";
+        assertFalse(leetCodeStrings.validParenthesis(testInput));
     }
 }
 
@@ -778,6 +925,46 @@ class LeetCodeTwoPointersTest extends ChallengesLeetCode_TestSuite {
         int expected = -1;
         int actual = leetCodeTwoPointers.trappingRainWater(testInput);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void validPalindrome_true() {
+        String testInput = "abcba";
+
+        boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
+        assertTrue(actual);
+    }
+
+    @Test
+    void validPalindrome_false() {
+        String testInput = "abcde";
+
+        boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
+        assertFalse(actual);
+    }
+
+    @Test
+    void validPalindrome_ignoreCasing() {
+        String testInput = "aBcbA";
+
+        boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
+        assertTrue(actual);
+    }
+
+    @Test
+    void validPalindrome_onlyAlphabet() {
+        String testInput = "A man, a plan, a canal: Panama";
+
+        boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
+        assertTrue(actual);
+    }
+
+    @Test
+    void validPalindrome_badInput() {
+        String testInput = "";
+
+        boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
+        assertFalse(actual);
     }
 }
 

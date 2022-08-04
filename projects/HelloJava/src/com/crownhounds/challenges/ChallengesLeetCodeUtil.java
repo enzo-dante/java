@@ -14,14 +14,101 @@ public class ChallengesLeetCodeUtil {
      * * Logic:
      *
      * * O() TIME COMPLEXITY:
-     * * O() TIME COMPLEXITY:
+     * * O() SPACE COMPLEXITY:
      */
 
     public static void main(String[] args) {
 
-        LeetCodeStrings leetCodeStrings = new LeetCodeStrings();
-
     }
+}
+
+class LeetCodeIntegers extends ChallengesLeetCodeUtil {
+
+    /**
+     * ? LeetCode 136: Amazon
+     *
+     * ? Given a non-empty array of integers (nums), every element appears twice except for one. Find that single one.
+     * ? You must implement a solution with a linear runtime complexity and use only constant extra spit.
+     *
+     * * Logic:
+     *      ! use XOR operator: for two same bits, results in 0
+     *      XOR = ^
+     *
+     *      [2,2,1]
+     *
+     *          2 ^ 2 = 0
+     *          0 ^ 1 = 1
+     *
+     *          return 1
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(1) constant TIME COMPLEXITY:
+     */
+    public int singleNumber(int[] nums) {
+
+        if(nums.length == 0) {
+            return -1;
+        }
+
+        int uniqueNum = nums[0];
+        int startIndex = 1;
+
+        for(int i = startIndex; i < nums.length; i++) {
+            uniqueNum = uniqueNum ^ nums[i];
+        }
+        return uniqueNum;
+    }
+
+    /**
+     * ? Facebook LeetCode 7:
+     *
+     * ? Given a signed 32-bit integer x, return x with its digits reversed
+     * ? if reversing x causing it to go outside the signed 32-bit integer range, return 0
+     *
+     * ! assume env does not allow 64-bit integers
+     *
+     * * Logic:
+     *
+     * * O(1) constant TIME COMPLEXITY: dependent length of n
+     * * O(1) constant SPACE COMPLEXITY:
+     */
+    public int reverseInteger(int x) {
+
+        boolean isNegative = false;
+        int result = 0;
+
+        if(x < 0) {
+            x *= -1;
+            isNegative = true;
+        }
+
+        // ? RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+        result = recursiveReverse(x, result);
+
+        if(isNegative) {
+            result *= -1;
+        }
+
+        return result;
+    }
+
+    private int recursiveReverse(int x, int result) {
+
+        // ? RECURSION base case/breaking condition: the algorithm either upward propagates recursive call return for stack resolution or experiences a stack overflow
+        boolean isBaseCase = (x <= 0);
+
+        if(isBaseCase) {
+            return result;
+        }
+
+        int lastDigit = x % 10;
+        x /= 10;
+
+        result = (result * 10) + lastDigit;
+
+        return recursiveReverse(x, result);
+    }
+
 }
 
 class LeetCodeStrings extends ChallengesLeetCodeUtil {
@@ -527,6 +614,100 @@ class LeetCodeStrings extends ChallengesLeetCodeUtil {
 
         // ! AUTOBOXING: automatically casting primitive dataType to Wrapper class dataType
         return -1;
+    }
+
+    /**
+     * ? Facebook LeetCode 49:
+     *
+     * ? Given an array of strings, find group anagrams.
+     * ? all inputs will be lowercase, output order does not matter
+     *
+     * * Logic:
+     *      [eat, tea, tan, ate]
+     *
+     *      eat, tea, ate = anagrams (same content, different order)
+     *
+     *      key         |       value
+     *
+     *      "aet"               ["eat", "tea", ...]
+     *      "ant"               ["tan", ...]
+     *
+     * * O(n klogk) TIME COMPLEXITY: k = n length input array, k max length of word
+     * * O(nk) SPACE COMPLEXITY:
+     */
+    public List<List<String>> groupAnagrams(ArrayList<String> strings) {
+
+        if(strings.isEmpty()) {
+            return null;
+        }
+
+        // ! GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
+        // ! MAPS INTERFACE: collection of key-value pair HASHMAP implementations that use GENERIC CLASS dataStructures w/ 2 parameters: UNIQUE key & value
+        Map<String, List<String>> hashmap = new HashMap<>();
+
+        for(String word : strings) {
+
+            char[] charArray = word.toCharArray();
+            Arrays.sort(charArray);
+
+            String key = new String(charArray);
+
+            if(!hashmap.containsKey(key)) {
+                hashmap.put(key, new ArrayList<>());
+            }
+
+            hashmap.get(key).add(word);
+        }
+
+        return new ArrayList<>(hashmap.values());
+    }
+
+    /**
+     * ? Facebook LeetCode 20:
+     *
+     * ? given a string s, containing just characters "(", ")", "{", "}", "[", "]"
+     * ? determine if the input string is valid.
+     * ? only valid if:
+     *      open brackets of the same type & in correct order
+     *
+     * * Logic:
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(n) linear SPACE COMPLEXITY:
+     */
+    public boolean validParenthesis(String s) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(s.isEmpty()) {
+            return false;
+        }
+
+        // ! MAPS INTERFACE: collection of key-value pair HASHMAP implementations that use GENERIC CLASS dataStructures w/ 2 parameters: UNIQUE key & value
+        Map<Character, Character> hashmap = new HashMap<>();
+        hashmap.put(')', '(');
+        hashmap.put('}', '{');
+        hashmap.put(']', '[');
+
+        // ! STACKS: (LIFO) last-in, first-out abstract class implemented by a LINKED LIST that uses push, pop, peek methods
+        Stack<Character> stack = new Stack();
+
+        for(int i = 0; i < s.length(); i++) {
+            char currentChar = s.charAt(i);
+
+            if(hashmap.containsKey(currentChar)) {
+
+                char top = (stack.size() != 0) ? stack.pop() : '#';
+                boolean isSameChar = (top == hashmap.get(currentChar));
+
+                if(!isSameChar) {
+                    return false;
+                }
+
+            } else {
+                stack.push(currentChar);
+            }
+        }
+        return stack.isEmpty();
     }
 }
 
@@ -1363,6 +1544,49 @@ class LeetCodeTwoPointers extends ChallengesLeetCodeUtil {
         }
         return unitsOfWaterTrapped;
     }
+
+    /**
+     * ? Facebook LeetCode 125:
+     *
+     * ? giving a string s and determine if it is a palindrome
+     * ? considering only alphanumeric characters and ignoring cases.
+     *
+     * * Logic:
+     *
+     * * O(n) linear TIME COMPLEXITY: length of input string
+     * * O(1) constant SPACE COMPLEXITY: always using 1 array
+     */
+    public boolean validPalindrome(String s) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(s.isEmpty()) {
+            return false;
+        }
+
+        boolean isPalindrome = false;
+        String onlyAlphanumericRegex = "[^A-Za-z0-9]";
+        String[] letters = s.replaceAll(onlyAlphanumericRegex, "")
+                .trim()
+                .toLowerCase()
+                .split("");
+
+        int i = 0;
+        int j = letters.length - 1;
+
+        while(i < j) {
+
+            if(letters[i].equals(letters[j])) {
+                isPalindrome = true;
+                i++;
+                j--;
+            } else {
+                isPalindrome = false;
+                break;
+            }
+        }
+        return isPalindrome;
+    }
+
 }
 
 class LeetCodeRecursion extends ChallengesLeetCodeUtil {
