@@ -1698,48 +1698,6 @@ public class Challenges {
         System.out.println("getLargestPrime(): " + LargestPrime.getLargestPrime(16));
     }
 
-    private static void challengeFiftyOne() {
-        /*
-            create a program using arrays that sort a list of integers in descending order (highest-to-lowest)
-
-            capture the values from console based on user input
-
-            * will have to copy array elements from argument into a new array, sort them, and return new sorted array
-
-            methods:
-                getIntegers: returns an array
-                printArray: print content of array
-                sortIntegers: sort array and return a new array containing the sorted numbers
-         */
-
-        ArraySorter arraySorter = new ArraySorter();
-        int[] userArray = arraySorter.getIntegers(5);
-        arraySorter.printArray(userArray);
-    }
-
-    private static void challengeFiftyTwo() {
-        /*
-            write a class MinElement
-
-            write a method called readIntegers with int parameter named 'count'
-                count represents number of integers user need to enter
-
-                returns an array containing the numbers the user enters
-
-            write a method called findMin with the user-generated array as a parameter
-                returns minimum value in the array
-
-            print the minimum element in the array
-
-            * implementation uses selection sort algorithm
-         */
-
-        MinElement minElement = new MinElement();
-        int[] userIntegers = minElement.readIntegers(3);
-        System.out.println("\nMin value of " + Arrays.toString(userIntegers) + ":\n"
-                + minElement.findMin(userIntegers));
-    }
-
     private static void challengeFiftyThree() {
         /*
             create an application that builds a grocery list

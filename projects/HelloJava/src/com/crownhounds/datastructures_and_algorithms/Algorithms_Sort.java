@@ -12,9 +12,9 @@ public class Algorithms_Sort {
 
 //        BubbleSort.runAlgorithm();
 //        SelectionSort.runAlgorithm();
-//        InsertionSort.runAlgorithm();
+        InsertionSort.runAlgorithm();
 //        ShellSort.runAlgorithm();
-        MergeSort.runAlgorithm();
+//        MergeSort.runAlgorithm();
 //        QuickSort.runAlgorithm();
 //        CountingSort.runAlgorithm();
 //        RadixStableSort.runAlgorithm();
@@ -264,7 +264,7 @@ class InsertionSort extends AlgorithmNotes {
                     unsorted partition starting at index 1
 
             on 1st iteration, take first element in the unsorted partition (index 1),
-            save it, and then "insert" it into the sorted partition
+            save it, and then "insert" it into the sorted partition via comp
 
                 by comparing if it is greater than or equal to the value in the sorted partition
 
@@ -299,7 +299,8 @@ class InsertionSort extends AlgorithmNotes {
             // save unsorted inserting value since shifting of elements might cause overwritten value
             insertValue = intArray[firstUnsortedIndex];
 
-            // traverse sorted partition for correct index of insertValue while not at beginning of partition AND sortedElement is greater than newElement
+            // traverse sorted partition for correct index of insertValue
+            // while not at beginning of partition AND sortedArrayElement is greater than insertElement
             for(i = firstUnsortedIndex; i > 0 && intArray[i - 1] > insertValue; i--) {
 
                 // if unsortedPartition insertValue less than currentSortedValue, shift left-to-right currentSortedValue up

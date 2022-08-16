@@ -839,6 +839,63 @@ class LeetCodeArrayTest extends ChallengesLeetCode_TestSuite {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void sequentialDigits_success() {
+
+        List<Integer> expected = new ArrayList<>();
+        expected.add(123);
+        expected.add(234);
+
+        List<Integer> actual = leetCodeArrays.sequentialDigits(100, 300);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sequentialDigits_none() {
+        List<Integer> actual = leetCodeArrays.sequentialDigits(1, 9);
+        assertNull(actual);
+
+        actual = leetCodeArrays.sequentialDigits(-10, 10);
+        assertNull(actual);
+    }
+
+    @Test
+    void sequentialDigits_badInput() {
+        List<Integer> actual = leetCodeArrays.sequentialDigits(200, 100);
+        assertNull(actual);
+
+        actual = leetCodeArrays.sequentialDigits(200, 200);
+        assertNull(actual);
+    }
+
+    @Test
+    void findAllDuplicates_success() {
+        int[] testInput = {1,1,2,3,3};
+
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(3);
+
+        ArrayList<Integer> actual = leetCodeArrays.findAllDuplicates(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAllDuplicates_none() {
+        int[] testInput = {1,2,3};
+
+        ArrayList<Integer> expected = new ArrayList<>();
+        ArrayList<Integer> actual = leetCodeArrays.findAllDuplicates(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAllDuplicates_badInput() {
+        int[] testInput = {};
+        ArrayList<Integer> actual = leetCodeArrays.findAllDuplicates(testInput);
+        assertNull(actual);
+    }
+
 }
 
 class LeetCodeTwoPointersTest extends ChallengesLeetCode_TestSuite {
@@ -965,6 +1022,26 @@ class LeetCodeTwoPointersTest extends ChallengesLeetCode_TestSuite {
 
         boolean actual = leetCodeTwoPointers.validPalindrome(testInput);
         assertFalse(actual);
+    }
+
+    @Test
+    void squareOfSortedArray_success() {
+
+        int[] testInput = {-4,-1,0,3,10};
+        LeetCodeSort leetCodeSort = new LeetCodeSort();
+        testInput = leetCodeSort.mergeSort(testInput);
+
+        String expected = Arrays.toString(new int[]{0, 1, 9, 16, 100});
+        String actual = Arrays.toString(leetCodeTwoPointers.squareOfSortedArray(testInput));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void squareOfSortedArray_badInput() {
+        int[] testInput = {};
+        int[] actual = leetCodeTwoPointers.squareOfSortedArray(testInput);
+        assertNull(actual);
+
     }
 }
 
@@ -1291,6 +1368,7 @@ class LeetCodeArray2DTest extends ChallengesLeetCode_TestSuite {
         int actual = leetCodeArray2D.rangeSumQuery(testMatrix, testUpperLeft, testLowerRight);
         assertEquals(expected, actual);
     }
+
 }
 
 class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {

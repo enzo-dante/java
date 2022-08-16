@@ -2,6 +2,10 @@ package com.crownhounds.challenges;
 
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChallengesMaster_TestSuite {
@@ -12,6 +16,8 @@ public class ChallengesMaster_TestSuite {
 
     public static final String BEFORE_ALL = "Message @beforeAll tests begin";
     public static final String AFTER_ALL = "All tests have been run";
+    public static final String BEFORE_EACH = "Before test, instantiate class";
+    public static final String AFTER_EACH = "Test has been run, reset instance to null";
 
 }
 
@@ -346,3 +352,245 @@ class BarkingDogTest extends ChallengesMaster_TestSuite {
         assertFalse(actualValue);
     }
 }
+
+class ArraySorterTest extends ChallengesMaster_TestSuite {
+
+    private ArraySorter arraySorter;
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        arraySorter = new ArraySorter();
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void sortIntegers_success() {
+        int[] testInput = {1000, 0, 4, 1, 299};
+        int[] expected = {0, 1, 4, 299, 1000};
+        int[] actual = arraySorter.sortIntegers(testInput);
+        assertEquals(Arrays.toString(expected), Arrays.toString(actual));
+    }
+
+    @Test
+    void sortIntegers_negativeInput() {
+        int[] testInput = {299, -1000, 1, 0, 4};
+        int[] expected = {-1000, 0, 1, 4, 299};
+        int[] actual = arraySorter.sortIntegers(testInput);
+        assertEquals(Arrays.toString(expected), Arrays.toString(actual));
+    }
+
+    @Test
+    void sortIntegers_emptyInput() {
+        int[] testInput = {};
+        int[] actual = arraySorter.sortIntegers(testInput);
+        assertNull(actual);
+    }
+
+    @Test
+    void sortIntegers_shortInput() {
+        int[] testInput = {2,1,3};
+        int[] actual = arraySorter.sortIntegers(testInput);
+        assertNull(actual);
+    }
+
+    @Test
+    void sortIntegers_longInput() {
+        int[] testInput = {2,1,3,7,10,0};
+        int[] actual = arraySorter.sortIntegers(testInput);
+        assertNull(actual);
+    }
+}
+
+class MinElementTest extends ChallengesMaster_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+    MinElement minElement;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        System.out.println(BEFORE_EACH);
+        minElement = new MinElement();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void findMin_success() {
+        int[] testInput = {5, 2, 3};
+        int expected = 2;
+        int actual = minElement.findMin(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMin_badInput() {
+        int[] testInput = {};
+        int expected = -1;
+        int actual = minElement.findMin(testInput);
+        assertEquals(expected, actual);
+    }
+}
+
+class GroceryAppTest extends ChallengesMaster_TestSuite {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String TEST_TIRAMISU = "Tiramisu".toLowerCase();
+    private static final String TEST_CHEESE = "Cheese".toLowerCase();
+    private static final String TEST_WATER = "Water".toLowerCase();
+    private static final String TEST_MILK = "Milk".toLowerCase();
+
+    // OOP ENCAPSULATION private class fields
+    GroceryApp groceryList;
+    List<String> testInput;
+    boolean actual;
+
+    @BeforeEach
+    void setup() {
+        groceryList = new GroceryApp();
+
+        testInput = new ArrayList<>();
+        testInput.add(TEST_CHEESE);
+        testInput.add(TEST_WATER);
+        testInput.add(TEST_MILK);
+
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void tearDown() {
+        testInput.clear();
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void addItem_true() {
+        actual = groceryList.addItem(testInput, TEST_TIRAMISU);
+        assertTrue(actual);
+    }
+
+    @Test
+    void addItem_falseBadItem() {
+        actual = groceryList.addItem(testInput, TEST_CHEESE);
+        assertFalse(actual);
+    }
+
+    @Test
+    void updateItem_true() {
+        actual = groceryList.updatedItem(testInput, 2, TEST_TIRAMISU);
+        assertTrue(actual);
+    }
+
+    @Test
+    void updateItem_falseBadIndex() {
+
+        actual = groceryList.updatedItem(testInput, -1, TEST_TIRAMISU);
+        assertFalse(actual);
+
+        actual = groceryList.updatedItem(testInput, 100, TEST_TIRAMISU);
+        assertFalse(actual);
+    }
+
+    @Test
+    void updateItem_falseEmptyList() {
+        testInput = new ArrayList<>();
+
+        actual = groceryList.updatedItem(testInput, 2, TEST_TIRAMISU);
+        assertFalse(actual);
+    }
+
+
+    @Test
+    void deleteItem_true() {
+        actual = groceryList.updatedItem(testInput, 2, TEST_TIRAMISU);
+        assertTrue(actual);
+    }
+
+    @Test
+    void deleteItem_falseEmptyList() {
+        testInput = new ArrayList<>();
+
+        boolean actual = groceryList.updatedItem(testInput, 2, TEST_TIRAMISU);
+        assertFalse(actual);
+    }
+
+    @Test
+    void deleteItem_falseBadIndex() {
+        boolean actual = groceryList.updatedItem(testInput, -1, TEST_TIRAMISU);
+        assertFalse(actual);
+
+        actual = groceryList.updatedItem(testInput, 100, TEST_TIRAMISU);
+        assertFalse(actual);
+    }
+
+    @Test
+    void queryForItem_success() {
+        String actual = groceryList.queryForItem(testInput, TEST_MILK);
+        assertEquals(TEST_MILK, actual);
+    }
+
+    @Test
+    void queryForItem_notFound() {
+        String actual = groceryList.queryForItem(testInput, "Chicken");
+        assertEquals(GroceryApp.ITEM_NOT_FOUND, actual);
+    }
+
+
+    @Test
+    void queryForItem_EmptyItem() {
+        String actual = groceryList.queryForItem(testInput, "");
+        assertEquals(INVALID_VALUE, actual);
+    }
+
+    @Test
+    void queryForItem_EmptyList() {
+        testInput = new ArrayList<>();
+        String actual = groceryList.queryForItem(testInput, TEST_CHEESE);
+        assertEquals(INVALID_VALUE, actual);
+    }
+     @Test
+    void queryForIndex_success() {
+        String actual = groceryList.queryForItem(testInput, 2);
+        assertEquals(TEST_MILK, actual);
+    }
+
+    @Test
+    void queryForIndex_badIndex() {
+        String actual = groceryList.queryForItem(testInput, 100);
+        assertEquals(INVALID_VALUE, actual);
+    }
+
+    @Test
+    void queryForIndex_EmptyList() {
+        testInput = new ArrayList<>();
+        String actual = groceryList.queryForItem(testInput, 2);
+        assertEquals(INVALID_VALUE, actual);
+    }
+}
+

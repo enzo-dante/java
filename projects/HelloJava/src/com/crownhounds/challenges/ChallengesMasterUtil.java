@@ -9,9 +9,13 @@ public class ChallengesMasterUtil {
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
     public static final String INVALID_INPUT = "Invalid input";
     public static final String INVALID_VALUE = "Invalid Value";
+    public static final String ADDED = "Added: ";
+    public static final String RESULT = "Result: ";
 
     public static void main(String[] args) {
 
+        GroceryApp groceryApp = new GroceryApp();
+        groceryApp.run();
     }
 }
 
@@ -607,4 +611,414 @@ class BarkingDog {
 
         return false;
     }
+}
+
+/*
+    create a program using arrays that sort a list of integers in descending order (highest-to-lowest)
+
+    capture the values from console based on user input
+
+    * will have to copy array elements from argument into a new array, sort them, and return new sorted array
+
+    methods:
+        getIntegers: returns an array
+        printArray: print content of array
+        sortIntegers: sort array and return a new array containing the sorted numbers
+ */
+
+class ArraySorter {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String INPUT_PROMPT = "\nPlease enter a number:\n";
+
+    // OOP ENCAPSULATION private class fields
+    private static Scanner scanner;
+
+    private static void printArray(int[] array) {
+        for(int i = 0; i < array.length; i++) {
+            System.out.print(array[i] + ",");
+        }
+        System.out.println();
+    }
+
+    public static int[] getIntegers() {
+
+        scanner = new Scanner(System.in);
+        int[] nums = new int[5];
+        int count = 0;
+
+        while(count < nums.length) {
+
+            System.out.println(INPUT_PROMPT);
+
+            // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+            if(scanner.hasNextInt()) {
+
+                int userInput = scanner.nextInt();
+
+                // handle enter key down
+                scanner.nextLine();
+
+                nums[count] = userInput;
+                count++;
+
+            } else {
+
+                System.out.println(ChallengesMasterUtil.INVALID_INPUT);
+                scanner = new Scanner(System.in);
+            }
+        }
+        System.out.println("\nPRE-insertion sort:".toUpperCase());
+        printArray(nums);
+        scanner.close();
+        return nums;
+    }
+
+    /**
+     * sort array of integers via insertion sort algorithm
+     *
+     * ! INSERTION SORT: take elements in the unsorted partition (index 1), save it, and then "insert" it into the sorted partition via comp
+     *      [[][unsortedPartition]] -> [[sortedPartition][unsortedPartition]]
+     *
+     * * O(n^2) quadratic time complexity: terrible bc of nested loops
+     * * 0(1) constant space complexity: in-place algorithm
+     *
+     * @param input
+     * @return array of sorted integers
+     */
+    public int[] sortIntegers(int[] input) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(input.length != 5) {
+            return null;
+        }
+
+        int unsortedInsertElement;
+        int sortedIndex;
+
+        for(int unsortedIndex = 1; unsortedIndex < input.length; unsortedIndex++) {
+
+            unsortedInsertElement = input[unsortedIndex];
+
+            // continue to loop backwards the sorted partition
+            for(sortedIndex = unsortedIndex;
+                // while not at sorted partition beginning AND current sortedElement is greater than insertElement
+                sortedIndex > 0 && input[sortedIndex - 1] > unsortedInsertElement;
+                sortedIndex--) {
+
+                // shift left-to-right current sortedElement
+                input[sortedIndex] = input[sortedIndex - 1];
+            }
+
+            // insert unsortedPartition element at correct index in sortedPartition
+            input[sortedIndex] = unsortedInsertElement;
+        }
+
+        System.out.println("\npost-insertion sort:".toUpperCase());
+        printArray(input);
+        return input;
+    }
+}
+
+/*
+    write a class MinElement
+
+    write a method called readIntegers with int parameter named 'count'
+       count represents number of integers user need to enter
+       returns an array containing the numbers the user enters
+
+    write a method called findMin with the user-generated array as a parameter
+       returns minimum value in the array
+
+    print the minimum element in the array
+
+    * implementation uses selection sort algorithm
+*/
+class MinElement {
+
+    // CONSTANTS/static class variables assigned FINAL value before
+    private static final String INPUT_PROMPT = "Enter number:\n";
+
+    // OOP ENCAPSULATION private class fields
+    Scanner scanner;
+
+    public int[] readIntegers(int count) {
+
+        int[] nums = new int[count];
+        scanner = new Scanner(System.in);
+
+        int i = 0;
+
+        while(nums[nums.length - 1] == 0) {
+
+            System.out.println(INPUT_PROMPT);
+
+            if(scanner.hasNextInt()) {
+                nums[i++] = scanner.nextInt();
+            } else {
+                System.out.println(ChallengesMasterUtil.INVALID_INPUT);
+                scanner = new Scanner(System.in);
+            }
+        }
+        return nums;
+    }
+
+    public int findMin(int[] input) {
+
+        if(input.length == 0) {
+            return -1;
+        }
+
+        selectionSort(input);
+        return input[0];
+    }
+
+    private int[] selectionSort(int[] input) {
+
+        // last index in the given iteration of the unsorted partition (array starts as unsorted)
+        //      [[unsortedPartition][]] -> [[unsortedPartition][sortedPartition]]
+        int lastUnsortedIndex = input.length - 1;
+
+        // largest value in the given iteration of the unsorted array
+        int currentLargestIndex = 0;
+
+        // ? UNSORTED partition
+        for(int i = 0; i <= lastUnsortedIndex; i++) {
+
+            // traverse array & track index w/ the largest element
+            if(i != lastUnsortedIndex) {
+
+                boolean foundLargerValue = input[currentLargestIndex] < input[i];
+
+                if(foundLargerValue) {
+                    currentLargestIndex = i;
+                }
+
+            } else {
+
+                // when you reach end of unsortedPartition during traversal & found a largerValue than the currentLargestValue
+                boolean needToReplaceLargestIndex = input[currentLargestIndex] < input[lastUnsortedIndex];
+
+                if(needToReplaceLargestIndex) {
+                    currentLargestIndex = lastUnsortedIndex;
+                }
+
+                // ? SORTED partition
+                // swap the largest element with element at the end of the unsorted partition
+                swap(input, currentLargestIndex, lastUnsortedIndex);
+
+                // reset largest element index for next unsortedPartition traversal
+                i = 0;
+                currentLargestIndex = 0;
+
+                // decrement length of unsorted partition meaning you are inversely incrementing length of sorted partition
+                lastUnsortedIndex--;
+            }
+        }
+        return input;
+    }
+
+    private void swap(int[] input, int i, int j) {
+        int temp = input[i];
+        input[i] = input[j];
+        input[j] = temp;
+    }
+}
+
+/*
+create an application that builds a grocery list
+
+use a scanner to capture user input
+
+write CRUD+ methods:
+    create a grocery list
+    read the grocery list
+    update items on the grocery list
+    delete items on the grocery list
+    that can query the grocery list for specific items
+    print instructions
+*/
+class GroceryApp {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String INVALID_VALUE = "Invalid Value";
+    private static final String ADDED_CONFIRMATION = "Added item: ";
+    private static final String GROCERY_LIST = "\nGrocery list\n".toUpperCase();
+    private static final String EMPTY_GROCERY_LIST = "There are currently no items on your grocery list";
+    public static final String ITEM_NOT_FOUND = "Query for item failed";
+    private static final String INSTRUCTIONS = GROCERY_LIST + "0 - print instructions\n" +
+            "1 - read grocery list\n" +
+            "2 - add item\n" +
+            "3 - delete item\n" +
+            "4 - update item\n" +
+            "5 - quit";
+    private static final String ENTER_CHOICE = "Enter your choice:\n";
+    private static final String SHUTDOWN = "Shutting down now....";
+
+    private Scanner scanner;
+
+    public void run() {
+
+        scanner = new Scanner(System.in);
+
+        List<String> list = new ArrayList<>();
+        boolean quit = false;
+        boolean exit = false;
+
+        System.out.println(INSTRUCTIONS);
+
+        while(!quit) {
+
+            exit = false;
+            System.out.println(ENTER_CHOICE);
+
+            if(scanner.hasNextInt()) {
+
+                int choice = scanner.nextInt();
+
+                // handle enter keydown
+                scanner.nextLine();
+
+                switch(choice) {
+                    case 0:
+                        System.out.println(INSTRUCTIONS);
+                        break;
+                    case 1:
+                        readGroceryList(list);
+                        break;
+                    case 2:
+                        while(!exit) {
+                            System.out.println(ENTER_CHOICE);
+
+                            if(scanner.hasNextLine()) {
+
+                                String input = scanner.nextLine();
+                                input = input.trim().toLowerCase();
+
+                                if(input.equals("-1") || input.equals("q")) {
+                                    exit = true;
+                                    break;
+                                }
+                                addItem(list, input);
+                                exit = true;
+                            } else {
+                                System.out.println(INVALID_VALUE);
+                                scanner = new Scanner(System.in);
+                            }
+                        }
+                        printInstructions();
+                        break;
+                    case 3:
+                        // delete
+                        break;
+                    case 4:
+                        // update
+                        System.out.println("\nPlease enter a valid value");
+                        break;
+                    case 5:
+                        quit = true;
+                        System.out.println(SHUTDOWN);
+                        break;
+                    default:
+                        printInstructions();
+                        break;
+                }
+            } else {
+                printInstructions();
+                System.out.println(INVALID_VALUE);
+                scanner = new Scanner(System.in);
+            }
+        }
+    }
+
+    private String formatInput(String input) {
+        return input.toLowerCase().trim();
+    }
+
+    public boolean addItem(List<String> list, String newItem) {
+
+        String formatItem = newItem.toLowerCase().trim();
+
+        if(formatItem.isEmpty() ||
+                list.contains(formatItem)
+        ) {
+            System.out.println(INVALID_VALUE);
+            return false;
+        }
+
+        list.add(formatItem);
+        System.out.println(ADDED_CONFIRMATION + formatItem);
+        return true;
+    }
+    public boolean updatedItem(List<String> list, int index, String updateItem) {
+
+        if(invalidArgs(list, index)) return false;
+
+        // ! O(1) constant TIME COMPLEXITY: array get() w/ index
+        list.set(index, updateItem.toLowerCase());
+        readGroceryList(list);
+        return true;
+    }
+
+    public boolean deleteItem(List<String> list, int index) {
+
+        if(invalidArgs(list, index)) {
+            System.out.println(INVALID_VALUE);
+            return false;
+        }
+
+        // ! O(1) constant TIME COMPLEXITY: array get() w/ index
+        list.remove(index);
+        readGroceryList(list);
+        return true;
+    }
+
+    public String queryForItem(List<String> list, String item) {
+
+        if(list.isEmpty() || item.isEmpty()) return INVALID_VALUE;
+
+        //! O(n) linear TIME COMPLEXITY: loop through worst-case entire array length
+        if(list.contains(item.toLowerCase())) return item;
+
+        return ITEM_NOT_FOUND;
+    }
+
+    // ! OVERLOADED METHOD: use same name for method to improve readability & scalability
+     public String queryForItem(List<String> list, int index) {
+
+        if(invalidArgs(list, index)) return INVALID_VALUE;
+
+        // ! O(1) constant TIME COMPLEXITY: array get() w/ index
+        return list.get(index);
+    }
+
+    // ! OOP ENCAPSULATION: ensure functionality integrity by limiting access via access modifiers to methods & variables
+    private void readGroceryList(List<String> list) {
+
+        if(list.isEmpty()) {
+            System.out.println(EMPTY_GROCERY_LIST);
+            return;
+        }
+
+        System.out.println(GROCERY_LIST);
+        for(int i = 0; i < list.size(); i++) {
+            System.out.println((i+1) + ") " + list.get(i));
+        }
+    }
+
+    private boolean invalidArgs(List<String> list, int index) {
+        if(list.isEmpty() ||
+                (index < 0 || index >= list.size())) {
+            return true;
+        }
+        System.out.println(INVALID_VALUE);
+        return false;
+    }
+
+    private void printInstructions() {
+        System.out.println("-----------");
+        System.out.println(INSTRUCTIONS);
+        System.out.println("-----------");
+    }
+
 }

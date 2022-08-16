@@ -1240,6 +1240,88 @@ class LeetCodeArrays extends ChallengesLeetCodeUtil {
         }
         return maxLength;
     }
+
+    /**
+     * ? LeetCode 1291:
+     *
+     * ? an integer has sequential digits, if and only if each digit in the number is one more than the previous digit
+     * ? return a sorted list of all the integers in the range, low and high, inclusive that have sequential visits.
+     *
+     * * Logic:
+     *      high = 300
+     *      low = 100
+     *      sequential = [123, 234]
+     *
+     * * O(1) constant TIME COMPLEXITY: will only run 64 times consistently
+     * * O(n) linear SPACE COMPLEXITY: to construct arrayList
+     */
+    public List<Integer> sequentialDigits(int low, int high) {
+
+        if((high <= low) ||
+                (high <= 10 && low >= -10)) {
+            return null;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        String digits = "123456789";
+
+        for(int i = 1; i <= 9; i++) {
+
+            for(int j = 0; j < digits.length() - i; j++) {
+
+                String subString = digits.substring(j, j + i);
+                int value = Integer.parseInt(subString);
+
+                if(value <= high && value >= low) {
+                    result.add(value);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * ? LeetCode 442:
+     *
+     * ? given an array of integers, 1 <= a[i] <= n (n = size of array)
+     * ? some elements appear twice, others appear once
+     * ? find all duplicates withing space O(1) && time O(n)
+     *
+     * * Logic:
+     *      in an array w/ elements starting from 1 to n (array max cannot exceed array length)
+     *      loop through array left-to-right
+     *      identify future element index respective to currentElement by subtracting currentElement by 1
+     *      flag elements as a duplicate by converting to negative
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(1) constant SPACE COMPLEXITY:
+     */
+    public ArrayList<Integer> findAllDuplicates(int[] input) {
+
+        if(input.length == 0) {
+            return null;
+        }
+
+        ArrayList<Integer> duplicates = new ArrayList<Integer>();
+
+        // array max cannot exceed array length
+        for(int i = 0; i < input.length; i++) {
+
+            int currentElement = Math.abs(input[i]);
+            int futureIndex = currentElement - 1;
+
+            boolean isNegativeElement = input[futureIndex] < 0;
+
+            if(isNegativeElement) {
+                duplicates.add(currentElement);
+            } else {
+
+                // flag future elements (whose index = currentElement - 1) as negative
+                input[futureIndex] *= -1;
+            }
+        }
+        return duplicates;
+    }
 }
 
 class LeetCodeArray2D extends ChallengesLeetCodeUtil {
@@ -1405,6 +1487,38 @@ class LeetCodeArray2D extends ChallengesLeetCodeUtil {
 
         return true;
     }
+
+    /**
+     * ? Microsoft LeetCode 56:
+     *
+     * ? Given an array of intervals where intervals[i] = [start, end]
+     * ? merge all overlapping intervals & return an array of non-overlapping intervals
+     * ? that cover all the intervals in the input
+     *
+     * * Logic:
+     *      INPUT:
+     *          [
+     *              [1, 3],
+     *              [2, 6],
+     *              [8, 10],
+     *              [15, 18]
+     *          ]
+     *
+     * *    since 2 is in the range of [1,3], these two interval arrays are overlapping
+     * *    merged interval = [1,6]
+     *
+     *      OUTPUT:
+     *          [
+     *              [1, 6],
+     *              [8, 10],
+     *              [15, 18]
+     *          ]
+     *
+     * * O() TIME COMPLEXITY:
+     * * O() SPACE COMPLEXITY:
+     */
+
+
 }
 
 class LeetCodeTwoPointers extends ChallengesLeetCodeUtil {
@@ -1586,6 +1700,75 @@ class LeetCodeTwoPointers extends ChallengesLeetCodeUtil {
         }
         return isPalindrome;
     }
+
+    /**
+     * ? Facebook LeetCode 977:
+     *
+     * ? Given an integer array nums sorted in non-decreasing order
+     * ? return a newly sorted in-place array of the squares of each number sorted in non-decreasing order
+     * ? nums can have negative numbers & can't use sorting algorithms
+     *
+     * * Logic:
+     *      firstPointer at start, secondPointer at end
+     *      loop through entire array once while populating temp array
+     *      assign max of two pointers to temp array end
+     *      move max element pointer towards center of array
+     *      decrement results index as end of unsorted partition
+     *
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(n) linear SPACE COMPLEXITY:
+     */
+
+    public int[] squareOfSortedArray(int[] nums) {
+
+        if(nums.length == 0) {
+            return null;
+        }
+
+        int leftPointer = 0;
+        int rightPointer = nums.length - 1;
+        int currentResultsIndex = rightPointer;
+        int[] results = new int[nums.length];
+
+        // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+        return recursiveSquareSortedArray(currentResultsIndex, leftPointer, rightPointer, nums, results);
+    }
+
+    private int[] recursiveSquareSortedArray(int current, int left, int right, int[] nums, int[] results) {
+
+        // ? RECURSION base case/breaking condition: the algorithm either upward propagates recursive call return for stack resolution or experiences a stack overflow
+        if(left > right) {
+            return results;
+        }
+
+        int leftElement = nums[left] * nums[left];
+        int rightElement = nums[right] * nums[right];
+
+        // traverse towards center from each end
+        boolean leftPointerGreaterOrEqual = leftElement >= rightElement;
+
+        if(leftPointerGreaterOrEqual) {
+
+            // assign larger of 2 pointer values to end of unsorted results index & decrement
+            results[current] = leftElement;
+            current--;
+
+            // move left pointer closer to center since leftElement was sorted into results array
+            left++;
+
+        } else {
+
+            // assign larger of 2 pointer values to end of unsorted results index & decrement
+            results[current] = rightElement;
+            current--;
+
+            // move right pointer closer to center since rightElement was sorted into results array
+            right--;
+        }
+        return recursiveSquareSortedArray(current, left, right, nums, results);
+    }
+
 
 }
 
