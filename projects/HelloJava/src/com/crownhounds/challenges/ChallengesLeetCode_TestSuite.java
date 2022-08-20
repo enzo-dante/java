@@ -4,10 +4,7 @@ import com.crownhounds.datastructures_and_algorithms.Employee;
 import com.crownhounds.datastructures_and_algorithms.Helper;
 import org.junit.jupiter.api.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1369,6 +1366,25 @@ class LeetCodeArray2DTest extends ChallengesLeetCode_TestSuite {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void mergeIntervals_success() {
+        int[][] testInput = new int[4][2];
+        testInput[0] = new int[]{1,3};
+        testInput[1] = new int[]{2,6};
+        testInput[2] = new int[]{8,10};
+        testInput[3] = new int[]{15,18};
+
+        int[][] expected = {
+                {1,6},
+                {8,10},
+                {15,18}
+        };
+
+        int[][] actual = leetCodeArray2D.mergeIntervals(testInput);
+        boolean isEqual = Objects.deepEquals(expected, actual);
+        assertTrue(isEqual);
+    }
+
 }
 
 class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
@@ -1526,5 +1542,17 @@ class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
 
         Employee expected = employees[2];
         assertEquals(expected, singlyLinkedList.getHead().getEmployee());
+    }
+
+    @Test
+    void addTwoNumbers_success() {
+
+        fail(NOT_IMPLEMENTED_FAIL);
+    }
+
+    @Test
+    void addTwoNumbers_fail() {
+
+        fail(NOT_IMPLEMENTED_FAIL);
     }
 }

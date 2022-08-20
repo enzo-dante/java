@@ -3,6 +3,8 @@ package com.crownhounds.challenges;
 import com.crownhounds.masterjava.Util;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChallengesMasterUtil {
 
@@ -843,17 +845,26 @@ class GroceryApp {
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
     private static final String INVALID_VALUE = "Invalid Value";
     private static final String ADDED_CONFIRMATION = "Added item: ";
+    private static final String UPDATED_CONFIRMATION = "Updated grocery list!";
     private static final String GROCERY_LIST = "\nGrocery list\n".toUpperCase();
     private static final String EMPTY_GROCERY_LIST = "There are currently no items on your grocery list";
     public static final String ITEM_NOT_FOUND = "Query for item failed";
+    private static final String QUIT = "quit";
     private static final String INSTRUCTIONS = GROCERY_LIST + "0 - print instructions\n" +
             "1 - read grocery list\n" +
             "2 - add item\n" +
             "3 - delete item\n" +
             "4 - update item\n" +
-            "5 - quit";
+            "5 - " + QUIT;
     private static final String ENTER_CHOICE = "Enter your choice:\n";
+    private static final String ENTER_ITEM_NUMBER= "\nEnter item number:\n";
+    private static final String ENTER_DELETE_CHOICE = "Enter your choice to be deleted:\n";
+    private static final String ADD_NEW_ITEM = "Add new item:\n";
+    private static final String ENTER_UPDATE_ITEM = "\nEnter new item for update:\n";
     private static final String SHUTDOWN = "Shutting down now....";
+    private static final String RETURN_TO_MAIN = "Returning to main menu";
+    private static final String ALREADY_ON_LIST = "Item is already on the list";
+    private static final String REGEX_QUIT = "(?i)^quit|^[qQ]$|^(?)-\\d|^\\d";
 
     private Scanner scanner;
 
@@ -863,20 +874,20 @@ class GroceryApp {
 
         List<String> list = new ArrayList<>();
         boolean quit = false;
-        boolean exit = false;
-
-        System.out.println(INSTRUCTIONS);
 
         while(!quit) {
 
-            exit = false;
+            boolean exit = false;
+
+            System.out.println(INSTRUCTIONS);
             System.out.println(ENTER_CHOICE);
 
             if(scanner.hasNextInt()) {
 
                 int choice = scanner.nextInt();
+                boolean notInListRange = choice <= 0 || choice > list.size();
 
-                // handle enter keydown
+                // handle enter key-down
                 scanner.nextLine();
 
                 switch(choice) {
@@ -888,47 +899,159 @@ class GroceryApp {
                         break;
                     case 2:
                         while(!exit) {
-                            System.out.println(ENTER_CHOICE);
+
+                            System.out.println(ADD_NEW_ITEM);
 
                             if(scanner.hasNextLine()) {
 
                                 String input = scanner.nextLine();
-                                input = input.trim().toLowerCase();
+                                input = formatInput(input);
 
-                                if(input.equals("-1") || input.equals("q")) {
+                                if(isRegexMatch(input, REGEX_QUIT)) {
+
+                                    System.out.println(RETURN_TO_MAIN);
                                     exit = true;
                                     break;
+
+                                } else if(list.contains(input)) {
+
+                                    System.out.println(ALREADY_ON_LIST);
+                                    exit = true;
+                                    break;
+
                                 }
                                 addItem(list, input);
                                 exit = true;
+
                             } else {
-                                System.out.println(INVALID_VALUE);
-                                scanner = new Scanner(System.in);
+                                scanner = handleInvalidValue();
                             }
                         }
-                        printInstructions();
                         break;
                     case 3:
-                        // delete
+                        while(!exit) {
+
+                            if(list.isEmpty()) {
+                                System.out.println(EMPTY_GROCERY_LIST);
+                                exit = true;
+                                break;
+                            }
+
+                            readGroceryList(list);
+                            System.out.println(ENTER_DELETE_CHOICE);
+
+                            if(scanner.hasNextInt()) {
+
+                                choice = scanner.nextInt();
+
+                                if(choice == -1) {
+
+                                    System.out.println(RETURN_TO_MAIN);
+                                    printInstructions();
+                                    exit = true;
+                                    break;
+
+                                } else if(notInListRange) {
+                                    scanner = handleInvalidValue();
+                                }
+
+                                choice -= 1;
+                                deleteItem(list, choice);
+                                exit = true;
+
+                            } else {
+                                scanner = handleInvalidValue();
+                            }
+                        }
                         break;
                     case 4:
-                        // update
-                        System.out.println("\nPlease enter a valid value");
+                        while(!exit) {
+
+                            if(list.isEmpty()) {
+                                System.out.println(EMPTY_GROCERY_LIST);
+                                exit = true;
+                                break;
+                            }
+
+                            readGroceryList(list);
+                            System.out.println(ENTER_UPDATE_ITEM);
+
+                            if(scanner.hasNextLine()) {
+
+                                String input = scanner.nextLine();
+                                input = formatInput(input);
+
+                                if(isRegexMatch(input, REGEX_QUIT)) {
+
+                                    System.out.println(RETURN_TO_MAIN);
+                                    exit = true;
+                                    break;
+
+                                } else if(list.contains(input)) {
+                                    System.out.println(ALREADY_ON_LIST);
+                                    exit = true;
+                                    break;
+                                }
+
+                                while(!exit) {
+
+                                    readGroceryList(list);
+                                    System.out.println(ENTER_ITEM_NUMBER);
+
+                                    if(scanner.hasNextInt()) {
+
+                                        choice = scanner.nextInt();
+
+                                        if(choice == -1) {
+
+                                            System.out.println(RETURN_TO_MAIN);
+                                            exit = true;
+                                            break;
+
+                                        } else if(notInListRange) {
+
+                                            scanner = handleInvalidValue();
+
+                                        } else {
+
+                                            choice -= 1;
+                                            updatedItem(list, choice, input);
+                                            exit = true;
+                                            break;
+                                        }
+                                    } else {
+                                        scanner = handleInvalidValue();
+                                    }
+                                }
+                            } else {
+                                scanner = handleInvalidValue();
+                            }
+                        }
                         break;
                     case 5:
                         quit = true;
                         System.out.println(SHUTDOWN);
                         break;
                     default:
-                        printInstructions();
+                        scanner = handleInvalidValue();
                         break;
                 }
             } else {
                 printInstructions();
-                System.out.println(INVALID_VALUE);
-                scanner = new Scanner(System.in);
+                scanner = handleInvalidValue();
             }
         }
+    }
+
+    private Scanner handleInvalidValue() {
+        System.out.println(INVALID_VALUE);
+        return new Scanner(System.in);
+    }
+
+    private boolean isRegexMatch(String input, String regex) {
+        Pattern regexPattern = Pattern.compile(regex);
+        Matcher regexMatcher = regexPattern.matcher(input);
+        return regexMatcher.find();
     }
 
     private String formatInput(String input) {
@@ -937,7 +1060,7 @@ class GroceryApp {
 
     public boolean addItem(List<String> list, String newItem) {
 
-        String formatItem = newItem.toLowerCase().trim();
+        String formatItem = formatInput(newItem);
 
         if(formatItem.isEmpty() ||
                 list.contains(formatItem)
@@ -952,17 +1075,23 @@ class GroceryApp {
     }
     public boolean updatedItem(List<String> list, int index, String updateItem) {
 
-        if(invalidArgs(list, index)) return false;
+        updateItem = formatInput(updateItem);
+
+        if(list.isEmpty() || list.contains(updateItem) || index < 0 || index >= list.size()) {
+            System.out.println(INVALID_VALUE);
+            return false;
+        }
 
         // ! O(1) constant TIME COMPLEXITY: array get() w/ index
-        list.set(index, updateItem.toLowerCase());
+        list.set(index, updateItem);
+        System.out.println(UPDATED_CONFIRMATION);
         readGroceryList(list);
         return true;
     }
 
     public boolean deleteItem(List<String> list, int index) {
 
-        if(invalidArgs(list, index)) {
+        if(list.isEmpty() || index < 0 || index >= list.size()) {
             System.out.println(INVALID_VALUE);
             return false;
         }
@@ -986,7 +1115,7 @@ class GroceryApp {
     // ! OVERLOADED METHOD: use same name for method to improve readability & scalability
      public String queryForItem(List<String> list, int index) {
 
-        if(invalidArgs(list, index)) return INVALID_VALUE;
+        if(list.isEmpty() || index < 0 || index >= list.size()) return INVALID_VALUE;
 
         // ! O(1) constant TIME COMPLEXITY: array get() w/ index
         return list.get(index);
@@ -1006,19 +1135,9 @@ class GroceryApp {
         }
     }
 
-    private boolean invalidArgs(List<String> list, int index) {
-        if(list.isEmpty() ||
-                (index < 0 || index >= list.size())) {
-            return true;
-        }
-        System.out.println(INVALID_VALUE);
-        return false;
-    }
-
     private void printInstructions() {
         System.out.println("-----------");
         System.out.println(INSTRUCTIONS);
         System.out.println("-----------");
     }
-
 }

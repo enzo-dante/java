@@ -1491,11 +1491,12 @@ class LeetCodeArray2D extends ChallengesLeetCodeUtil {
     /**
      * ? Microsoft LeetCode 56:
      *
-     * ? Given an array of intervals where intervals[i] = [start, end]
+     * ? Given a sorted array of intervals where intervals[i] = [start, end]
      * ? merge all overlapping intervals & return an array of non-overlapping intervals
      * ? that cover all the intervals in the input
      *
      * * Logic:
+     *
      *      INPUT:
      *          [
      *              [1, 3],
@@ -1503,6 +1504,8 @@ class LeetCodeArray2D extends ChallengesLeetCodeUtil {
      *              [8, 10],
      *              [15, 18]
      *          ]
+     *
+     * *    compare start & end values of adjacent intervals and replace end if there is overlap
      *
      * *    since 2 is in the range of [1,3], these two interval arrays are overlapping
      * *    merged interval = [1,6]
@@ -1514,9 +1517,64 @@ class LeetCodeArray2D extends ChallengesLeetCodeUtil {
      *              [15, 18]
      *          ]
      *
-     * * O() TIME COMPLEXITY:
-     * * O() SPACE COMPLEXITY:
+     * * create linkedList and cast return as an Array
+     *
+     * * O(nlogn) loglinear TIME COMPLEXITY:
+     * * O(n) linear SPACE COMPLEXITY:
      */
+    public int[][] mergeIntervals(int[][] intervals) {
+
+        // ! LINKED LISTS: default doubly dataStructure that imposes order by storing the currentElement value as well as the pointer/link to the nextElement
+        LinkedList<int[]> nonOverlappingIntervals = new LinkedList<>();
+
+        // ensure input is a sorted array of intervals
+        Arrays.sort(intervals, new IntervalComparator());
+
+        // traverse the intervals
+        for(int[] currentInterval : intervals) {
+
+        // if the list of merged intervals is empty or if the current
+        // interval does not overlap with the previous, simply append it.
+            if(nonOverlappingIntervals.isEmpty() ||
+            nonOverlappingIntervals.getLast()[1] < currentInterval[0]) {
+
+                nonOverlappingIntervals.add(currentInterval);
+
+            } else {
+
+                // otherwise, there is overlap, so we merge the current and previous intervals.
+                int savedIntervalEnd = nonOverlappingIntervals.getLast()[1];
+                int newIntervalEnd = Math.max(savedIntervalEnd, currentInterval[1]);
+
+                nonOverlappingIntervals.getLast()[1] = newIntervalEnd;
+            }
+        }
+        int resultSize = nonOverlappingIntervals.size();
+        int[][] resultArray = nonOverlappingIntervals.toArray(new int[resultSize][2]);
+        return resultArray;
+    }
+
+    // ! INTERFACE: must uniquely implement/@Override publicly-shared signatures for designated classes
+    private static class IntervalComparator implements Comparator<int[]> {
+        @Override
+        public int compare(int[] intervalA, int[] intervalB) {
+            int aStart = intervalA[0];
+            int bStart = intervalB[0];
+
+            if(aStart < bStart) {
+
+                return -1;
+
+            } else if(aStart == bStart) {
+
+                return 0;
+
+            } else {
+
+                return 1;
+            }
+        }
+    }
 
 
 }
@@ -2639,6 +2697,72 @@ class LeetCodeLinkedList extends ChallengesLeetCodeUtil {
 
             // ! UNBOXING: casting wrapper class dataType -> primitive
             return this.size;
+        }
+    }
+
+    /**
+     * ? Facebook LeetCode 445:
+     *
+     * ? given 2 non-empty linkedLists representing 2 non-negative integers
+     * ? the most significant digit comes first, and each of their nodes contains a single digit
+     * ? add the 2 numbers & return it as a linkedList
+     *
+     * * assume the 2 numbers do not contain any leading 0's except 0 itself
+     *
+     * * Logic:
+     *      given:
+     *          2 -> 3 -> 4 -> null
+     *               4 -> 3 -> null
+     *
+     *      return:
+     *          2 -> 7 -> 7 -> null
+     *
+     *          start sum at null
+     *
+     *          since 4 + 3 = 7
+     *          since 4 + 3 = 7
+     *          since 2 + 0 = 2
+     *
+     *          if the sum exceeds 9, carry over the 1 towards the start of the linkedList
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(n) linear SPACE COMPLEXITY:
+     */
+    public ListNode addTwoNumbers(ListNode n1, ListNode n2) {
+
+        if(n1 == null || n2 == null) return null;
+
+        return n1;
+    }
+
+    public class ListNode {
+
+        // OOP ENCAPSULATION private class fields
+        private int data;
+        private ListNode next;
+
+        // OOP constructor initializes class fields on class object instantiation
+        public ListNode(Integer data) {
+
+            // ! UNBOXING: casting Wrapper class dataType -> primitive dataType
+            this.data = data;
+        }
+
+        // OOP getters & setters
+        public Integer getData() {
+            return data;
+        }
+
+        public void setData(Integer data) {
+            this.data = data;
+        }
+
+        public ListNode getNext() {
+            return next;
+        }
+
+        public void setNext(ListNode next) {
+            this.next = next;
         }
     }
 }
