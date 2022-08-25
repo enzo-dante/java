@@ -592,7 +592,7 @@ class AccessModifiers extends Notes {
 class StaticStatement extends Notes {
 
     /*
-        ! STATIC FIELD: a single memory unique class-level shared variable belong to class blueprint and NOT with any specific instances
+        ! STATIC FIELD: a single memory unique class-level shared variable that belongs to the class blueprint and NOT with any specific instances
             only 1 unique version of a STATIC FIELD exists in memory at any time, which instance is used is inconsequential
 
         ! STATIC FIELD: memory-shared variable only requires class reference and without an instance

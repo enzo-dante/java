@@ -47,6 +47,179 @@ abstract class Challenge implements IChallenge {
     }
 }
 
+class MergeSortDescending extends ChallengesMasterUtil {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String MERGE_SORT = "Merge Sort Descending";
+
+    // OOP ENCAPSULATION private class fields
+
+    public static int[] execute(int[] input) {
+
+        if(input.length == 0) return null;
+
+        System.out.println(Arrays.toString(input));
+
+        int start = 0;
+        int end = input.length;
+
+        // ! RECURSION: an algorithm that calls itself & each call that is placed on the call stack is waiting for a return value until a breaking condition or overflow
+        splitting(input, start, end);
+
+        System.out.println(Arrays.toString(input));
+        return input;
+    }
+
+    /*
+        ! DIVIDE & CONQUER
+
+             recursively divide the original problem into 2 or more sub-problems & repeat until the sub-problems become small enough to solve a base case
+
+             after solving the base case/breaking condition, combine the solutions to construct the overall solution to the original problem
+
+         ? PHASE 1: splitting
+
+             logical splitting (in-place = no new arrays)
+
+             1. divide the array into two sub-arrays (left & right partition)
+             2. then recursively divide each subsequent array into two arrays
+             3. UNTIL you have multiple sorted arrays of 1 length
+     */
+    private static void splitting(int[] input, int start, int end) {
+
+        /*
+            ! RECURSION BASE CASE: the upward propagating return values of an algorithm's that yields stack resolution or overflow
+                a partition/array is sorted if length = 1
+         */
+        int partitionLength = end - start;
+        boolean isBaseCase = partitionLength < 2;
+
+        if(isBaseCase) return;
+
+        /*
+              ? PHASE 1: splitting
+
+                 logical splitting (in-place = no new arrays)
+
+                 1. divide the array into two sub-arrays (left & right partition)
+                 2. then recursively divide each subsequent array into two arrays
+                 3. UNTIL you have multiple sorted arrays of 1 length
+
+                     split left side first, then right side last
+                         each split results in 'sibling arrays'
+         */
+
+        int midpoint = (start + end) / 2;
+
+        // [20, 35, -15, 7, 55, 1, -22]
+
+        // ? LEFT partition + sub-partitions
+        // [20, 35, -15] ->
+        //      [20] [35, -15] ->
+        //          [20] [35] [-15]
+        splitting(input, start, midpoint);
+
+        // ? MERGE SORT RIGHT partition + sub-partitions
+        // [7, 55, 1, -22] ->
+        //      [7, 55] [1,-22] ->
+        //          [7] [55] [1] [-22]
+        splitting(input, midpoint, end);
+
+        /*
+              ? PHASE 2: MERGING (not in-place)
+
+                    sorting elements starting from bottom-to-up with temporary array
+
+                        not in-place: uses new temporary arrays
+
+                    handle left side first, then right side
+
+                        merge all sibling arrays on left & right side before proceeding to higher level to recursively merge resulting sibling arrays
+         */
+        merging(input, start, midpoint, end);
+    }
+
+    /*
+        ? PHASE 2: merging (not in-place)
+
+            MERGING = sorting elements bottom-to-up with temporary array
+
+                not in-place: uses new temporary arrays
+
+            handle left side first, then right side
+
+                merge all sibling arrays on left & right side before proceeding to higher level to recursively merge resulting sibling arrays
+     */
+    private static void merging(int[] input, int start, int midpoint, int end) {
+
+        int leftPartitionEnd = input[midpoint - 1];
+        int rightPartitionStart = input[midpoint];
+        boolean isSortedPartition = leftPartitionEnd >= rightPartitionStart;
+
+        if(isSortedPartition) return;
+
+        // then, some RIGHT partition elements > some LEFT partition elements
+        int i = start;
+        int j = midpoint;
+        int tempIndex = 0;
+        int tempSize = end - start;
+
+        int[] tempPartition = new int[tempSize];
+
+        // i < mp = traverse left partition
+        // j < end = traverse right partition
+        while(i < midpoint && j < end) {
+
+            int currentLeftElement = input[i];
+            int currentRightElement = input[j];
+
+            /*
+                ! FOR DESCENDING ORDER:
+
+                traverse through left & right array & get the BIGGEST value for temp: compare left[i] to right[j] sibling arrays
+
+                repeat until temp array has merged all elements into temp array in sorted order
+
+                ! STABLE ALGORITHM:
+
+                if there are duplicate elements, the original order of these elements will be preserved
+
+                    because only swap if element at index_i > (index_i + 1)
+
+             */
+            boolean isLeftBigger = currentLeftElement >= currentRightElement;
+
+            if(isLeftBigger) {
+                tempPartition[tempIndex++] = input[i++];
+            } else {
+                tempPartition[tempIndex++] = input[j++];
+            }
+        }
+
+         /*
+            ? MERGE SORT OPTIMIZATION
+
+                LEFT partition remaining elements, must copy to temp array
+
+                RIGHT partition remaining elements, no copying into temp array needed bc already will be in sorted order for input array
+         */
+        int copyEndIndex = start + tempIndex;
+        int copyStartIndex = i;
+
+        // no action, if no remainder left partition elements
+        // else move to correct index
+        int notCopiedCount = midpoint - i;
+
+        // ? MERGE SORT: copying sorted tempArray elements back into inputArray
+        int[] sourceArray = input;
+        System.arraycopy(sourceArray, copyStartIndex, input, copyEndIndex, notCopiedCount);
+
+        // ? MERGE SORT: then only copy numElements in tempArray into inputArray
+        sourceArray = tempPartition;
+        System.arraycopy(sourceArray, 0, input, start, tempIndex);
+    }
+}
+
 class NumberToWords extends ChallengesMasterUtil{
 
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
@@ -1139,5 +1312,88 @@ class GroceryApp {
         System.out.println("-----------");
         System.out.println(INSTRUCTIONS);
         System.out.println("-----------");
+    }
+}
+
+/*
+    NOTE: use int or long for num data types
+    BONUS: for input 61 minutes = '01h 01m 00s' || '1h 1m 0s'
+
+    1. create a SecondsAndMinutes class
+
+        1. create a method called getDurationString that returns a String
+            first parameter = minutes
+            second parameter = seconds
+
+        2. validate params:
+            valid if minutes is greater than or equal to 0
+            valid if seconds is greater than or equal to 0 and less than or equal to 59
+
+        3. getDurationString returns 'Invalid value' if either param validation fails
+
+        4. if params valid,
+            calculate how many hours, minutes, and seconds equal the minutes and seconds passed to this method
+
+                1 minute = 60 seconds
+                1 hour = 60 minutes || 3600 seconds
+
+            return that value as a string in format "XXh YYm ZZs"
+
+    2. method overload getDurationString with only 1 param: seconds
+
+        1. validate seconds is greater than or equal to 0 and return 'Invalid value' if it is not true
+
+        2. if params valid,
+            calculate how many minutes are in the seconds value
+
+                1 minute = 60 seconds
+                1 hour = 60 minutes || 3600 seconds
+
+            then call the other overloaded method with the minutes and seconds parameters
+ */
+class SecondsAndMinutes extends ChallengesMasterUtil {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String XX = "XX";
+    private static final String YY = "YY";
+    private static final String ZZ = "ZZ";
+
+    // OOP ENCAPSULATION private class fields
+
+    // ! ACCESS MODIFIER PRIVATE: object visible only in declared class
+    // ! STATIC FIELD: a single memory unique class-level shared variable that belongs to the class blueprint and NOT with any specific instances
+    private static String getFormatInteger(int n) {
+        String nString = Integer.toString(n);
+        return n < 10 ? "0" + nString : nString;
+    }
+
+    // ! OVERLOADED METHODS: methods with the same name but unique parameters to optimize code readability & scalability
+    public static String getDurationString(int minutes, int seconds) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(minutes < 0 ||
+                (seconds < 0 || seconds > 59)) return INVALID_VALUE;
+
+        int hours = minutes / 60;
+        int remainingMinutes = minutes % 60;
+
+        String format = "XXh YYm ZZs";
+
+        format = format.replaceAll(XX, getFormatInteger(hours));
+        format = format.replaceAll(YY, getFormatInteger(remainingMinutes));
+        return format.replaceAll(ZZ, getFormatInteger(seconds));
+    }
+
+    // ! ACCESS MODIFIER PUBLIC: member (class field or method) visible everywhere
+    // ! STATIC FIELD: a single memory unique class-level shared variable that belongs to the class blueprint and NOT with any specific instances
+    public static String getDurationString(int seconds) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(seconds < 0) return INVALID_VALUE;
+
+        int minutes = (seconds / 60);
+        int remainingSeconds = (seconds % 60);
+
+        return getDurationString(minutes, remainingSeconds);
     }
 }

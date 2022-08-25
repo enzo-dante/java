@@ -1,8 +1,8 @@
-package com.crownhounds.masterjava;
+package com.crownhounds.masterjava.concurrency;
 
 import java.util.stream.Stream;
 
-public class Concurrency {
+public class ThreadCreation {
     /*
         ! CONCURRENCY the ability of software to execute processes simultaneously (one task doesn't have to complete before another one can start)
 
@@ -65,96 +65,87 @@ public class Concurrency {
 
             Then one and only one of the waiting threads can get the lock and continue executing.
      */
-}
 
-// ! OOP INHERITANCE: a child subclass inherits class fields & public methods from extending parent super class
-class MyCustomThread extends Thread {
-
-    // CONSTANTS: static class variables assigned FINAL value before compilation/instantiation
-
-    // Passing a seed value, code will print numbers in increments of the seed value
-    private int seed;
-
-    // OOP constructor that initializes the class fields on class object instantiation
-    MyCustomThread(String threadName, int seed) {
-        // ! OOP INHERITANCE: a child subclass inherits class fields & public methods from extending parent super class
-        super(threadName);
-        this.seed = seed;
-    }
-
-    // ! OOP POLYMORPHISM: uniquely implement/@Override publicly shared methods for designated classes
-    // Method overrides Thread.run.  This is implementation of task to be executed
-    public void run() {
-
-        // Infinite stream of numbers, defined by seed attribute
-        Stream<Integer> infiniteStream =
-                Stream.iterate(this.seed, (t) -> t + this.seed);
-        try {
-            infiniteStream.forEach(s -> {
-                // must satisfy catch/specify for InterruptedException
-                try {
-                    // numbers printed every half a second
-                    sleep(500);
-                } catch (InterruptedException ie) {
-                    // throws an unchecked method when interrupted
-                    throw new RuntimeException("interrupted");
-                }
-                // print numbers and include thread name
-                System.out.print(this.getName() + ": " + s + " ");
-            });
-
-        } catch (RuntimeException re) {
-            // Print a statement and terminate cleanly
-            System.out.println("\nInterrupted " + this.getName() +
-                    "'s execution");
-        }
-
-    }
-}
-
-class CustomThreadCreation {
-
-    // Main method will spawn two asynchronous threads.  Thread.sleep
-    // throws InterruptedException, declared in throws clause here
+    // main() will spawn two asynchronous threads
     public static void main(String[] args) throws InterruptedException {
 
-        // This task will print numbers out in increments of 5
-        Thread t = new MyCustomThread("Fives:", 5);
+        // thread instance 1: task will print numbers in increments of 5
+        Thread t1 = new MyCustomThread("Fives: ", 5);
 
-        // This task will print numbers out in increments of 7
-        Thread v = new MyCustomThread("Sevens", 7);
+        // thread instance 2: task will print numbers in increments of 7
+        Thread t2 = new MyCustomThread("Sevens: ", 7);
 
-        // Start both tasks using Thread.start() - which executes run
-        t.start();
-        v.start();
+        // ? Thread.start() executes .run()
+        t1.start();
+        t2.start();
 
-        // Pauses current thread for 3 seconds allowing other asynchronous
-        // tasks time to run a bit
+        // ? Pause current thread for 3 seconds allowing other asynchronous tasks time to run a bit
         Thread.sleep(3000);
 
         // interrupt one of the threads
-        v.interrupt();
+        t2.interrupt();
 
-        // Do some work in the current thread slowly..
-        for (int i = 0; i < 3; i++) {
+        // on current thread, execute some work
+        for(int i = 0; i < 3; i++) {
             Thread.sleep(1500);
             System.out.println("\nmain thread executing: " + i);
         }
-        // Pause current thread again..
+
+        // pause current thread again
         Thread.sleep(3000);
 
-        // Interrupt second asynchronous thread
-        t.interrupt();
+        // interrupt 2nd asynchronous thread
+        t1.interrupt();
 
-        // Validate if the asynchronous thread is still executing, stay in this loop until it terminates
-        while (t.isAlive()) {
-
-            System.out.println("\nWaiting for " + t.getName() +
-                    " to terminate");
+        // stay in loop until asynchronous thread terminates
+        while(t1.isAlive()) {
+            System.out.println("\nwaiting for " + t1.getName() + " to terminate");
             Thread.sleep(150);
         }
 
-        System.out.println("\nAll threads interrupted, Terminating");
+        System.out.println("\nall thread interrupted, Terminating");
+    }
+}
 
+// ! CREATE NEW THREAD 1: instantiating a subclass of Thread (INHERITANCE) & @Override the Thread class run()
+class MyCustomThread extends Thread {
+
+    // OOP ENCAPSULATION private class fields
+    // passing a seed value, code will print numbers in increments of the seed value
+    private int seed;
+
+    // OOP constructor that initializes the class fields/instance members on class object/instantiation
+    MyCustomThread(String threadName, int seed) {
+        // ! INHERITANCE: child subclass inherits class fields & public methods from extending parent super class
+        super(threadName);
+        this.seed = seed;
+
+    }
+
+    // ! OOP POLYMORPHISM + INTERFACE: must uniquely implement all publicly shared method signatures for designated classes
+    @Override
+    public void run() {
+
+        // Infinite stream of numbers, defined by seed attribute
+        // ! LAMBDA/anonymousFunction = shortcut that does not return anything
+        Stream<Integer> infiniteStream = Stream.iterate(this.seed, (t) -> (t + this.seed));
+
+        // ! EXCEPTION HANDLING: EASY TO ASK FOR FORGIVENESS THAN PERMISSION (EAFTP) = use try-catch block
+        try {
+            infiniteStream.forEach(s -> {
+
+                try {
+                    // numbers printed every 1/2 second
+                    sleep(500);
+
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                // print threadName & numbers
+                System.out.println(this.getName() + ": " + s + " ");
+            });
+        } catch(RuntimeException e) {
+            System.out.println("\nInterrupted " + this.getName() +"'s execution: " + e.getMessage());
+        }
     }
 }

@@ -505,7 +505,7 @@ class MergeSort extends AlgorithmNotes {
 
                  3. set j to 1st index of right sibling array
 
-                 4. step through left & right array & get the smallest value for temp: compare left[i] to right[j] sibling arrays
+                 4. traverse through left & right array & get the smallest value for temp: compare left[i] to right[j] sibling arrays
 
                      if left[i] is smaller, copy to temp array and increment i by 1
                      if right[j] is smaller, copy to temp array and increment j by 1
@@ -542,7 +542,7 @@ class MergeSort extends AlgorithmNotes {
         // inputArray = [20, 35, -15, 7, 55, 1, -22]
 
         // ! RECURSION: an algorithm calls itself & each call waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
-        // 1 element arrays are sorted and don't require recursive calls
+        // RECURSIVE BASE CASE: 1 element PARTITIONS are sorted and don't require recursive calls
         boolean isBaseCase = (end - start) < 2;
 
         if(isBaseCase) {

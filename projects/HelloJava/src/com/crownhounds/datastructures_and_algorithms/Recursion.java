@@ -45,6 +45,12 @@ public class Recursion {
         * simplified factorial equation for RECURSION
 
             !n = !(n-1) * n
+
+        ? DIVIDE & CONQUER
+
+            recursively divide the original problem into 2 or more sub-problems & repeat until the sub-problems become small enough to solve a base case
+
+            after solving the base case/breaking condition, combine the solutions to construct the overall solution to the original problem
      */
 
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation

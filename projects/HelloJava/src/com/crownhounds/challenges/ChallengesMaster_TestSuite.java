@@ -21,23 +21,23 @@ public class ChallengesMaster_TestSuite {
 
 }
 
-/**
- * ? Write a class called AreaCalculator
- *
- * ? Write a method called area with 1 double parameter named radius
- *      return -1 if radius is negative
- *      return a double value that represents the area of a circle
- *
- * * area_circle = radius * radius * Math.PI
- *
- * ? Write an overloaded method with 2 parameters x & y (both doubles & a side of a rectangle)
- *      return -1 if either or both parameters are negative
- *      the method returns the area of a rectangle
- *
- * * area_rectangle = x * y
- */
 class AreaCalculatorTest extends ChallengesMaster_TestSuite {
 
+    /**
+     * ? Write a class called AreaCalculator
+     *
+     * ? Write a method called area with 1 double parameter named radius
+     *      return -1 if radius is negative
+     *      return a double value that represents the area of a circle
+     *
+     * * area_circle = radius * radius * Math.PI
+     *
+     * ? Write an overloaded method with 2 parameters x & y (both doubles & a side of a rectangle)
+     *      return -1 if either or both parameters are negative
+     *      the method returns the area of a rectangle
+     *
+     * * area_rectangle = x * y
+     */
     private AreaCalculator areaCalculator;
 
     @BeforeAll
@@ -94,40 +94,40 @@ class AreaCalculatorTest extends ChallengesMaster_TestSuite {
 
 }
 
-/**
- * ? Write a speed converter class
- *
- * ? Write a method called toMilesPerHour that has 1 parameter of type double with the name kilometersPerHour.
- *     This method needs to return the rounded value of the calculation of type long
- *
- *     If the parameter kilometersPerHour is less than 0,
- *         the method toMilesPerHour needs to return -1 to indicate an invalid value.
- *
- *     Otherwise, if kilometersPerHour is positive,
- *         calculate the value of miles per hour, round it and return it.
- *
- *         NOTE: 1.609 kilometers per hour is 1 mile per hour
- *
- *             milesPerHour = kilometersPerHour / 1.609
- *
- *         Use method Math.round to round the number of calculated miles per hour(double). The method round returns long.
- *
- *             The Math.round() is a built-in math method which returns the closest long to the argument.
- *             The result is rounded to an integer by adding 1/2, taking the floor of the result after adding 1/2, and typecasting the result to type long.
- *
- *             The method returns the value of the argument rounded to the nearest int value.
- *
- * ? Write another method called printConversion with 1 parameter of type double with the name kilometersPerHour.
- *     This method should not return anything (void) and it needs to calculate milesPerHour from the kilometersPerHour parameter.
- *
- *         Then it needs to print a message in the format "XX km/h = YY mi/h".
- *             XX represents the original value kilometersPerHour.
- *             YY represents the rounded milesPerHour from the kilometersPerHour parameter.
- *
- *     If the parameter kilometersPerHour is < 0 then print the text "Invalid Value"
- */
 class SpeedConverterTest extends ChallengesMaster_TestSuite {
 
+    /**
+     * ? Write a speed converter class
+     *
+     * ? Write a method called toMilesPerHour that has 1 parameter of type double with the name kilometersPerHour.
+     *     This method needs to return the rounded value of the calculation of type long
+     *
+     *     If the parameter kilometersPerHour is less than 0,
+     *         the method toMilesPerHour needs to return -1 to indicate an invalid value.
+     *
+     *     Otherwise, if kilometersPerHour is positive,
+     *         calculate the value of miles per hour, round it and return it.
+     *
+     *         NOTE: 1.609 kilometers per hour is 1 mile per hour
+     *
+     *             milesPerHour = kilometersPerHour / 1.609
+     *
+     *         Use method Math.round to round the number of calculated miles per hour(double). The method round returns long.
+     *
+     *             The Math.round() is a built-in math method which returns the closest long to the argument.
+     *             The result is rounded to an integer by adding 1/2, taking the floor of the result after adding 1/2, and typecasting the result to type long.
+     *
+     *             The method returns the value of the argument rounded to the nearest int value.
+     *
+     * ? Write another method called printConversion with 1 parameter of type double with the name kilometersPerHour.
+     *     This method should not return anything (void) and it needs to calculate milesPerHour from the kilometersPerHour parameter.
+     *
+     *         Then it needs to print a message in the format "XX km/h = YY mi/h".
+     *             XX represents the original value kilometersPerHour.
+     *             YY represents the rounded milesPerHour from the kilometersPerHour parameter.
+     *
+     *     If the parameter kilometersPerHour is < 0 then print the text "Invalid Value"
+     */
     // OOP ENCAPSULATION private class fields
     SpeedConverter speedConverter;
 
@@ -155,29 +155,29 @@ class SpeedConverterTest extends ChallengesMaster_TestSuite {
 
 }
 
-/**
- * ? Write a NumberToWords class
- *
- * ? Write a method called numberToWords that has 1 parameter of type int with the name number.
- *     This method should print out the passed number using words for the digits
- *          Extract the last digit of the given number using the remainder operator.
- *          Convert the value of the digit found in Step 1 into a word. There are 10 possible values for that digit, those being 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Print the corresponding word for each digit, e.g. print "Zero" if the digit is 0, "One" if the digit is 1, and so on.
- *          Remove the last digit from the number.
- *          Repeat Steps 2 through 4 until the number is 0.
- *
- *     if the number is negative, print "Invalid Value"
- *
- * ? Write a method called reverse that has 1 parameter of type int with the name number.
- *     This method should return the reversed number and any negatives
- *
- * ? Write a method called getDigitCount that has 1 parameter of type int with the name number.
- *     This method should return the count of the digits in that number
- *     if number is negative, return -1
- *
- * ? use reverse in numberToWords
- */
 class NumberToWordsTest extends ChallengesMaster_TestSuite {
 
+    /**
+     * ? Write a NumberToWords class
+     *
+     * ? Write a method called numberToWords that has 1 parameter of type int with the name number.
+     *     This method should print out the passed number using words for the digits
+     *          Extract the last digit of the given number using the remainder operator.
+     *          Convert the value of the digit found in Step 1 into a word. There are 10 possible values for that digit, those being 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Print the corresponding word for each digit, e.g. print "Zero" if the digit is 0, "One" if the digit is 1, and so on.
+     *          Remove the last digit from the number.
+     *          Repeat Steps 2 through 4 until the number is 0.
+     *
+     *     if the number is negative, print "Invalid Value"
+     *
+     * ? Write a method called reverse that has 1 parameter of type int with the name number.
+     *     This method should return the reversed number and any negatives
+     *
+     * ? Write a method called getDigitCount that has 1 parameter of type int with the name number.
+     *     This method should return the count of the digits in that number
+     *     if number is negative, return -1
+     *
+     * ? use reverse in numberToWords
+     */
     // OOP ENCAPSULATION private class fields
     NumberToWords numberToWords;
 
@@ -235,26 +235,26 @@ class NumberToWordsTest extends ChallengesMaster_TestSuite {
     }
 }
 
-/*
-   ? Write a megabyte converter class
-
-   ? Write a method called printMegaBytesAndKiloBytes that has 1 parameter of type int with the name kiloBytes.
-       The method should not return anything(void)
-
-       it needs to calculate the megabytes and remaining kilobytes from the kilobytes parameter.
-
-           1 MB = 1024 KB
-
-   ? Then it needs to print a message in the format "XX KB = YY MB and ZZ KB".
-       XX represents the original value kiloBytes.
-       YY represents the calculated megabytes.
-       ZZ represents the calculated remaining kilobytes.
-
-       If the parameter kiloBytes is less than 0 then print the text "Invalid Value".
- */
 // ! OOP INHERITANCE: child subclass inherits class fields + public methods from extending parent superclass
 class MegaByteConverterTest extends ChallengesMaster_TestSuite {
 
+    /*
+       ? Write a megabyte converter class
+
+       ? Write a method called printMegaBytesAndKiloBytes that has 1 parameter of type int with the name kiloBytes.
+           The method should not return anything(void)
+
+           it needs to calculate the megabytes and remaining kilobytes from the kilobytes parameter.
+
+               1 MB = 1024 KB
+
+       ? Then it needs to print a message in the format "XX KB = YY MB and ZZ KB".
+           XX represents the original value kiloBytes.
+           YY represents the calculated megabytes.
+           ZZ represents the calculated remaining kilobytes.
+
+           If the parameter kiloBytes is less than 0 then print the text "Invalid Value".
+     */
     @BeforeAll
     static void beforeAll() {
         System.out.println(BEFORE_ALL);
@@ -294,6 +294,8 @@ class MegaByteConverterTest extends ChallengesMaster_TestSuite {
     }
 }
 
+class BarkingDogTest extends ChallengesMaster_TestSuite {
+
 /*
    ? Write a BarkingDog class
 
@@ -312,8 +314,6 @@ class MegaByteConverterTest extends ChallengesMaster_TestSuite {
 
        In all other cases return false.
 */
-
-class BarkingDogTest extends ChallengesMaster_TestSuite {
 
     // OOP ENCAPSULATION private class fields
     private boolean actualValue;
@@ -594,3 +594,126 @@ class GroceryAppTest extends ChallengesMaster_TestSuite {
     }
 }
 
+class MergeSortDescendingTest extends ChallengesMaster_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+    MergeSortDescending mergeSort;
+    private static int[] testInput;
+    private static final int[] expected = {55, 35, 20, 7, 1, -15, -22};
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        System.out.println(BEFORE_EACH);
+        testInput = new int[]{20, 35, -15, 7, 55, 1, -22};
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void mergeSortExecute_success() {
+
+        int[] actual = MergeSortDescending.execute(testInput);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void mergeSortExecute_badInput() {
+
+        testInput = new int[] {};
+        int[] actual = MergeSortDescending.execute(testInput);
+        assertNull(actual);
+    }
+}
+
+class SecondsAndMinutesTest extends ChallengesMaster_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+    String expected = "XXh YYm ZZs";
+    String actual;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+        expected = INVALID_VALUE;
+        actual = null;
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void getDurationString1_success() {
+
+        // BONUS: for input 61 minutes = '01h 01m 00s' || '1h 1m 0s'
+        expected = "01h 01m 00s";
+        actual = SecondsAndMinutes.getDurationString(61, 0);
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void getDurationString1_negative() {
+
+        expected = INVALID_VALUE;
+
+        actual = SecondsAndMinutes.getDurationString(-30, 18);
+        assertEquals(expected, actual);
+
+        actual = SecondsAndMinutes.getDurationString(40, -23);
+        assertEquals(expected, actual);
+
+        actual = SecondsAndMinutes.getDurationString(-20, -20);
+        assertEquals(expected, actual);
+
+        actual = SecondsAndMinutes.getDurationString(10, 88);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getDurationString2_success() {
+
+        expected = "02h 06m 34s";
+        actual = SecondsAndMinutes.getDurationString(7594);
+        assertEquals(expected, actual);
+
+        expected = "00h 00m 09s";
+        actual = SecondsAndMinutes.getDurationString(9);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getDurationString2_fail() {
+
+        expected = INVALID_VALUE;
+
+        actual = SecondsAndMinutes.getDurationString(-15);
+        assertEquals(expected, actual);
+    }
+}
