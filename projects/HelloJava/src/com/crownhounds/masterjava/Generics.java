@@ -21,7 +21,7 @@ public class Generics {
                 class:
                     * ArrayList<Integer> myIntegers
 
-            ? GENERIC CLASSES: when using Type parameter, extend Type parameter with bounded restriction to validate only usage of specific dataType via '<T extends dataType>'
+            ? GENERIC CLASSES: when using dataType parameter, extend dataType parameter with bounded restriction to validate only usage of specific dataType via '<T extends dataType>'
                 on class instantiation, Java will automatically replace 'T' with provided dataType
 
                 class Team<T extends Player> {

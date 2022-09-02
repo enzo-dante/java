@@ -227,7 +227,7 @@ class NumberToWords extends ChallengesMasterUtil{
     // OOP ENCAPSULATION private class fields
     private static Map<Integer, String> nums = new HashMap<>();
 
-    // ! STATIC: single class instance method shared in memory
+    // ! STATIC: single class variable method shared in memory across application
     public static void numberToWords(int number) {
 
         // ? COLLECTION MAP hashMapInstance.put(key, value) = add key-value pair into map collection
@@ -1395,5 +1395,413 @@ class SecondsAndMinutes extends ChallengesMasterUtil {
         int remainingSeconds = (seconds % 60);
 
         return getDurationString(minutes, remainingSeconds);
+    }
+}
+
+/*
+    write a class NumberPalindrome
+
+    write the method isPalindrome with 1 int parameter called number
+        returns a boolean based on if parameter is a palindrome
+*/
+
+class NumberPalindrome {
+
+    public static boolean isPalindrome(int number) {
+
+        if(number >= -9 && number <= 9) return true;
+
+        String[] nums;
+
+        if(number < 0) {
+            number *= -1;
+        }
+
+        nums = Integer.toString(number).split("");
+
+        int i = 0;
+        int j = nums.length - 1;
+
+        while(i < j) {
+
+            String front = nums[i];
+            String end = nums[j];
+
+            if(!front.equals(end)) {
+                return false;
+            }
+
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
+
+/*
+    write a class EvenDigitSum
+
+    write the method getEvenDigitSum with 1 int parameter called number
+        returns -1 if param is negative
+
+        use a loop and return the sum of all even digits in the number
+
+    ? Interfaces vs Abstract Classes
+
+        ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
+
+        INTERFACES can ONLY define publicly-shared signatures
+
+            interfaces can have essentially-constant variables defined as "public static final"
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: publicly-shared method signatures that must be uniquely implemented via @Override by designated classes
+interface ISum {
+
+    public boolean validateInput(int input);
+}
+
+/*
+    ? ABSTRACT CLASSES
+
+        force child subclass INHERITANCE of method, signatures, & parent super-class fields for a set of classes
+        by mandating POLYMORPHISM method signatures to be defined in order to execute respectively-unique implementation
+        ! CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+ */
+abstract class DigitSum implements ISum {
+
+    public int sum = 0;
+
+    public boolean validateInput(int input) {
+        return input < 1;
+    }
+}
+
+// ! INHERITANCE: child subclass inherits public fields + methods from extending parent super class
+class EvenDigitSum extends DigitSum {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String SUM = "Sum: ";
+
+    // OOP ENCAPSULATION private class fields
+    private int sum = 0;
+
+    // ! TIME COMPLEXITY O(1) linear: number of steps dependent on the length of the input
+    public int getEvenDigitSum(int number) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(validateInput(number)) return -1;
+
+        for(int i = 0; i < number; i++) {
+            if(i % 2 == 0) {
+                System.out.print(i + " + ");
+                sum += i;
+            }
+        }
+
+        System.out.println("\n" + SUM + sum);
+        return sum;
+    }
+}
+
+/*
+     write a class SharedDigit
+
+     write the method hasSharedDigit with 2 int parameters
+         each parameter should within 10-99 inclusive
+         returns false if one of the parameters is out of range
+
+     if both numbers share a common digit return true
+         ex: 25 and 58 share a five
+ */
+class SharedDigit {
+
+    // ! ACCESS-MODIFIER protected: object visible only in declared class & subclass (even in another package)
+    // ! STATIC FIELD: a single memory-shared variable that only requires class reference & without an instance
+    protected static boolean hasSharedDigit(int a, int b) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement
+        boolean outOfRange = (a < 10 || a > 99) ||(b < 10 || b > 99);
+        if(outOfRange) return false;
+
+        int pointer = a % 10;
+
+        if(pointer == b % 10 || pointer == b / 10) return true;
+
+        pointer = a / 10;
+
+        if(pointer == b % 10 || pointer == b / 10) return true;
+
+        return false;
+    }
+}
+
+/*
+    sort algorithm with INSERTION SORT with RECURSIVE implementation
+    sort algorithm with INSERTION SORT with ITERATIVE implementation
+
+    * HINT: grow sorted partition with RECURSION
+
+    ! RADIX SORT Big(O) TIME COMPLEXITY: O(n) linear
+
+        RADIX SORT often runs slower at O(nlogn) LOGLINEAR time complexity
+
+        ! BIG(O) + TIME COMPLEXITY: an algorithm's worst-case number of steps (performance) relative to the number of processed items, independent of hardware
+
+    ! SPACE COMPLEXITY: in-place algorithm that doesnt use extra memory
+
+    ! STABLE algorithm: if there are duplicates, original order of elements are preserved
+ */
+class DuelInsertionSort {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String BEFORE_SORT = "BEFORE SORT:";
+    private static final String AFTER_SORT = "AFTER SORT:";
+
+    // ! OOP ENCAPSULATION: protect object instance members/class fields from external access & direct inappropriate updates
+    // ! ACCESS-MODIFIER private: access to variable exclusively limited to the scope of the class
+    // private class fields
+    private static int[] integers = {20, 35, -15, 7, 55, 1, -22};
+    private static boolean isSorted = false;
+
+    // ! ACCESS-MODIFIER protected: access to variable only allowed within scope of declared class and subclasses via INHERITANCE (even in another package)
+    // ! INHERITANCE: a child subclass inherits public variables & methods from extending parent super classes
+    protected static int[] execute(boolean isRecursive) {
+
+        int[] numbers = getIntegers();
+
+        if(isRecursive) {
+            recursiveSorting(numbers, numbers.length);
+        } else {
+            iterativeSorting(numbers);
+        }
+
+        return getIntegers();
+    }
+
+    /**
+     * sort input array with ITERATIVE implementation
+     * ! ACCESS-MODIFIER private: access to method/variable limited to the scope of the defined class
+     * ! STATIC: single class variable or method shared in memory across application
+     * ! RECURSION: a self-calling algorithm that where each call on the call stack is waiting for a return value until a breaking condition resulting in a stack resolution or overflow
+     * @param input
+     * @param numElements
+     */
+    private static void recursiveSorting(int[] input, int numElements) {
+
+        // ! RECURSIVE BASE CASE: breaking condition that starts upward propagation of call returns for stack resolution or overflow
+        // partitions of 1 lengths are sorted
+        boolean isBaseCase = numElements < 2;
+        if(isBaseCase) return;
+
+        // ! RECURSION: a self-calling algorithm that where each call on the call stack is waiting for a return value until a breaking condition resulting in a stack resolution or overflow
+        // ? INSERTION SORT: use recursion to increase sorted partition size
+        // decrement number of elements in unsorted partition since an element has been inserted into sorted partition
+        recursiveSorting(input, numElements - 1);
+
+        // ? INSERTION SORT + RECURSION: after getting to base case, traverse input & insert at correct index
+        // save unsorted insertValue since element shifting & comparing might cause overwrite of value
+        int insertValue = input[numElements - 1];
+
+        // track index for insertion into sorted partition
+        int i;
+
+        // comparison traversal in sorted partition w/ unsorted insertValue is descending right-to-left
+        // break when insertValue is less than the sortedValue
+        for(i = numElements - 1; i > 0 && input[i - 1] > insertValue; i--) {
+
+            // if unsorted insertValue < current sortedValue at the given index, shift up (left-to-right) current sorted Value & continue
+            int newShiftedIndex = i - 1;
+            int elementToShiftUp = input[newShiftedIndex];
+
+            input[i] = elementToShiftUp;
+        }
+
+        // have found correct index for insertValue in sorted partition & insert value at said index in sorted partition
+        input[i] = insertValue;
+    }
+
+    /**
+     * sort input array with ITERATIVE implementation
+     * ! ACCESS-MODIFIER private: access to method/variable limited to the scope of the defined class
+     * ! STATIC: single class variable or method shared in memory across application
+     * @param input
+     */
+    private static void iterativeSorting(int[] input) {
+        // ! INSERTION SORT partitions: sorted & unsorted (starts w/ everything in unsorted and compares & moves into sorted)
+        // ? SORTED PARTITION that's initialized w/ 1 element at index 0
+        for(int firstUnsortedIndex = 1; firstUnsortedIndex < input.length; firstUnsortedIndex++) {
+
+            // save unsorted insertValue since element shifting & comparing might cause overwrite of value
+            int insertValue = input[firstUnsortedIndex];
+
+            // track index for insertion into sorted partition
+            int i;
+
+            // comparison traversal in sorted partition w/ unsorted insertValue is descending right-to-left
+            // break when insertValue is less than the sortedValue
+            for(i = firstUnsortedIndex; i > 0 && input[i - 1] > insertValue; i--) {
+
+                // if unsorted insertValue < current sortedValue at the given index, shift up (left-to-right) current sorted Value & continue
+                int newShiftedIndex = i - 1;
+                int elementToShiftUp = input[newShiftedIndex];
+
+                input[i] = elementToShiftUp;
+            }
+
+            // have found correct index for insertValue in sorted partition & insert value at said index in sorted partition
+            input[i] = insertValue;
+        }
+    }
+
+    // CLASS METHODS:
+    private static void printResults() {
+
+        if(!isSorted) {
+            System.out.println(BEFORE_SORT);
+        } else {
+            System.out.println(AFTER_SORT);
+        }
+        isSorted = !isSorted;
+
+        for(int i = 0; i < integers.length; i++) {
+            System.out.print(integers[i] + ", ");
+        }
+
+        System.out.println();
+    }
+
+    // OOP GETTERS & SETTERS
+    // ! ACCESS-MODIFIER public: access to variable available from any scope
+    public static int[] getIntegers() {
+        printResults();
+        return integers;
+    }
+}
+
+/*
+    ? sort the following values (all lowercase) using RADIX SORT:
+
+    "bcdef"
+    "dbaqc"
+    "abcde"
+    "omadd"
+    "bbbbb"
+
+    ! RADIX SORT Big(O) TIME COMPLEXITY: O()
+
+    ! SPACE COMPLEXITY: not in-place algorithm that does use extra memory
+
+    ! STABLE algorithm: if there are duplicates, original order of elements are preserved
+ */
+
+class RadixSort {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation
+    private static final String PRE_SORT = "\n\tPRE-SORT:";
+    private static final String POST_SORT = "\tPOST-SORT:";
+    private static final char LETTER_A = 'a';
+
+    // ! OOP ENCAPSULATION: protect object instance members/class fields from inappropriate external access
+    // ! STATIC: single class variable/method shared in memory across application
+    private static String[] strings = {
+            "bcdef",
+            "dbaqc",
+            "abcde",
+            "omadd",
+            "bbbbb"
+    };
+
+    public static String[] execute() {
+
+        // ? RADIX STABLE SORT: assumes data (consisting of only integers || Strings) has the same radix (shared set of characters) and width (shared element length)
+        String[] input = getStrings(false);
+
+        // ? RADIX SORT radix: 26 because english alphabet has 0-26 inclusive letters (array index)
+        int radix = 26;
+        // ? RADIX SORT width: each element in the array has 5 indices
+        int width = 5;
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to avoid errors
+        if(input.length == 0) return null;
+
+        // traverse each index in each element of the given input array & sort
+        int stringEnd = width - 1;
+        for(int i = stringEnd; i >= 0; i--) {
+            singleRadixStableSort(input, i, radix);
+        }
+
+        return getStrings(true);
+    }
+
+    private static void singleRadixStableSort(String[] input, int currentElementIndex, int radix) {
+
+        int numElements = input.length;
+        int[] radixTally = new int[radix]; // radix of 26 = integers 0-26
+
+        // ? STEP 1: get raw count of each radix character occurrence
+        // for each element in the input array, count how many elements have a SPECIFIC character at the current indexInElement
+        for(String element : input) {
+            int updatedTally = getRadixCharAtIndex(element, currentElementIndex);
+            radixTally[updatedTally]++;
+        }
+
+        // ? STEP 2: adjust tally/count
+        // sum indices to adjust the tally of each char to get numberOfElement that have char occurances at given index
+        for(int i = 1; i < radix; i++) {
+            int charIndex = i - 1;
+            radixTally[i] += radixTally[charIndex];
+        }
+
+        // ? STEP 3: using char tally/count, write values into tempArray in sorted order
+        String[] tempSorted = new String[numElements];
+
+        // right-to-left to maintain stable algorithm
+        for(int i = (numElements - 1); i >= 0; i--) {
+            /*
+                --array[i] = decrement value at index before it is used
+                array[i]-- = decrement value at index after it is used
+             */
+            String element = input[i];
+            int radixIndex = getRadixCharAtIndex(element, currentElementIndex);
+
+            int decrementBeforeElementUse = --radixTally[radixIndex];
+
+            tempSorted[decrementBeforeElementUse] = input[i];
+        }
+
+        // ? STEP 4: copy sorted elements back into input
+        for(int i = 0; i < numElements; i++) {
+            input[i] = tempSorted[i];
+        }
+    }
+
+    private static int getRadixCharAtIndex(String element, int currentIndex) {
+
+        char radixCharacter = element.charAt(currentIndex);
+        int countingIndex = radixCharacter - LETTER_A;
+
+        // char = numeric value
+        // converting numeric value for character into index in counting array
+        return countingIndex;
+    }
+
+    // OOP GETTERS & SETTERS
+    public static String[] getStrings(boolean isSorted) {
+
+        if(!isSorted) {
+            System.out.println(PRE_SORT);
+        } else {
+
+            System.out.println(POST_SORT);
+        }
+
+        for(int i = 0; i < strings.length; i++) {
+            strings[i] = strings[i].toLowerCase();
+            System.out.println(strings[i]);
+        }
+        System.out.println();
+
+        return strings;
     }
 }

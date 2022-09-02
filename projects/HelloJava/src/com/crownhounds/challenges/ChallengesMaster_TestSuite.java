@@ -717,3 +717,244 @@ class SecondsAndMinutesTest extends ChallengesMaster_TestSuite {
         assertEquals(expected, actual);
     }
 }
+
+class NumberPalindromeTest extends ChallengesMaster_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void isPalindrome_true() {
+        boolean actual = NumberPalindrome.isPalindrome(-303);
+        assertTrue(actual);
+    }
+
+    @Test
+    void isPalindrome_trueSingle() {
+        boolean actual = NumberPalindrome.isPalindrome(-6);
+        assertTrue(actual);
+
+        actual = NumberPalindrome.isPalindrome(3);
+        assertTrue(actual);
+    }
+
+    @Test
+    void isPalindrome_false() {
+        boolean actual = NumberPalindrome.isPalindrome(125);
+        assertFalse(actual);
+
+        actual = NumberPalindrome.isPalindrome(-411);
+        assertFalse(actual);
+    }
+}
+
+class EvenDigitSumTest extends ChallengesMaster_TestSuite {
+
+    // OOP ENCAPSULATION private class fields
+    EvenDigitSum evenDigitSum;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        evenDigitSum = new EvenDigitSum();
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void getEvenDigitSum_success() {
+        int expected = 20;
+        int actual = evenDigitSum.getEvenDigitSum(10);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getEvenDigitSum_failBadInput() {
+        int expected = -1;
+        int actual = evenDigitSum.getEvenDigitSum(-22);
+        assertEquals(expected, actual);
+    }
+}
+
+class SharedDigitTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: protect object instance members/class fields from external access of direct inappropriate update
+    // private class fields
+    private SharedDigit sharedDigit;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        sharedDigit = new SharedDigit();
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void hasSharedDigit_true() {
+        // ! UNBOXING: casting greater functionality Wrapper class -> primitive dataType
+        Integer a = 25;
+        Integer b = 58;
+
+        boolean actual = SharedDigit.hasSharedDigit(a, b);
+        assertTrue(actual);
+    }
+
+    @Test
+    void hasSharedDigit_false() {
+        // ! UNBOXING: casting greater functionality Wrapper class -> primitive dataType
+        Integer a = 25;
+        Integer b = 68;
+
+        boolean actual = SharedDigit.hasSharedDigit(a, b);
+        assertFalse(actual);
+    }
+
+    @Test
+    void hasSharedDigit_badInput() {
+        // ! UNBOXING: casting greater functionality Wrapper class -> primitive dataType
+        Integer a = -1;
+        Integer b = 50;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+
+        a = 100;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+
+        a = 50;
+        b = -1;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+
+        a = 50;
+        b = 100;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+
+        a = -1;
+        b = 100;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+
+        a = 100;
+        b = -1;
+        assertFalse(SharedDigit.hasSharedDigit(a,b));
+    }
+}
+
+class RecursiveInsertionSortTest extends ChallengesMaster_TestSuite {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final int[] EXPECTED = {-22, -15, 1, 7, 20, 35, 55};
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void duelInsertionSort_isRecursive() {
+        int[] actual = DuelInsertionSort.execute(true);
+        assertArrayEquals(EXPECTED, actual);
+    }
+
+    @Test
+    void duelInsertionSort_isIterative() {
+        int[] actual = DuelInsertionSort.execute(false);
+        assertArrayEquals(EXPECTED, actual);
+    }
+}
+
+class RadixSortTest extends ChallengesMaster_TestSuite {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static String[] EXPECTED = {
+            "abcde",
+            "bbbbb",
+            "bcdef",
+            "dbaqc",
+            "omadd"
+    };
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void radixSort_success() {
+        String[] actual = RadixSort.execute();
+        assertArrayEquals(EXPECTED, actual);
+    }
+}

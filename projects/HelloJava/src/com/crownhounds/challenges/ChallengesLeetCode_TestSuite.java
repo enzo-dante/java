@@ -1098,6 +1098,86 @@ class LeetCodeRecursionTest extends ChallengesLeetCode_TestSuite {
         List<String> actual = leetCodeRecursion.generateParenthesis(test);
         assertNull(actual);
     }
+
+    @Test
+    void combineSum_failEmptyInput() {
+
+        int[] integers = {};
+        int target = 7;
+
+        List<List<Integer>> actual = leetCodeRecursion.combinationSum(integers, target);
+        assertNull(actual);
+    }
+
+    @Test
+    void combineSum_failBadTarget() {
+
+        int[] integers = {2,3,6,7};
+        int target = 0;
+
+        List<List<Integer>> actual = leetCodeRecursion.combinationSum(integers, target);
+        assertNull(actual);
+    }
+
+    @Test
+    void combineSum_failBadInputs() {
+
+        int[] integers = {};
+        int target = -1;
+
+        List<List<Integer>> actual = leetCodeRecursion.combinationSum(integers, target);
+        assertNull(actual);
+    }
+
+    @Test
+    void combineSum_success1() {
+
+        int[] integers = {2,3,5};
+        int target = 8;
+
+        List expected = new ArrayList<>();
+        LinkedList<Integer> row1 = new LinkedList<>();
+        row1.add(2);
+        row1.add(2);
+        row1.add(2);
+        row1.add(2);
+        expected.add(row1);
+
+        LinkedList<Integer> row2 = new LinkedList<>();
+        row2.add(2);
+        row2.add(3);
+        row2.add(3);
+        expected.add(row2);
+
+        LinkedList<Integer> row3 = new LinkedList<>();
+        row3.add(3);
+        row3.add(5);
+        expected.add(row3);
+
+        List<List<Integer>> actual = leetCodeRecursion.combinationSum(integers, target);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void combineSum_success2() {
+
+        int[] integers = {2,3,6,7};
+        int target = 7;
+
+        List expected = new ArrayList<>();
+        LinkedList<Integer> row1 = new LinkedList<>();
+        row1.add(2);
+        row1.add(2);
+        row1.add(3);
+        expected.add(row1);
+
+        LinkedList<Integer> row2 = new LinkedList<>();
+        row2.add(7);
+        expected.add(row2);
+
+        List<List<Integer>> actual = leetCodeRecursion.combinationSum(integers, target);
+        assertEquals(expected, actual);
+    }
 }
 
 class LeetCodeFamousAlgorithmsTest extends ChallengesLeetCode_TestSuite {
@@ -1542,17 +1622,5 @@ class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
 
         Employee expected = employees[2];
         assertEquals(expected, singlyLinkedList.getHead().getEmployee());
-    }
-
-    @Test
-    void addTwoNumbers_success() {
-
-        fail(NOT_IMPLEMENTED_FAIL);
-    }
-
-    @Test
-    void addTwoNumbers_fail() {
-
-        fail(NOT_IMPLEMENTED_FAIL);
     }
 }

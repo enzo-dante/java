@@ -4,7 +4,7 @@ import com.crownhounds.masterjava.Util;
 
 public class Recursion {
     /*
-        ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+        ! RECURSION: self-calling algorithm & each call-stack call waits for a return until reaching base case or overflow
             an algorithm is a repeatable sequence of steps
 
         ? RECURSION base case/breaking condition: the algorithm either upward propagates recursive call return for stack resolution or experiences a stack overflow

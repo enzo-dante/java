@@ -1090,22 +1090,6 @@ public class Challenges {
         System.out.println("the sum: " + DigitalSum.sumDigits(-1));
     }
 
-    private static void challengeThirtyOne() {
-        /*
-            write a class NumberPalindrome
-            write the method isPalindrome with 1 int parameter called number
-                returns a boolean based on if parameter is a palindrome
-
-         */
-
-        NumberPalindrome.isPalindrome(125);
-        NumberPalindrome.isPalindrome(101);
-        NumberPalindrome.isPalindrome(-6);
-        NumberPalindrome.isPalindrome(-303);
-        NumberPalindrome.isPalindrome(-411);
-        NumberPalindrome.isPalindrome(3);
-    }
-
     private static void challengeThirtyTwo() {
         /*
             write a class FirstLastDigitSum
@@ -1121,41 +1105,6 @@ public class Challenges {
         System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(0));
         System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(5));
         System.out.println(FirstLastDigitSum.sumFirstAndLastDigit(-10));
-
-    }
-
-    private static void challengeThirtyThree() {
-        /*
-            write a class EvenDigitSum
-
-            write the method getEvenDigitSum with 1 int parameter called number
-                returns -1 if param is negative
-
-                use a loop and return the sum of all even digits in the number
-         */
-
-        System.out.println("\n\tchallengeThirtyThree\n");
-
-        System.out.println(EvenDigitSum.getEvenDigitSum(123456789));
-        System.out.println(EvenDigitSum.getEvenDigitSum(252));
-        System.out.println(EvenDigitSum.getEvenDigitSum(-22));
-    }
-
-    private static void challengeThirtyFour() {
-       /*
-            write a class SharedDigit
-
-            write the method hasSharedDigit with 2 int parameters
-                each parameter should within 10-99 inclusive
-                returns false if one of the parameters is out of range
-
-            if both numbers share a common digit return true
-                ex: 25 and 58 share a five
-        */
-
-        System.out.println(SharedDigit.hasSharedDigit(12, 23));
-        System.out.println(SharedDigit.hasSharedDigit(9, 99));
-        System.out.println(SharedDigit.hasSharedDigit(15, 55));
 
     }
 

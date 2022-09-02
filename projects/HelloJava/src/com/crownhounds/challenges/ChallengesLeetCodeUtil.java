@@ -1911,6 +1911,83 @@ class LeetCodeRecursion extends ChallengesLeetCodeUtil {
 
     }
 
+    /**
+     * ? LeetCode 39:
+     *
+     * ? Given an array of distinct integers candidates and a target integer target,
+     * ? return a list of all unique combinations of candidates where the chosen numbers sum to target.
+     * ?    You may return the combinations in any order.
+     *
+     * ? The same number may be chosen from candidates an unlimited number of times.
+     * ? Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+     *
+     * ? It is guaranteed that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+     *
+     * * Logic:
+     *
+     * ! Depth First Search (DFS): traverse down path at node first then checks siblings on same level
+     *
+     *      input = [2,3,5]
+     *      target = 8
+     *
+     *      1. element 2 - target 8 = 6
+     *      2. repeat step 1 until reaching base case (0)
+     *
+     *      output = [
+     *          [2,2,2,2],
+     *          [2,3,3],
+     *          [3,5]
+     *      ]
+     *
+     * * O() TIME COMPLEXITY:
+     * * O() SPACE COMPLEXITY:
+     */
+    public List<List<Integer>> combinationSum(int[] nums, int target) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else catch block
+        if(nums.length == 0 || target < 1) return null;
+
+        // ! GENERICS: improve ENCAPSULATION by enforcing specific dataType when creating classes, interfaces, & methods
+        List<List<Integer>> result = new ArrayList<>();
+        LinkedList<Integer> currentCombo = new LinkedList<>();
+
+        // ! RECURSION: self-calling algorithm that waits for return values until reaching base case or overflow
+        backtracking(target, currentCombo, 0, nums, result);
+        return result;
+
+    }
+
+    // ! ACCESS-MODIFIER protected: object visible only in declared class & subclasses (even if in another package)
+    protected void backtracking(int remainingCombos, LinkedList<Integer> currentCombo, int startIndex, int[] nums, List<List<Integer>> result) {
+
+        // ! RECURSION base case: self-algorithm stops on smallest case and starts to upward propagate return values for stack resolution or overflow
+        boolean isBaseCase = remainingCombos == 0;
+        boolean notValidPath = remainingCombos < 0;
+
+        if(isBaseCase) {
+            List<Integer> deepCopyCombination = new ArrayList<>(currentCombo);
+            result.add(deepCopyCombination);
+            return;
+        } else if(notValidPath) {
+            return;
+        }
+
+        // traverse possible paths
+        for(int i = startIndex; i < nums.length; ++i) {
+
+            int n = nums[i];
+            currentCombo.add(n);
+
+            // at each number in input, see if there is a valid path (0) to the target
+            int decrementedTargetPath = remainingCombos - n;
+
+            // ! RECURSION: self-calling algorithm that waits for return values until reaching base case or overflow
+            backtracking(decrementedTargetPath, currentCombo, i, nums, result);
+
+            // backtrack, remove the number from the combination
+            currentCombo.removeLast();
+        }
+    }
 }
 
 class LeetCodeFamousAlgorithms extends ChallengesLeetCodeUtil {

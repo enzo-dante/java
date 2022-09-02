@@ -912,9 +912,9 @@ class RadixStableSort extends AlgorithmNotes {
     /*
         ! Big(O) Notation / O(n): independent of hardware, an algorithm's TIME COMPLEXITY relative to the number of processed items
 
-             * CONSTANT TIME COMPLEXITY - O(n)
+             * LINEAR TIME COMPLEXITY - O(n)
 
-                 radix sort array uses constant time complexity because we're making assumptions about the data we're sorting: must be integers or Strings
+                 radix sort array uses linear time complexity because we're making assumptions about the data we're sorting: must be integers or Strings
                  
              often runs slower than O(nlogn) algorithms because of the overhead involved
              
@@ -975,7 +975,7 @@ class RadixStableSort extends AlgorithmNotes {
 
     public static void runAlgorithm() {
 
-        // ? RADIX STABLE SORT: assumes data (consisting of only integers || Strings) has the same radix (shared set of characters) and width (element length)
+        // ? RADIX STABLE SORT: assumes data (consisting of only integers || Strings) has the same radix (shared set of characters) and width (shared element length)
         int[] intArray = {4725, 4586, 1330, 8792, 1594, 5729};
 
         // radix: 10 because digits at the given index in an element can only be from 0-9 inclusive in an integer
