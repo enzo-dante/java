@@ -2843,3 +2843,157 @@ class LeetCodeLinkedList extends ChallengesLeetCodeUtil {
         }
     }
 }
+
+// ! INHERITANCE: child subclass inherits public methods & fields from an extending parent super-class
+class MinStack extends ChallengesLeetCodeUtil {
+
+    /*
+        ? Design a stack that support push, pop, top and retrieving the minimum element in constant time
+
+        * pop() & top() = both return head, but pop() removes head and replaces it
+
+        ! BIG(O) TIME COMPLEXITY: an algorithm's worst-case number of steps (independent of hardware performance) required to process all the items
+
+            O(1) CONSTANT TIME COMPLEXITY = best
+
+        ! STACKS: (LIFO) last-in, first-out abstract class implemented by a LINKED LIST that uses push, pop, peek methods
+
+            due to LIFO, no random access and can only access the top of a stack
+
+            * Interfaces vs Abstract Classes
+
+            ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
+
+                abstract classes must have a constructor for INHERITANCE for subclasses BUT abstract classes cannot be instantiated
+                abstract classes signatures, implemented methods, & variables can have public or private access modifiers
+
+            INTERFACES can ONLY define publicly-shared signatures for designated implementing classes
+
+                interfaces can have essentially-constant variables defined as "public static final"
+                interfaces do NOT have a constructor since it cannot be instantiated
+                interfaces signature & variables must be public
+
+        ! LINKED LIST STACK O(1) CONSTANT TIME COMPLEXITY: for push(), pop(), & peek()
+
+        ! ARRAY STACK O(n) LINEAR TIME COMPLEXITY for push(), pop(), & peek()
+     */
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String EMPTY_STACK = "Stack is empty";
+
+    // ! OOP ENCAPSULATION: access-modifier protected object instance members/class fields from inappropriate external access
+    private LinkedListNode<Integer> head;
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public MinStack() {
+        this.head = null;
+    }
+
+    private boolean isEmpty() {
+        return this.head == null;
+    }
+
+    public LinkedListNode<Integer> push(int x) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else code block to avoid exceptions
+        if(this.isEmpty()) {
+            this.head = new LinkedListNode<>(x, x);
+            return this.head;
+        }
+
+        int min = Math.min(x, this.head.getMin());
+        LinkedListNode<Integer> newNode = new LinkedListNode<>(x, min);
+        LinkedListNode<Integer> previousHead = this.head;
+
+        // newNode becomes head of stack backed by linkedList
+        this.head = newNode;
+
+        // push down previous head down 1 position in linkedList
+        this.head.setNext(previousHead);
+
+        return this.head;
+    }
+
+    public LinkedListNode<Integer> pop() {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else code block to avoid exceptions
+        if(this.isEmpty()) {
+            System.out.println(EMPTY_STACK);
+            return null;
+        }
+
+        LinkedListNode<Integer> removedNode = this.head;
+        LinkedListNode<Integer> newHead = removedNode.getNext();
+        this.head = newHead;
+
+        return removedNode;
+    }
+
+    public LinkedListNode<Integer> top() {
+        // ! EXCEPTION HANDLING look before you leap: use if-else code block to avoid exceptions
+        if(this.isEmpty()) {
+            System.out.println(EMPTY_STACK);
+            return null;
+        }
+
+        return this.head;
+    }
+
+    public int getMin() {
+
+        if(this.isEmpty()) {
+            System.out.println(EMPTY_STACK);
+            return -1;
+        }
+        return this.head.getMin();
+    }
+
+    // OOP GETTERS & SETTERS
+    public LinkedListNode<Integer> getHead() {
+        return head;
+    }
+}
+
+// ! GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
+class LinkedListNode<T extends Integer> {
+
+    // ! OOP ENCAPSULATION: access-modifier private/protected class fields that limit access of method or variable from external access & inappropriate use
+    // private class fields
+    private int value;
+    private int min;
+    private LinkedListNode next;
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public LinkedListNode(int value, int min) {
+        this.value = value;
+        this.min = min;
+        this.next = null;
+    }
+
+
+    // OOP GETTERS & SETTERS
+    public Integer getValue() {
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        return this.value;
+    }
+
+    public int getMin() {
+        return min;
+    }
+
+    public LinkedListNode getNext() {
+        return next;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public void setNext(LinkedListNode next) {
+        this.next = next;
+    }
+}

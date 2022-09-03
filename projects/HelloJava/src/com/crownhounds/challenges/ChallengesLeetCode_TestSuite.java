@@ -1624,3 +1624,141 @@ class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
         assertEquals(expected, singlyLinkedList.getHead().getEmployee());
     }
 }
+
+class MinStackTest extends ChallengesLeetCode_TestSuite {
+
+    // ! OOP ENCAPSULATION: access-modifier protected object instance members/class fields from inappropriate external access
+    // ! ACCESS-MODIFIER private: limit the accessibility of method/variable within scope of defined class and exclude external access
+    // private class fields
+    private MinStack minStack;
+    private LinkedListNode<Integer> expected;
+    private LinkedListNode<Integer> actual;
+    private Integer testInput;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        System.out.println(BEFORE_EACH);
+
+        minStack = new MinStack();
+
+        testInput = 3;
+        actual = minStack.push(testInput);
+
+        testInput = 2;
+        actual = minStack.push(testInput);
+
+        testInput = 1;
+        actual = minStack.push(testInput);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void minStack_pushEmpty() {
+
+        minStack = new MinStack();
+
+        testInput = 1;
+
+        expected = minStack.push(testInput);
+        actual = minStack.push(testInput);
+        assertEquals(expected.getValue(), actual.getValue());
+    }
+
+    @Test
+    void minStack_pushFilled() {
+
+        minStack = new MinStack();
+
+        expected = new LinkedListNode<>(1, 1);
+        expected.setNext(new LinkedListNode<>(2, 2));
+//        expected.next.next = new LinkedListNode<>(3, 3);
+        expected.getNext().setNext(new LinkedListNode<>(3, 3));
+
+        testInput = 3;
+        actual = minStack.push(testInput);
+
+        testInput = 2;
+        actual = minStack.push(testInput);
+
+        testInput = 1;
+        actual = minStack.push(testInput);
+
+        assertEquals(expected.getValue(), actual.getValue());
+        assertEquals(expected.getNext().getValue(), 2);
+        assertEquals(expected.getNext().getNext().getValue(), 3);
+    }
+
+    @Test
+    void minStack_popNull() {
+        minStack = new MinStack();
+        actual = minStack.pop();
+        assertNull(actual);
+    }
+
+    @Test
+    void minStack_pop() {
+        expected = new LinkedListNode<>(1, 1);
+        actual = minStack.pop();
+        assertEquals(expected.getValue(), actual.getValue());
+        assertEquals(2, minStack.getHead().getValue());
+    }
+
+    @Test
+    void minStack_topNull() {
+        minStack = new MinStack();
+        actual = minStack.pop();
+        assertNull(actual);
+    }
+
+    @Test
+    void minStack_top() {
+        expected = new LinkedListNode<>(1, 1);
+        actual = minStack.pop();
+        assertEquals(expected.getValue(), actual.getValue());
+    }
+
+    @Test
+    void minStack_getMin() {
+
+        minStack = new MinStack();
+
+        testInput = 2;
+        actual = minStack.push(testInput);
+
+        testInput = 1;
+        actual = minStack.push(testInput);
+
+        testInput = 3;
+        actual = minStack.push(testInput);
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        Integer expected = 1;
+        Integer actual = minStack.getMin();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void minStack_getMinEmpty() {
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        Integer expected = -1;
+
+        minStack = new MinStack();
+        Integer actual = minStack.getMin();
+        assertEquals(expected, actual);
+    }
+}

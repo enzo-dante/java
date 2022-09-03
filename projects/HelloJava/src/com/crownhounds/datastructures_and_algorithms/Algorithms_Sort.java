@@ -912,9 +912,9 @@ class RadixStableSort extends AlgorithmNotes {
     /*
         ! Big(O) Notation / O(n): independent of hardware, an algorithm's TIME COMPLEXITY relative to the number of processed items
 
-             * LINEAR TIME COMPLEXITY - O(n)
+             * CONSTANT TIME COMPLEXITY - O(1)
 
-                 radix sort array uses linear time complexity because we're making assumptions about the data we're sorting: must be integers or Strings
+                 radix sort array uses constant time complexity because we're making assumptions about the data we're sorting: must be integers or Strings
                  
              often runs slower than O(nlogn) algorithms because of the overhead involved
              

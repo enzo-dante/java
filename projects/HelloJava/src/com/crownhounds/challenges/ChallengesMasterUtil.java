@@ -1448,6 +1448,7 @@ class NumberPalindrome {
 
     ? Interfaces vs Abstract Classes
 
+        // ! ABSTRACT CLASSES cannot be instantiated and must rely on normal subclasses that use OOP INHERITANCE
         ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
 
         INTERFACES can ONLY define publicly-shared signatures
@@ -1688,7 +1689,7 @@ class DuelInsertionSort {
     "omadd"
     "bbbbb"
 
-    ! RADIX SORT Big(O) TIME COMPLEXITY: O()
+    ! RADIX SORT Big(O) TIME COMPLEXITY: O(1) constant
 
     ! SPACE COMPLEXITY: not in-place algorithm that does use extra memory
 
