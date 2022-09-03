@@ -958,3 +958,87 @@ class RadixSortTest extends ChallengesMaster_TestSuite {
         assertArrayEquals(EXPECTED, actual);
     }
 }
+
+class BankAccountTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: private/protected class fields/methods that prevent external access & inappropriate use
+    private BankAccount bankAccount;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        bankAccount = new BankAccount(1, 100, "Test Customer", "test@gmail.com", "123-123-1234");
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void deposit_success() {
+        int testAmount = 50;
+        int expected = 150;
+        int actual = bankAccount.deposit(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deposit_invalidAmount() {
+        int testAmount = -50;
+        int expected = -1;
+        int actual = bankAccount.deposit(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void withdraw_success() {
+        int testAmount = 50;
+        int expected = 50;
+        int actual = bankAccount.withdraw(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void withdraw_emptyAccount() {
+        int testAmount = 150;
+        int expected = -1;
+        bankAccount.setBalance(0);
+        int actual = bankAccount.withdraw(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void withdraw_overdraft() {
+        int testAmount = 150;
+        int expected = -1;
+        int actual = bankAccount.withdraw(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void withdraw_zero() {
+        int testAmount = 100;
+        int expected = 0;
+        int actual = bankAccount.withdraw(testAmount);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void withdraw_invalidAmount() {
+        int testAmount = -50;
+        int expected = -1;
+        int actual = bankAccount.withdraw(testAmount);
+        assertEquals(expected, actual);
+    }
+}

@@ -1372,29 +1372,6 @@ public class Challenges {
         System.out.println(person.getFullName());
     }
 
-    private static void challengeFortyOne() {
-        /*
-            create a bank account class
-                with fields:
-                    account number, balance, customer name, email and phone number
-
-            create getters & setters for each field
-            create deposit funds method that increments balance field
-            create withdraw funds method that deducts from balance field
-                only allow withdraws if there are sufficient funds
-         */
-
-        OOP_BankAccount testAccount = new OOP_BankAccount();
-        double amount = testAccount.withdrawFunds(100d);
-        testAccount.depositFunds(50d);
-        amount = testAccount.withdrawFunds(100d);
-        testAccount.depositFunds(51d);
-        amount = testAccount.withdrawFunds(100d);
-
-        testAccount.setBalance(400d);
-        System.out.println(testAccount.getBalance());
-    }
-
     private static void challengeFortyTwo() {
 
         /*

@@ -1806,3 +1806,163 @@ class RadixSort {
         return strings;
     }
 }
+
+/*
+    ! use INTERFACES & ABSTRACT classes
+
+        INTERFACE: abstract collection of public signatures that designated classes must uniquely implement/@Override for standardization
+        ABSTRACT CLASSES: force INHERITANCE of NECESSARY extending child/subclasses instances with standardized method implementations with potential POLYMORPHISM
+
+            ! Interfaces vs Abstract Classes
+
+                ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
+
+                INTERFACES can ONLY define publicly-shared signatures
+
+                    interfaces can have essentially-constant variables defined as "public static final"
+
+    ? create a bank account class
+        with fields:
+            account number, balance, customer name, email and phone number
+
+    ? create getters & setters for each field
+    ? create deposit funds method that increments balance field
+    ? create withdraw funds method that deducts from balance field
+        only allow withdraws if there are sufficient funds
+ */
+
+interface IAccounts {
+
+    // abstract collection of publicly-shared method signatures (for object standardization) that designated classes must uniquely implement/@Override
+    int deposit(int amount);
+    int withdraw(int amount);
+}
+
+abstract class AbstractAccount implements IAccounts {
+
+    // private class fields
+    private int accountNumber;
+    private int balance;
+    private String customerName;
+    private String email;
+    private String phoneNumber;
+
+    // ! INTERFACE + POLYMOPRHISM: must uniquely implement/@Override all publicly-shared signatures for designated classes
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountNumber=" + accountNumber +
+                ", balance=" + balance +
+                ", customerName='" + customerName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
+    // OOP constructor that initializes the class fields on class object instantiation
+    public AbstractAccount(int accountNumber, int balance, String customerName, String email, String phoneNumber) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        this.customerName = customerName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int deposit(int amount) {
+        if(!hasEnoughFunds(amount) || !validAmount(amount)) return -1;
+        return this.balance += amount;
+    }
+
+    public int withdraw(int amount) {
+        if(!hasEnoughFunds(amount) || !validAmount(amount)) return -1;
+        return this.balance -= amount;
+    }
+
+    private boolean validAmount(int amount) {
+        return amount > 0;
+    }
+
+    private boolean hasEnoughFunds(int withdraw) {
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class
+        Integer newBalance = (this.balance - withdraw);
+        return newBalance >= 0;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+}
+
+class BankAccount extends AbstractAccount {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String NOT_ENOUGH_FUNDS = "Not enough funds.";
+
+    // OOP constructor that initializes the class fields on class/object instantiation
+    public BankAccount(int accountNumber, int balance, String customerName, String email, String phoneNumber) {
+        // ! INHERITANCE: child subclass inherits the class fields & public methods from an extending parent super class
+        super(accountNumber, balance, customerName, email, phoneNumber);
+    }
+
+    @Override
+    public int deposit(int amount) {
+        int response = super.deposit(amount);
+        if(response == -1) {
+            System.out.println(NOT_ENOUGH_FUNDS + this.toString());
+            return response;
+        }
+
+        System.out.println("New balance: " + response);
+        return response;
+    }
+
+    @Override
+    public int withdraw(int amount) {
+        int response = super.withdraw(amount);
+        if(response == -1) {
+            System.out.println(NOT_ENOUGH_FUNDS + this.toString());
+            return response;
+        }
+
+        System.out.println("New balance: " + response);
+        return response;
+    }
+
+
+}
