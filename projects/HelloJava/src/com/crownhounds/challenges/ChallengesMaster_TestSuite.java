@@ -1540,3 +1540,208 @@ class EmployeeDoublyLinkedListTest extends ChallengesMaster_TestSuite {
         assertNull(actual);
     }
 }
+
+class VehicleTest extends ChallengesMaster_TestSuite {
+
+    // private class fields
+    private Ferrari enzo;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        enzo = new Ferrari("Enzo", 6);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void changingGears_success() {
+        enzo.setSpeed(25);
+        boolean actual = enzo.changingGears(2);
+        assertTrue(actual);
+    }
+
+    @Test
+    void changingGears_invalidInputFail() {
+        boolean actual = enzo.changingGears(7);
+        assertFalse(actual);
+    }
+
+
+    @Test
+    void changingGears_stallingFail() {
+        boolean actual = enzo.changingGears(4);
+        assertFalse(actual);
+    }
+
+
+    @Test
+    void accelerating_success() {
+
+        int test = 10;
+
+        int expected = 10;
+        int actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+
+        test = 25;
+
+        expected = 35;
+        actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void accelerating_inputFail() {
+
+        int test = 0;
+
+        int expected = -1;
+        int actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+
+        test = 10;
+        enzo.accelerating(test);
+
+        test = 0;
+        int expectedGetSpeed = 10;
+        enzo.accelerating(test);
+        assertEquals(expectedGetSpeed, enzo.getSpeed());
+    }
+
+    @Test
+    void accelerating_zeroTotalSuccess() {
+
+        int test = 1;
+
+        int expected = 1;
+        int actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+
+
+        test = -1;
+        expected = 0;
+        actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+
+        test = 1;
+        enzo.accelerating(test);
+        test = -5;
+        actual = enzo.accelerating(test);
+        expected = 0;
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void accelerating_negativeInputSuccess() {
+
+        int test = 35;
+
+        int expected = 35;
+        int actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+
+
+        test = -7;
+
+        expected = 28;
+        actual = enzo.accelerating(test);
+        assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void isMoving_true() {
+        int test = 35;
+        enzo.accelerating(test);
+
+        assertTrue(enzo.isMoving());
+    }
+
+    @Test
+    void isMoving_false() {
+        assertFalse(enzo.isMoving());
+    }
+
+    @Test
+    void handSteering_success() {
+        int test = 10;
+
+        int expected = 10;
+        int actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        expected = 20;
+        enzo.setDirection(10);
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        expected = 9;
+        enzo.setDirection(359);
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void handSteering_inputFail() {
+
+        int test = 0;
+
+        int expected = -1;
+        int actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = 360;
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = -360;
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = 361;
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = -361;
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void handSteering_negativeSuccess() {
+
+        enzo.setDirection(10);
+
+        int test = -10;
+        int expected = 10;
+        int actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = -355;
+        expected = -345;
+        enzo.setDirection(10);
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+
+        test = -359;
+        expected = -9;
+        enzo.setDirection(-10);
+        actual = enzo.handSteering(test);
+        assertEquals(expected, actual);
+    }
+}

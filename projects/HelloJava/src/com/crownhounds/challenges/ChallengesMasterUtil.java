@@ -12,13 +12,11 @@ public class ChallengesMasterUtil {
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
     public static final String INVALID_INPUT = "Invalid input";
     public static final String INVALID_VALUE = "Invalid Value";
-    public static final String ADDED = "Added: ";
-    public static final String RESULT = "Result: ";
 
     public static void main(String[] args) {
+//        GroceryApp groceryApp = new GroceryApp();
+//        groceryApp.run();
 
-        GroceryApp groceryApp = new GroceryApp();
-        groceryApp.run();
     }
 }
 
@@ -2426,5 +2424,352 @@ class EmployeeDoublyLinkedList extends AbstractDoubly {
 
     public void setSize(int size) {
         this.size = size;
+    }
+}
+
+/*
+    ? Create Vehicle class
+
+        in conjunction with state, the shared vehicle behaviors have:
+
+            hand steering
+
+            changing gears
+
+            moving with speed
+                accelerating: increasing/decreasing speeding should be included
+
+    ? Create Car class that inherits from Vehicle class
+
+    ? Create specific model class that inherits from Car class
+
+        specific model class should have unique behavior
+
+    * use INNER CLASS, OOP INHERITANCE, INTERFACE, ABSTRACTION
+
+    ! INTERFACES VS ABSTRACT CLASSES
+
+        ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+
+        * CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+
+        INTERFACES can ONLY define publicly-shared signatures
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: for standardization, publicly-shared method signatures that must be uniquely implemented/@Override for designated classes
+interface IVehicle {
+
+    boolean changingGears(int gear);
+    Integer accelerating(int speed);
+    boolean isMoving();
+}
+
+// ! ABSTRACT CLASSES: enforce OOP INHERITANCE by mandating POLYMORPHISM for MANDATORY subclasses
+// ! INHERITANCE: child subclass inherits public class fields & methods from an extending parent super class
+abstract class AbstractVehicle implements IVehicle {
+
+    protected static final String CURRENT_DIRECTION = "Vehicle currently moving direction is at angle ";
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect class functionality and attributes from inappropriate external access
+    // ! ACCESS-MODIFIER private: accessibility of variable or method limited to the scope of the defining class
+    // private class fields
+    private int speed;
+    private int direction;
+    private Gearbox gearbox;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public AbstractVehicle(int speed, int numGears) {
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        this.speed = speed;
+
+        // default values on instantiation
+        this.direction = 0;
+        this.gearbox = new Gearbox(numGears);
+    }
+
+    // ! ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+    abstract int handSteering(int direction);
+
+    @Override
+    public boolean isMoving() {
+        return this.speed > 0;
+    }
+
+    // ! OOP GETTERS & SETTERS
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getDirection() {
+        System.out.println(CURRENT_DIRECTION + this.direction);
+        return this.direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public Gearbox getGearbox() {
+        return gearbox;
+    }
+
+    public void setGearbox(Gearbox gearbox) {
+        this.gearbox = gearbox;
+    }
+
+    public int getCurrentGear() {
+        return this.gearbox.currentGear.gearNumber;
+    }
+
+    // ! ACCESS-MODIFIER protected: accessibility of public variable or method limited to the scope of defining class and it's subclasses
+    // ! INNER CLASS: logically grouped class components within a parent class
+    protected class Gearbox {
+
+        // ! CONSTANTS/static class variables assigned FINAl value before compilation/instantiation
+        // ! STATIC: class-associated (not any subclass instance) variable stored in single space in memory and shared accross entire applicaiton
+        protected static final String GRINDING = "Gears are grinding because speed is too high for gear range";
+
+        // ! OOP ENCAPSULATION: use access-modifiers to protect class functionality and attributes from inappropriate external access
+        // ! GENERICS: enforce parameter dataType on object definition to improve OOP ENCAPSULATION
+        // private class fields
+        private final ArrayList<Gear> gears;
+        private Gear currentGear;
+
+        // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+        public Gearbox(int numGears) {
+
+            // default values on class instantiation
+            this.gears = new ArrayList<>();
+
+            for(int i = 1; i <= numGears; i++) {
+                Gear gear = new Gear(i);
+                this.gears.add(gear);
+            }
+
+            this.currentGear = this.gears.get(0);
+        }
+
+        @Override
+        public String toString() {
+            return "\n\tGearbox{" +
+                    "gears=" + gears.toString() +
+                    "}\n";
+        }
+
+        // OOP GETTERS & SETTERS
+        public ArrayList<Gear> getGears() {
+            return gears;
+        }
+
+        public Gear getCurrentGear() {
+            return currentGear;
+        }
+
+        public void setCurrentGear(Gear currentGear) {
+            this.currentGear = currentGear;
+        }
+
+        protected class Gear {
+
+            // ! OOP ENCAPSULATION: use access-modifiers to protect class functionality and attributes from inappropriate external access
+            // private class fields
+            private final int gearNumber;
+
+            // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+            public Gear(int gearNumber) {
+                this.gearNumber = gearNumber;
+            }
+
+            // CLASS METHODS: unique object behavior
+            @Override
+            public String toString() {
+                return "\n\t\tGear{" +
+                        "gearNumber=" + getGearNumber() +
+                        '}';
+            }
+
+            // OOP GETTERS & SETTERS
+            public int getGearNumber() {
+                return gearNumber;
+            }
+        }
+    }
+}
+
+class Vehicle extends AbstractVehicle {
+
+    // ! CONSTANTS/static class variables assigned FINAL values before compilation/instantiation
+    private static final String NOW_MOVING_AT = " now moving at ";
+    protected static final String COMPLETE_STOP = " is at a complete stop";
+    protected static final String INVALID_GEAR = "Invalid Gear";
+    protected static final String SAME_GEAR = "Same Gear";
+    protected static final String CURRENT_GEAR = "Current Gear: ";
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public Vehicle(int numGears) {
+        // ! OOP INHERITANCE: child subclass inherits public class fields & methods from an extending parent super class
+        super(0, numGears);
+    }
+
+    @Override
+    public boolean changingGears(int gear) {
+
+        Gearbox gearbox = this.getGearbox();
+        int oldGearNumber = this.getCurrentGear();
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(gear > gearbox.getGears().size()) {
+            System.out.println(INVALID_GEAR);
+            return false;
+        } else if(gear == oldGearNumber) {
+            System.out.println(SAME_GEAR);
+            return false;
+        }
+
+        int currentSpeed = this.getSpeed();
+        Gearbox.Gear newGear = gearbox.getGears().get(gear);
+
+        switch(gear) {
+            case 1:
+                if(currentSpeed > 0 && currentSpeed < 10) gearbox.setCurrentGear(newGear);
+                break;
+            case 2:
+                 if(currentSpeed >= 10 && currentSpeed < 30) gearbox.setCurrentGear(newGear);
+                break;
+            case 3:
+                if(currentSpeed >= 30 && currentSpeed < 45) gearbox.setCurrentGear(newGear);
+                break;
+            case 4:
+                if(currentSpeed >= 45 && currentSpeed < 70) gearbox.setCurrentGear(newGear);
+                break;
+            case 5:
+                if(currentSpeed >= 70 && currentSpeed < 90) gearbox.setCurrentGear(newGear);
+                break;
+            case 6:
+                if(currentSpeed >= 90) gearbox.setCurrentGear(newGear);
+                break;
+            default:
+                System.out.println(INVALID_GEAR);
+                break;
+        }
+
+        if(getCurrentGear() != oldGearNumber) {
+            System.out.println(CURRENT_GEAR + this.getCurrentGear());
+            return true;
+        }
+
+        System.out.println(INVALID_GEAR);
+        return false;
+    }
+
+    @Override
+    public Integer accelerating(int speed) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(speed == 0) return -1;
+
+        int newSpeed = this.getSpeed() + speed;
+
+        if(newSpeed <= 0) {
+            this.setSpeed(0);
+            System.out.println(getClass().getSimpleName() + COMPLETE_STOP);
+            return this.getSpeed();
+        }
+
+        this.setSpeed(newSpeed);
+        System.out.println(getClass().getSimpleName() + NOW_MOVING_AT + this.getSpeed());
+        return this.getSpeed();
+    }
+
+    @Override
+    int handSteering(int direction) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(!inRangeDirection(direction)) return -1;
+
+        int newDirection = this.getDirection() + direction;
+
+        if(newDirection == 0) return this.getDirection();
+
+        if(newDirection < -360) {
+            newDirection += 360;
+        } else if(newDirection > 360) {
+            newDirection -= 360;
+        }
+
+        this.setDirection(newDirection);
+        return getDirection();
+    }
+
+    private boolean inRangeDirection(int direction) {
+        return direction != 0 && direction < 360 && direction > -360;
+    }
+}
+
+class Car extends Vehicle {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect class functionality and attributes from inappropriate external access
+    // private class fields
+    private int numWheels;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public Car(int numWheels, int numGears) {
+        super(numGears);
+        this.numWheels = numWheels;
+    }
+
+    // CLASS METHODS
+    // ! OOP POLYMORPHISM: @Override inherited public method for class to have unique implementation
+
+    // OOP GETTERS & SETTERS
+    public int getNumWheels() {
+        return numWheels;
+    }
+
+    public void setNumWheels(int numWheels) {
+        this.numWheels = numWheels;
+    }
+}
+
+class Ferrari extends Car {
+
+    // private class fields
+    private String model;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public Ferrari(String model, int numGears) {
+        super(4, numGears);
+        this.model = model;
+
+    }
+
+    // CLASS METHODS: unique object behavior
+    @Override
+    public String toString() {
+        return "Ferrari{" +
+                "model='" + getModel() + '\'' +
+                ", gearbox=" + getGearbox() +
+                '}';
+    }
+
+    @Override
+    public boolean isMoving() {
+
+        if(!super.isMoving()) System.out.println(this + COMPLETE_STOP);
+
+        return super.isMoving();
+    }
+
+    public String getModel() {
+        return this.getClass().getSimpleName() + " " + model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }
