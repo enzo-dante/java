@@ -1,5 +1,6 @@
 package com.crownhounds.challenges;
 
+import com.crownhounds.datastructures_and_algorithms.Employee;
 import com.crownhounds.masterjava.Util;
 
 import java.util.*;
@@ -1965,4 +1966,465 @@ class BankAccount extends AbstractAccount {
     }
 
 
+}
+
+/*
+    ? write a class called GSD
+
+    ? write a method getGreatestCommonDivisor with two params of type int named first and second
+
+        if one of the params < 10, return -1
+
+        the method should return the greatest common divisor of the 2 numbers (int)
+
+    ! use INTERFACES, ABSTRACTION, EXCEPTION HANDLING, TDD, GENERICS, AUTOBOXING/UNBOXING
+
+    * HINT: greatest common divisor is the largest positive integer that can fully divide each of the integers (no remainder)
+
+            12 = [12, 1], [6, 2], [4,3]
+            GCF/GCD = 6
+
+    ! INTERFACES vs ABSTRACTION
+
+        ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
+
+        INTERFACES can ONLY define publicly-shared signatures
+
+            interfaces can have essentially-constant variables defined as "public static final"
+ */
+
+interface IDivisor {
+
+    // ! INTERFACES + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared defined signatures for designated classes
+    Integer getGreatestCommonDivisor(int first, int second);
+}
+
+// ! ABSTRACT CLASSES: enforce child subclass INHERITANCE of methods, method signatures, & class fields of an extending parent super class by mandating POLYMORPHISM for prerequisite instances of designated classes
+abstract class AbstractGreatest implements IDivisor {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect public class fields & methods from external inappropriate use
+    // ! ACCESS-MODIFIER private: method or variable w/ accessability limited to scope of defining class
+    private int limit;
+
+    // ! OOP: constructor that initializes the class fields on class/object instantiation
+    public AbstractGreatest(int limit) {
+        this.limit = limit;
+    }
+}
+
+class GSD extends AbstractGreatest {
+
+    // ! OOP: constructor that initializes the class fields on class/object instantiation
+    // ! ACCESS-MODIFIER public: method or variable accessible from any scope
+    public GSD(int limit) {
+        super(limit);
+    }
+
+    @Override
+    public Integer getGreatestCommonDivisor(int first, int second) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to prevent code breaks
+        if(validateParms(first, second)) return -1;
+
+        int gsd = 1;
+        int length = Math.max(first, second) / 2;
+
+        // option 1
+        for(int i = 1; i < length; i++) {
+
+            if((first % i == 0) &&
+                    (second % i == 0)) gsd = i;
+        }
+
+        return gsd;
+    }
+
+    private boolean validateParms(int first, int second) {
+        return (first < 10) || (second < 10);
+    }
+}
+
+/*
+    write FactorPrinter class
+    write the printFactors method with 1 int parameter called number
+
+        that returns nothing, but prints all the factors of a number
+
+    if number is less than 1, print 'Invalid Value'
+
+    * HINT: a factor is an integer that divides that number wholly (no remainder)
+ */
+class FactorPrinter {
+
+    // CONSTANTS/static class variables assigned final value before compilation/instantiation
+    private static final String INVALID_VALUE = "Invalid Value";
+    private static final String ALL_FACTORS_PRINTED = "All factors printed";
+
+    // ! STATIC: single class variables saved in memory associated with class and not instances shared across entire app
+    // ! GENERICS: enforce parameter dataType and improve OOP ENCAPSULATION
+    static String printFactors(int number) {
+
+        if(number < 1) return INVALID_VALUE;
+
+        int midpoint = number / 2;
+        for(int factor = 1; factor < midpoint; factor++) {
+
+            if(number % factor == 0) {
+                System.out.println(factor);
+                number /= factor;
+            }
+        }
+
+        return ALL_FACTORS_PRINTED;
+    }
+}
+
+/*
+    ? write a class called PerfectNumber
+
+    ? write a method called isPerfectNumber with int parameter(s) called number
+
+        if number < 1
+            returns false
+
+        if number is perfect
+            return true
+
+    perfect number:
+        ! A perfect number is a positive integer which is equal to the sum of its proper positive divisors.
+    Proper positive divisors:
+        ! positive integers that fully divide the perfect number without leaving a remainder and exclude the perfect number itself.
+
+        * For example, take the number 6:
+
+            * Its proper divisors are 1, 2, and 3
+                (since 6 is the value of the perfect number, it is excluded)
+
+            * the sum of its proper divisors is 1 + 2 + 3 = 6.
+ */
+
+class PerfectNumber {
+
+    public static boolean isPerfectNumber(int number) {
+
+        if(number < 1) return false;
+
+        int sum = 0;
+        boolean isProperPositiveDivisor;
+
+        for(int i = 1; i < number; i++) {
+
+            isProperPositiveDivisor = (number % i == 0);
+
+            if(isProperPositiveDivisor) {
+                sum += i;
+            }
+        }
+        return sum == number;
+    }
+}
+
+/*
+   1. Write a LeapYearCalculator class
+
+   2. Write a method isLeapYear with a parameter of type int named year.
+
+       The parameter needs to be greater than or equal to 1 and less than or equal to 9999.
+           If the parameter is not in that range return false.
+
+       Otherwise, if it is in the valid range,
+           calculate if the year is a leap year and return true if it is a leap year, otherwise return false.
+
+       To determine whether a year is a leap year, follow these steps:
+           1. If the year is evenly divisible by 4, go to step 2.
+
+               Otherwise, go to step 5 if NOT evenly divisible by 4 go step 5
+
+           2. If the year is evenly divisible by 100, go to step 3.
+               Otherwise, go to step 4.
+
+           3. If the year is evenly divisible by 400, go to step 4.
+               Otherwise, go to step 5.
+
+           4. The year is a leap year (it has 366 days).
+               The method isLeapYear needs to return true.
+
+           5. The year is not a leap year (it has 365 days).
+               The method isLeapYear needs to return false.
+
+   3. TEST divisibility by 100 BUT_NOT/AND 400
+
+       1. The following years are NOT leap years:
+
+       This is because they are evenly divisible by 100 but NOT by 400.
+           1700, 1800, 1900, 2100, 2200, 2300, 2500, 2600
+
+       2. The following years ARE leap years:
+
+       This is because they are evenly divisible by both 100 AND 400.
+           1600, 2000, 2400
+
+*/
+class LeapYearCalculator {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    // ! STATIC: single instance variables saved in memory associated with class and not any single subclass instance
+    // ! ACCESS-MODIFIER private: accessibility to variable and method limited to the scope of the defining class
+    private static final String IS_VALID_YEAR = " is a valid year!";
+
+    // ! ACCESS-MODIFIER public: accessible from any scope
+    public static boolean isLeapYear(int year) {
+
+        boolean isDivBy4 = (year % 4 == 0);
+        boolean isDivBy100 = (year % 100 == 0);
+        boolean isDivBy400 = (year % 400 == 0);
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to prevent any exceptions
+        if(!inRangeParameter(year) || !isDivBy4) return false;
+        System.out.println(year + IS_VALID_YEAR);
+
+        if(!isDivBy100) return true;
+
+        return isDivBy400;
+    }
+
+    // ! ACCESS-MODIFIER protected: accessibility to variable and method limited to the scope of the defining class and child subclasses
+    protected static boolean inRangeParameter(int year) {
+        return (year >= 1) && (year < 10000);
+    }
+}
+
+/*
+    ? Define EmployeeDoublyLinkedList class that has all the functionality of a doubly linkedList
+
+    ? implement addBefore(Employee e1, Employee e2) for EmployeeDoublyLinkedList class that will insert new employee immediately before existing employee
+        return true if you were able to successfully add the employee
+        into the list before the existing employee. Return false
+        if the existing employee doesn't exist in the list
+
+    ! INTERFACE & ABSTRACT CLASSES
+
+        ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+
+        * CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+
+        INTERFACES can ONLY define publicly-shared signatures
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: publicly-shared method signatures that must be uniquely implemented/@Override by all implementing classes
+interface IDoubly {
+
+    boolean addBefore(Employee e1, Employee e2);
+    boolean isEmpty();
+    int getSize();
+}
+
+// ! ABSTRACT CLASSES: enforce required child subclass INHERITANCE of methods, signatures, parent super class-fields by mandating OOP POLYMORPHISM of method signatures
+abstract class AbstractDoubly implements IDoubly {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    // ! STATIC: variable stored in a single place in memory that is shared by entire application and associated w/ the defining class and not any single subclass
+    // ! ACCESS-MODIFIER protected: accessibility of variable or method limited to the scope of the defining class and it's subclasses within the package
+    protected static final String NO_EMPLOYEES = "There are no employees in this doubly linkedList.";
+    private static final String HEAD = "HEAD => ";
+    private static final String TAIL = "NULL TAIL";
+    private static final String DIVIDER = "\n\t <=> ";
+
+    // ! OOP ENCAPSULATION: access-modifier protected variables & methods from inappropriate external use
+    // ! ACCESS-MODIFIER private: accessibility of variable or method limited to the scope of the defining class
+    // private class fields
+    private Employee head;
+    private Employee tail;
+
+    // ! OOP constructor that initializes the class fields on class/object instantiation
+    public AbstractDoubly() {
+        // default values
+        this.head = null;
+        this.tail = null;
+    }
+
+    // OOP CLASS METHODS
+    // ! ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+    abstract boolean addToFront(Employee e);
+    abstract boolean addToEnd(Employee e);
+    abstract Employee removeFromFront();
+    abstract Employee removeFromEnd();
+
+    // ! ACCESS-MODIFIER public: variable or method is accessible from any scope
+    public void printList() {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to avoid exceptions
+        if(this.isEmpty()) System.out.println(NO_EMPLOYEES);
+        Employee current = this.head;
+
+        System.out.print(HEAD);
+
+        while(current != null) {
+            System.out.print(current);
+            System.out.print(DIVIDER);
+
+            current = current.getNext();
+        }
+        System.out.println(TAIL);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.head == null;
+    }
+    // OOP ENCAPSULATION GETTERS & SETTERS
+    public Employee getHead() {
+        return this.head;
+    }
+
+    public Employee getTail() {
+        return this.tail;
+    }
+
+    public void setHead(Employee head) {
+        this.head = head;
+    }
+
+    public void setTail(Employee tail) {
+        this.tail = tail;
+    }
+}
+
+class EmployeeDoublyLinkedList extends AbstractDoubly {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String NOT_FOUND = "Employee not found";
+
+    // private class fields
+    private int size;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public EmployeeDoublyLinkedList() {
+        this.size = 0;
+    }
+
+    @Override
+    public boolean addBefore(Employee insertingNode, Employee existingNode) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(this.isEmpty() || insertingNode == null || existingNode == null ) return false;
+
+        if(this.getHead().getId() == existingNode.getId()) {
+            this.addToFront(insertingNode);
+            return true;
+        }
+
+        Employee current = this.getHead();
+
+        while(current != null && current.getNext() != null) {
+
+            Employee currentTail = current.getNext();
+
+            if(currentTail.getId() == existingNode.getId()){
+                this.size++;
+
+                insertingNode.setNext(currentTail);
+                current.setNext(insertingNode);
+
+                return true;
+            }
+            current = currentTail;
+        }
+        System.out.println(NO_EMPLOYEES);
+        return false;
+    }
+
+    @Override
+    boolean addToFront(Employee e) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(e == null) return false;
+
+        this.size++;
+
+        if(this.isEmpty()) {
+            this.setHead(e);
+            return true;
+        }
+
+        e.setNext(this.getHead());
+        this.setHead(e);
+        return true;
+    }
+
+    @Override
+    boolean addToEnd(Employee e) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(e == null) return false;
+
+        this.size++;
+
+        if(this.isEmpty()) {
+            addToFront(e);
+        } else {
+
+            Employee current = this.getHead();
+
+            while(current.getNext() != null) {
+                current = current.getNext();
+            }
+
+            current.setNext(e);
+            this.setTail(e);
+        }
+        return true;
+    }
+
+    @Override
+    Employee removeFromFront() {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(this.isEmpty()) return null;
+
+        this.size--;
+
+        Employee poppedEmployee = this.getHead();
+        this.setHead(poppedEmployee.getNext());
+
+        return poppedEmployee;
+    }
+
+    @Override
+    Employee removeFromEnd() {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(this.isEmpty()) return null;
+
+        this.size--;
+
+        Employee current = this.getHead();
+        Employee removed = null;
+
+        while(current.getNext() != null) {
+            removed = current.getNext().getNext();
+            if(removed == null) break;
+
+            current = current.getNext();
+        }
+
+        removed = current.getNext();
+        current.setNext(null);
+        this.setTail(current);
+
+        return removed;
+    }
+
+    @Override
+    public int getSize() {
+
+        if(this.isEmpty()) return -1;
+
+        // implied else-statement
+        return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

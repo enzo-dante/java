@@ -862,45 +862,6 @@ class Phone {
     }
 }
 
-class PerfectNumber {
-
-    /**
-     * perfect number:
-     *     ! A perfect number is a positive integer which is equal to the sum of its proper positive divisors.
-     * Proper positive divisors:
-     *     ! positive integers that fully divide the perfect number without leaving a remainder and exclude the perfect number itself.
-     *
-     * @param number
-     * @return boolean
-     */
-    public static boolean isPerfectNumber(int number) {
-
-        int sum = 0;
-        boolean isProperPositiveDivisor;
-        boolean isPerfect;
-
-        if(number < 1) {
-            return false;
-        }
-
-        for(int i = 1; i < number; i++) {
-
-            isProperPositiveDivisor = (number % i == 0);
-
-            if(isProperPositiveDivisor) {
-                sum += i;
-            }
-        }
-
-        isPerfect = (sum == number);
-
-        if(isPerfect) {
-            return true;
-        }
-
-        return false;
-    }
-}
 
 class Bank {
 

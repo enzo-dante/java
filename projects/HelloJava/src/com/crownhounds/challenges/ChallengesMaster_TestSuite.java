@@ -1,5 +1,6 @@
 package com.crownhounds.challenges;
 
+import com.crownhounds.datastructures_and_algorithms.Employee;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -1040,5 +1041,502 @@ class BankAccountTest extends ChallengesMaster_TestSuite {
         int expected = -1;
         int actual = bankAccount.withdraw(testAmount);
         assertEquals(expected, actual);
+    }
+}
+
+class GSDTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect public class fields & methods from external inappropriate use
+    // ! ACCESS-MODIFIER private: method or variable w/ accessability limited to scope of defining class
+    // private class fields
+    private GSD gsd;
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_ALL);
+        gsd = new GSD(10);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void getGreatestCommonDivisor_success() {
+
+        int testInputFirst = 12; // 12-1 6-2 4-3
+        int testInputSecond = 30; // 30-1 15-2 10-3 6-5
+
+        Integer expected = 6;
+        Integer actual = gsd.getGreatestCommonDivisor(testInputFirst, testInputSecond);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getGreatestCommonDivisor_badInput() {
+
+        int testInputFirst = 11;
+        int testInputSecond = 9;
+
+        Integer expected = -1;
+
+        // ! AUTOBOXING: casting a primitive dataType -> greater functionality compatible Wrapper class dataType
+        Integer actual = gsd.getGreatestCommonDivisor(testInputFirst, testInputSecond);
+        assertEquals(expected, actual);
+
+        testInputFirst = -1;
+        testInputSecond = 11;
+
+        actual = gsd.getGreatestCommonDivisor(testInputFirst, testInputSecond);
+        assertEquals(expected, actual);
+
+        testInputFirst = -5;
+        testInputSecond = -9;
+
+        actual = gsd.getGreatestCommonDivisor(testInputFirst, testInputSecond);
+        assertEquals(expected, actual);
+    }
+}
+
+class FactorPrinterTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect variables & methods from external inappropriate use
+    // private class fields
+    private String expected;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        System.out.println(BEFORE_EACH);
+
+    }
+
+    @AfterEach
+    void afterEach() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void printFactors_success() {
+
+        int testInput = 6;
+        expected = "All factors printed";
+        String actual = FactorPrinter.printFactors(testInput);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void printFactors_fail() {
+
+        int testInput = -1;
+        expected = "Invalid Value";
+        String actual = FactorPrinter.printFactors(testInput);
+        assertEquals(expected, actual);
+    }
+}
+
+class PerfectNumberTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to protect variables & methods from external inappropriate use
+    // private class fields
+    private boolean expected;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        System.out.println(BEFORE_EACH);
+
+    }
+
+    @AfterEach
+    void afterEach() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void isPerfectNumber_success() {
+
+        int testInput = 6;
+        boolean actual = PerfectNumber.isPerfectNumber(testInput);
+        assertTrue(actual);
+    }
+
+    @Test
+    void isPerfectNumber_fail() {
+
+        int testInput = 7;
+        boolean actual = PerfectNumber.isPerfectNumber(testInput);
+        assertFalse(actual);
+    }
+
+
+    @Test
+    void isPerfectNumber_badInput() {
+
+        int testInput = 0;
+        boolean actual = PerfectNumber.isPerfectNumber(testInput);
+        assertFalse(actual);
+    }
+}
+
+class LeapYearCalculatorTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: access-modifier protection from external inappropriate use
+    // private class fields
+    private LeapYearCalculator leapYearCalculator;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void isLeapYear_true() {
+
+        // ! WRAPPER CLASS: a dataType with greater functionality than comprable primitive dataType
+        // ! UNBOXING: casting wrapper class dataType -> primitive dataType
+        Integer test = 1600;
+         // REFERENCE LeapYearCalculator class
+        boolean actual = LeapYearCalculator.isLeapYear(test);
+        assertTrue(actual);
+
+        test = 2000;
+        actual = LeapYearCalculator.isLeapYear(test);
+        assertTrue(actual);
+
+        // TEST numbers in range(1,100)
+        test = 4;
+        actual = LeapYearCalculator.isLeapYear(test);
+        assertTrue(actual);
+
+        test = 1924;
+        actual = LeapYearCalculator.isLeapYear(test);
+        assertTrue(actual);
+    }
+
+    @Test
+    void isLeapYear_false() {
+
+        // REFERENCE LeapYearCalculator class
+        Integer test = 2017;
+        boolean actual = LeapYearCalculator.isLeapYear(test);
+        assertFalse(actual);
+
+        // TEST divisibility by 100 AND 4 BUT_NOT 400
+        test = 1800;
+        actual = LeapYearCalculator.isLeapYear(test);
+        assertFalse(actual);
+
+        test = 1900;
+        actual = LeapYearCalculator.isLeapYear(test);
+        assertFalse(actual);
+    }
+
+    @Test
+    void isLeapYear_badInput() {
+
+        Integer test = -1600;
+        boolean actual = LeapYearCalculator.isLeapYear(test);
+        assertFalse(actual);
+    }
+}
+
+class EmployeeDoublyLinkedListTest extends ChallengesMaster_TestSuite {
+
+    // ! OOP ENCAPSULATION: access-modifier protection from external inappropriate use
+    // private class fields
+    private EmployeeDoublyLinkedList linkedList;
+    private Employee test = new Employee("Stone", "Vernon", 999);
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        linkedList = new EmployeeDoublyLinkedList();
+
+        linkedList.addToFront(new Employee("Jane", "Jones", 123));
+        linkedList.addToFront(new Employee("John", "Doe", 456));
+        linkedList.addToFront(new Employee("Mary", "Smith", 789));
+        linkedList.addToFront(new Employee("Mike", "Wilson", 135));
+        linkedList.addToFront(new Employee("Bill", "Elvin", 246));
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+        linkedList = null;
+    }
+
+    @Test
+    void isEmpty_true() {
+        linkedList = new EmployeeDoublyLinkedList();
+        assertTrue(linkedList.isEmpty());
+    }
+
+    @Test
+    void isEmpty_false() {
+        assertFalse(linkedList.isEmpty());
+    }
+
+    @Test
+    void getSize_success() {
+        int expected = 5;
+        int actual = linkedList.getSize();
+        linkedList.printList();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getSize_empty() {
+        linkedList = new EmployeeDoublyLinkedList();
+        int expected = -1;
+        int actual = linkedList.getSize();
+        linkedList.printList();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addBefore_true() {
+        Employee e2 = new Employee("Mary", "Smith", 789);
+        int expectedSize = 6;
+
+        boolean actual = linkedList.addBefore(test, e2);
+        linkedList.printList();
+        assertTrue(actual);
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addBefore_true2() {
+        Employee e2 = new Employee("John", "Doe", 456);
+        int expectedSize = 6;
+
+        boolean actual = linkedList.addBefore(test, e2);
+        linkedList.printList();
+        assertTrue(actual);
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addBefore_newHeadTrue() {
+        Employee e2 = new Employee("Bill", "Elvin", 246);
+        int expectedSize = 6;
+
+        boolean actual = linkedList.addBefore(test, e2);
+        linkedList.printList();
+        assertTrue(actual);
+
+        linkedList.printList();
+        assertEquals(test, linkedList.getHead());
+
+
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addBefore_missingExistingFalse() {
+        Employee e1 = new Employee("Jane", "Jones", 123);
+        Employee e2 = new Employee("test", "test", 000);
+        int expectedSize = 5;
+
+        boolean actual = linkedList.addBefore(e1, e2);
+        linkedList.printList();
+        assertFalse(actual);
+
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addBefore_badInputFalse() {
+        Employee e1 = new Employee("Jane", "Jones", 123);
+        Employee e2 = new Employee("Mary", "Smith", 789);
+
+        boolean actual = linkedList.addBefore(null, null);
+        linkedList.printList();
+        assertFalse(actual);
+
+        actual = linkedList.addBefore(null, e2);
+        assertFalse(actual);
+
+        actual = linkedList.addBefore(e1, null);
+        assertFalse(actual);
+    }
+
+    @Test
+    void addBefore_emptyFalse() {
+        linkedList = new EmployeeDoublyLinkedList();
+        Employee e1 = new Employee("Jane", "Jones", 123);
+        Employee e2 = new Employee("Mary", "Smith", 789);
+
+        boolean actual = linkedList.addBefore(e1, e2);
+        linkedList.printList();
+        assertFalse(actual);
+    }
+
+    @Test
+    void addToFront_emptyAdd() {
+        linkedList = new EmployeeDoublyLinkedList();
+        Employee expected =  test;
+
+        linkedList.addToFront(expected);
+        linkedList.printList();
+        assertEquals(expected, linkedList.getHead());
+    }
+
+    @Test
+    void addToFront_populatedAdd() {
+        Employee expected = new Employee("Stone", "Vernon", 999);
+        int expectedSize = 6;
+
+        linkedList.addToFront(expected);
+        linkedList.printList();
+        assertEquals(expected, linkedList.getHead());
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addToFront_badInputFail() {
+        test = null;
+
+        Employee expected = new Employee("Bill", "Elvin", 246);
+        int expectedSize = 5;
+
+        linkedList.addToEnd(test);
+        linkedList.printList();
+        assertEquals(expected, linkedList.getHead());
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void addToEnd_emptyAdd() {
+        linkedList = new EmployeeDoublyLinkedList();
+
+        linkedList.addToEnd(test);
+        linkedList.printList();
+        assertEquals(test, linkedList.getHead());
+    }
+
+    @Test
+    void addToEnd_populateAdd() {
+        int expectedSize = 6;
+        linkedList.addToEnd(test);
+
+        assertEquals(test, linkedList.getTail());
+        assertEquals(expectedSize, linkedList.getSize());
+
+        Employee current = linkedList.getHead();
+
+        while(current.getNext() != null) {
+            current = current.getNext();
+        }
+        assertEquals(test, current);
+        linkedList.printList();
+    }
+
+    @Test
+    void addToEnd_badInputFail() {
+        test = null;
+        Employee expected = new Employee("Bill", "Elvin", 246);
+
+        linkedList.addToEnd(test);
+        linkedList.printList();
+        assertEquals(expected, linkedList.getHead());
+        assertNull(linkedList.getTail());
+    }
+
+    @Test
+    void removeFromFront_success() {
+        Employee expected = new Employee("Bill", "Elvin", 246);
+        int expectedSize = 4;
+
+        Employee actual = linkedList.removeFromFront();
+        linkedList.printList();
+        assertEquals(expected, actual);
+        assertEquals(expectedSize, linkedList.getSize());
+    }
+
+    @Test
+    void removeFromFront_emptyFail() {
+        linkedList = new EmployeeDoublyLinkedList();
+
+        Employee actual = linkedList.removeFromFront();
+        linkedList.printList();
+        assertNull(actual);
+    }
+
+    @Test
+    void removeFromEnd_success() {
+        Employee expected = new Employee("Jane", "Jones", 123);
+        int expectedSize = 4;
+
+        Employee actual = linkedList.removeFromEnd();
+        System.out.println("REMOVED: " + actual);
+        linkedList.printList();
+        assertEquals(expected, actual);
+        assertEquals(expectedSize, linkedList.getSize());
+
+        expected = new Employee("John", "Doe", 456);
+        assertEquals(expected, linkedList.getTail());
+    }
+
+    @Test
+    void removeFromEnd_emptyFail() {
+        linkedList = new EmployeeDoublyLinkedList();
+
+        Employee actual = linkedList.removeFromEnd();
+        linkedList.printList();
+        assertNull(actual);
     }
 }

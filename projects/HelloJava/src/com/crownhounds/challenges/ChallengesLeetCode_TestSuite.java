@@ -1472,6 +1472,7 @@ class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
     // OOP ENCAPSULATION private class fields
     private LeetCodeLinkedList leetCodeLinkedList;
     private LeetCodeLinkedList.SinglyLinkedList singlyLinkedList;
+    private LinkedListNode<Integer> testNode;
 
     @BeforeAll
     static void beforeAll() {
@@ -1482,6 +1483,23 @@ class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {
     void setUp() {
         leetCodeLinkedList = new LeetCodeLinkedList();
         singlyLinkedList = leetCodeLinkedList.new SinglyLinkedList();
+
+        MinStack minStack = new MinStack();
+
+        int testInput = 5;
+        testNode = minStack.push(testInput);
+
+        testInput = 4;
+        testNode = minStack.push(testInput);
+
+        testInput = 3;
+        testNode = minStack.push(testInput);
+
+        testInput = 2;
+        testNode = minStack.push(testInput);
+
+        testInput = 1;
+        testNode = minStack.push(testInput);
 
         System.out.println(BEFORE_EACH);
     }
@@ -1762,3 +1780,6 @@ class MinStackTest extends ChallengesLeetCode_TestSuite {
         assertEquals(expected, actual);
     }
 }
+
+
+

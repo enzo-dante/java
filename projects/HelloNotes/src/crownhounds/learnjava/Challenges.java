@@ -331,7 +331,7 @@ public class Challenges {
 
          */
 
-//         REFERENCE LeapYearCalculator class
+        // REFERENCE LeapYearCalculator class
         boolean yearN1600 = LeapYearCalculator.isLeapYear(-1600);
         System.out.println("yearN1600: " + yearN1600);
         boolean year1600 = LeapYearCalculator.isLeapYear(1600);
@@ -1427,48 +1427,6 @@ public class Challenges {
         System.out.println(w2.getArea());
     }
 
-    private static void challengeFortyFour() {
-        /*
-            write a method getGreatestCommonDivisor with two params of type int named first and second
-
-                if one of the params < 10, return -1
-
-                the method should return the greatest common divisor of the 2 numbers (int)
-
-                HINT: greatest common divisor is the largest positive integer that can fully divide each of the integers (no remainder)
-
-                    12 = [12, 1], [6, 2], [4,3]
-                    GCF/GCD = 6
-
-         */
-
-        System.out.println(getGreatestCommonDivisor(2, 40));
-        System.out.println(getGreatestCommonDivisor(35, -14));
-        System.out.println(getGreatestCommonDivisor(12, 30));
-    }
-
-    public static int getGreatestCommonDivisor(int num1, int num2) {
-
-        // divide by 2 to optimize performance
-        int endLoop = Math.max(num1, num2) / 2;
-        int gcf = 1;
-
-        if(num1 >= 10 && num2 >= 10) {
-
-            // loop from 1 => largest parameter
-            for(int factor = 1; factor <= endLoop; factor++) {
-
-                if((num1 % factor == 0) && (num2 % factor == 0)) {
-                    gcf = factor;
-                }
-            }
-
-            return gcf;
-        }
-
-        return -1;
-    }
-
     private static void challengeFortyFive() {
         /*
             Create Vehicle class
@@ -1492,21 +1450,6 @@ public class Challenges {
         ferrari.accelerate(30);
         ferrari.accelerate(20);
         ferrari.accelerate(-42);
-    }
-
-    private static void challengeFortySix() {
-        /*
-            write FactorPrinter class
-            write the printFactors method with 1 int parameter called number
-
-                that returns nothing, but prints all the factors of a number
-
-            if number is less than 1, print 'Invalid Value'
-
-            * HINT: a factor is an integer that divides that number wholly (no remainder)
-         */
-
-        FactorPrinter.printFactors(6);
     }
 
     private static void challengeFortySeven() {
@@ -1887,36 +1830,6 @@ public class Challenges {
 
         System.out.println(testBank.addCustomerTransaction("testBranch", "gary", 500));
         System.out.println(testBank.listCustomers("testBranch", true));
-
-    }
-
-    private static void challengeFiftyFive() {
-        /*
-            ? write a class called PerfectNumber
-
-            ? write a method called isPerfectNumber with int parameter(s) called number
-
-                if number < 1
-                    returns false
-
-                if number is perfect
-                    return true
-
-            perfect number:
-                ! A perfect number is a positive integer which is equal to the sum of its proper positive divisors.
-            Proper positive divisors:
-                ! positive integers that fully divide the perfect number without leaving a remainder and exclude the perfect number itself.
-
-                * For example, take the number 6:
-
-                    * Its proper divisors are 1, 2, and 3
-                        (since 6 is the value of the perfect number, it is excluded)
-
-                    * the sum of its proper divisors is 1 + 2 + 3 = 6.
-         */
-
-        System.out.println(PerfectNumber.isPerfectNumber(6)); // true
-        System.out.println(PerfectNumber.isPerfectNumber(7)); // false
 
     }
 }

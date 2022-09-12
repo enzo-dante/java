@@ -7,6 +7,7 @@ public class Employee {
     // OOP ENCAPSULATION private class fields
     private String firstName;
     private String lastName;
+    private Employee next;
     private int id;
 
     // OOP constructor that initializes the class fields on class/object instantiation
@@ -14,6 +15,9 @@ public class Employee {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+
+        // default values
+        this.next = null;
     }
 
     // OOP CLASS METHODS: unique object behavior
@@ -63,5 +67,13 @@ public class Employee {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Employee getNext() {
+        return next;
+    }
+
+    public void setNext(Employee next) {
+        this.next = next;
     }
 }
