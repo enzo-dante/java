@@ -2773,3 +2773,263 @@ class Ferrari extends Car {
         this.model = model;
     }
 }
+
+/*
+    ? define class CentimeterCalculator
+
+    ? 1. create a method: calcFeetAndInchesToCentimeters
+        2 parameters: double feet, double inches
+
+    validate feet is greater than or equal to 0
+    validate inches is greater than or equal to 0, validate inches is less than or equal to 12
+    if any false, return -1
+
+    if params valid, calculate number of centimeters passes to method based on params
+        1 foot = 12 inches
+        1 in = 2.54cm
+
+    ? 2. create 2nd method with same name but only 1 param: double inches
+
+    validate that inches >= 0
+        return -1 if false
+        calculate how many feet are in the inches param
+            1 foot = 12 inches
+
+    CALLING another overloaded method just requires you to use the right number of parameters
+
+    * USE OOP, GENERICS, ABSTRACTION, INTERFACES, AUTOBOXING/UNBOXING, METHOD OVERLOADING, EXCEPTION HANDLING
+
+    ! INTERFACES VS ABSTRACT CLASSES
+
+        ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+
+        * CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+
+        INTERFACES can ONLY define publicly-shared signatures
+ */
+
+// ! INTERFACES + OOP POLYMORPHISM: publicly-shared method signatures that must be uniquely implemented/@Override by for designated standardized classes
+interface ICentimeter {
+
+    // ! METHOD OVERLOADING: using same name for multiple associated methods to help with scaleability & code readabiliuty
+    double calcFeetAndInchesToCentimeters(double feet, double inches);
+    double calcFeetAndInchesToCentimeters(Double inches);
+}
+
+// ! ABSTRACT CLASSES: enforce OOP INHERITANCE & POLYMORPHISM of abstract method signatures, methods, class fields for MANDATORY child subclasses that help with standardization
+abstract class AbstractCentimeter implements ICentimeter {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantion
+    // ! STATIC: class-associated variable saved in a single space in memory that is used across entire applicaiton
+    // ! ACCESS-MODIFIER protected: OOP ENCAPSULATION access to variable or method is limited to the scope of defining class and it's subclasses via OOP INHERITANCE
+    // ! OOP ENCAPSULATION: use access-modifiers to manage accessibility of variables and methods in order to guard against inappropriate external use
+    protected static final Integer ERROR = -1;
+
+    // private class fields
+    private boolean isOn;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public AbstractCentimeter(boolean isOn) {
+        this.isOn = isOn;
+    }
+
+    // ! ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+    abstract protected boolean validateParams(double feet, double inches);
+
+    @Override
+    public double calcFeetAndInchesToCentimeters(double feet, double inches) {
+
+        if(!validateParams(feet, inches)) return -1;
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        Double feetToInches = feet * 12D;
+
+        Double totalInches = feetToInches + inches;
+
+        return calcFeetAndInchesToCentimeters(totalInches);
+    }
+
+
+    @Override
+    public double calcFeetAndInchesToCentimeters(Double inches) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        // ! CASTING: converting one dataType to another compatible dataType
+        if(inches < 0) return -1;
+
+        // ! UNBOXING: casting greater functionality Wrapper class dataType -> primitive dataType
+        return inches * 2.54;
+    }
+}
+
+class CentimeterCalculator extends AbstractCentimeter {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    // ! STATIC: class-associated variable saved in a single space in memory that is used across entire app
+    // ! ACCESS-MODIFIER private: OOP ENCAPSULATION access to variable or method is limited ONLY to the scope of defining class and cannot be access externally
+    private static final String INVALID_INPUT = "Invalid Input";
+
+    // ! OOP COMPOSITION: organize class/object functionality by having components that themselves are classes that handle specific functionality
+    // private class fields
+    private PowerButton powerButton;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public CentimeterCalculator(boolean isOn) {
+        // ! OOP INHERITANCE: child subclass inherits access to public class fields & methods from extending parent super class
+        super(isOn);
+
+        this.powerButton = new PowerButton();
+        if(isOn) this.powerButton.pressButton();
+    }
+
+    @Override
+    protected boolean validateParams(double feet, double inches) {
+        return (inches >= 0 && inches <= 12) && (feet >= 0);
+    }
+}
+
+class PowerButton {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String ON = "Power On";
+    private static final String OFF = "Power Off";
+    // private class fields
+    private boolean isPressed;
+
+    public PowerButton() {
+        // default values
+        this.isPressed = false;
+    }
+
+    // CLASS METHOD: unique object behavior
+    public void pressButton() {
+
+        this.isPressed = !this.isPressed;
+
+        if(!this.isPressed) {
+            System.out.println(ON);
+        } else {
+            System.out.println(OFF);
+        }
+    }
+}
+
+/*
+     ! OOP: Implement the following classes:
+
+      ? Bank
+
+        It has two fields:
+            String called name
+            ArrayList that holds objects of type Branch called branches.
+
+        A constructor that takes a String (name of the bank).
+            It initialises name and instantiates branches.
+
+        And five methods, they are (their functions are in their names):
+
+            addBranch()
+                has one parameter of type String (name of the branch) and returns a boolean.
+                It returns true if the branch was added successfully or false otherwise.
+
+            addCustomer()
+                has three parameters:
+                    String (name of the branch),
+                    String (name of the customer),
+                    double (initial transaction)
+                It returns true if the customer was added successfully or false otherwise.
+
+            addCustomerTransaction()
+                has three parameters:
+                    String (name of the branch),
+                    String (name of the customer),
+                    double (transaction)
+                It returns true if the customers' transaction was added successfully or false otherwise.
+
+            findBranch()
+                has one parameter of type String (name of the Branch) and returns a Branch.
+                Return the Branch if it exists or null otherwise.
+
+            listCustomers()
+                This method prints out a list of customers.
+                has two parameters
+                    String (name of the Branch),
+                    boolean (print transactions)
+                Return true if the branch exists or false otherwise.
+
+            * TIP:  In Bank, use the findBranch() method in each of the other four methods to validate a branch.
+                              * Do the same thing in Branch with findCustomer() except for the two getters.
+      ?  Branch
+
+            It has two fields:
+                String called name
+                ArrayList that holds objects of type Customer called customers.
+
+            A constructor that takes a String (name of the branch)
+                It initialises name and instantiates customers.
+
+            And five methods, they are (their functions are in their names):
+
+                getName()
+                    getter for name.
+
+                getCustomers()
+                    getter for customers.
+
+                newCustomer()
+                    has two parameters of type String (name of customer), double (initial transaction) and returns a boolean.
+                    Returns true if the customer was added successfully or false otherwise.
+
+                addCustomerTransaction()
+                    has two parameters of type String (name of customer), double (transaction) and returns a boolean.
+                    Returns true if the customers' transaction was added successfully or false otherwise.
+
+                findCustomer()
+                    has one parameter of type String (name of customer) and returns a Customer.
+                    Return the Customer if they exist, null otherwise.
+
+      ?  Customer
+
+            It has two fields:
+                String called name
+                ArrayList that holds objects of type Double called transactions.
+
+            A constructor that takes a  String (name of customer) and a double (initial transaction).
+                It initialises name and instantiates transactions.
+
+            And three methods, they are (their functions are in their names):
+
+                getName()
+                    getter for name.
+
+                getTransactions()
+                    getter for transactions.
+
+                addTransaction()
+                    has one parameter of type double (transaction)
+                    doesn't return anything.
+
+     ! INNER CLASSES, ABSTRACTION, INTERFACES, GENERICS
+
+     ! MUST USE AUTOBOXING and UNBOXING
+        transactions an ideal place for implementation requirement
+
+      Your job is to create a simple banking application.
+
+      ! COMPOSITION
+            TIP:  In Customer, think about what else you need to do in the constructor when you instantiate a Customer object.
+            TIP:  Think about what methods you need to call from another class when implementing a method.
+
+      NOTE:  All transactions are deposits (no withdraws/balances).
+
+      ! ENCAPSULATION
+            NOTE:  All fields are private.
+            NOTE:  All constructors are public.
+
+            * NOTE:  All methods are public (except for findBranch() and findCustomer() which are private).
+
+      NOTE:  Be extremely careful with the spelling of the names of the fields, constructors and methods.
+      NOTE:  Be extremely careful about spaces and spelling in the printed output.
+      NOTE:  There are no static members.
+      NOTE:  Do not add a main method to the solution code.
+ */

@@ -1745,3 +1745,130 @@ class VehicleTest extends ChallengesMaster_TestSuite {
         assertEquals(expected, actual);
     }
 }
+
+class CentimeterCalculatorTest extends ChallengesMaster_TestSuite {
+
+    // private class fields
+    private CentimeterCalculator calculator;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        calculator = new CentimeterCalculator(true);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void calcFeetAndInchesToCentimeters_success() {
+
+        double testFeet = 6;
+        double testInches = 0;
+
+        double expected = 182.88;
+        double actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testFeet = 0;
+        testInches = 9;
+
+        expected = 22.86;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testFeet = 7;
+        testInches = 5;
+
+        expected = 226.06;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void calcFeetAndInchesToCentimeters_fail() {
+
+        double testInches = -1;
+        double testFeet = 1;
+
+        double expected = -1;
+        double actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testInches = 1;
+        testFeet = -1;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testInches = -1;
+        testFeet = -2;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testInches = 13;
+        testFeet = 1;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+
+        testInches = 14;
+        testFeet = -1;
+        actual = calculator.calcFeetAndInchesToCentimeters(testFeet, testInches);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calcFeetAndInchesToCentimeters_paramFalse() {
+
+        double testInches = -1;
+        double testFeet = 1;
+        assertFalse(calculator.validateParams(testFeet, testInches));
+
+        testInches = 1;
+        testFeet = -1;
+        assertFalse(calculator.validateParams(testFeet, testInches));
+
+        testInches = -1;
+        testFeet = -2;
+        assertFalse(calculator.validateParams(testFeet, testInches));
+
+        testInches = 13;
+        testFeet = 1;
+        assertFalse(calculator.validateParams(testFeet, testInches));
+
+        testInches = 14;
+        testFeet = -1;
+        assertFalse(calculator.validateParams(testFeet, testInches));
+    }
+
+    @Test
+    void calcFeetAndInchesToCentimeters_paramTrue() {
+
+        double testInches = 0;
+        double testFeet = 1;
+        assertTrue(calculator.validateParams(testInches, testFeet));
+
+        testInches = 12;
+        assertTrue(calculator.validateParams(testInches, testFeet));
+
+        testInches = 1;
+        testFeet = 0;
+        assertTrue(calculator.validateParams(testInches, testFeet));
+
+        testInches = 5;
+        testFeet = 5;
+        assertTrue(calculator.validateParams(testInches, testFeet));
+    }
+}
