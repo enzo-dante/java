@@ -22,6 +22,81 @@ public class ChallengesMaster_TestSuite {
 
 }
 
+class MethodHelperTest extends ChallengesMaster_TestSuite {
+
+    MethodHelper helper;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        System.out.println(BEFORE_EACH);
+        helper = new MethodHelper();
+    }
+
+    @AfterEach
+    void afterEach() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @Test
+    void sumDigits_success() {
+        int input = 125;
+
+        int expected = 8;
+        int actual = MethodHelper.sumDigits(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sumDigits_fail_singleDigit() {
+        int input = 0;
+
+        int expected = -1;
+        int actual = MethodHelper.sumDigits(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sumDigits_fail_badInput() {
+        int input = -1;
+
+        int expected = -1;
+        int actual = MethodHelper.sumDigits(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getEvens_success() {
+        int end = 10;
+        int total = 0;
+        int current = 0;
+
+        int expected = 6;
+        int actual = MethodHelper.getEvens(end, current, total);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getEvens_negative() {
+        int end = 10;
+        int total = 0;
+        int current = -10;
+
+        int expected = 11;
+        int actual = MethodHelper.getEvens(end, current, total);
+        assertEquals(expected, actual);
+    }
+}
+
 class AreaCalculatorTest extends ChallengesMaster_TestSuite {
 
     /**
@@ -1872,3 +1947,716 @@ class CentimeterCalculatorTest extends ChallengesMaster_TestSuite {
         assertTrue(calculator.validateParams(testInches, testFeet));
     }
 }
+
+class BankThreadTest extends ChallengesMaster_TestSuite {
+
+    private  static final String ANSI_RESET = "\u001B[0m";
+    private BankThread bank;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        bank = new BankThread();
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(ANSI_RESET + AFTER_EACH);
+    }
+
+    @Test
+    void getBalance_success() {
+        Double expected = 1353.75;
+        Double actual = bank.getBalance();
+        assertEquals(expected, actual);
+    }
+}
+
+class LargestPrimeTest extends ChallengesMaster_TestSuite {
+
+    private LargestPrime largestPrime;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        largestPrime = new LargestPrime("The test failed..");
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void getPrimeLargest_success() {
+        int test = 21;
+        Integer expected = 7;
+        Integer actual = largestPrime.getLargestPrime(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPrimeLargest_failBadInput() {
+        int test = -1;
+        Integer expected = -1;
+        Integer actual = largestPrime.getLargestPrime(test);
+        assertEquals(expected, actual);
+    }
+}
+
+class FinancialBankTest extends ChallengesMaster_TestSuite {
+
+    private FinancialBank bank;
+    private FinancialBranch branch;
+    private FinancialCustomer customer;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        customer = new FinancialCustomer("Test Customer");
+        branch = new FinancialBranch<>("Test Branch");
+        bank = new FinancialBank("Test Bank");
+        bank.addBranch("Test Branch");
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void customer_addCustomerTransaction_success() {
+        Double testInput = 100D;
+        Double expected = 1D;
+        customer.addCustomerTransaction(testInput);
+        assertEquals(expected, customer.getTransactions().size());
+    }
+
+    @Test
+    void customer_addCustomerTransaction_fail() {
+        Double testInput = -100D;
+        customer.addCustomerTransaction(testInput);
+        assertTrue(customer.getTransactions().isEmpty());
+    }
+    @Test
+    void branch_newCustomer_true() {
+        String testInputCustomer = "Test Customer";
+        Double testInputAmount = 200D;
+        boolean actual = branch.newCustomer(testInputCustomer, testInputAmount);
+        assertTrue(actual);
+    }
+
+    @Test
+    void branch_newCustomer_false() {
+        String testInputCustomer = "Test Customer";
+        Double testInputAmount = -100D;
+        boolean actual = branch.newCustomer(testInputCustomer, testInputAmount);
+        assertFalse(actual);
+
+        testInputCustomer = "";
+        testInputAmount = 100D;
+        actual = branch.newCustomer(testInputCustomer, testInputAmount);
+        assertFalse(actual);
+
+    }
+
+    @Test
+    void branch_newCustomer_falseDuplicate() {
+        String testInputCustomer = "Test Customer";
+        Double testInputAmount = 100D;
+        branch.newCustomer(testInputCustomer, testInputAmount);
+
+        boolean actual = branch.newCustomer(testInputCustomer, testInputAmount);
+        assertFalse(actual);
+    }
+
+    @Test
+    void branch_addCustomerTransaction_true() {
+        String testInputCustomer = "Test Customer";
+        Double testInputAmount = 100D;
+        branch.newCustomer(testInputCustomer, testInputAmount);
+
+        boolean actual = branch.addCustomerTransaction(testInputCustomer, testInputAmount);
+        assertTrue(actual);
+    }
+
+    @Test
+    void branch_addCustomerTransaction_false() {
+        String testInputCustomer = "Test Customer";
+        Double testInputAmount = -100D;
+        branch.newCustomer(testInputCustomer, testInputAmount);
+        boolean actual = branch.addCustomerTransaction(testInputCustomer, testInputAmount);
+        assertFalse(actual);
+
+        testInputCustomer = "";
+        testInputAmount = 100D;
+        actual = branch.addCustomerTransaction(testInputCustomer, testInputAmount);
+        assertFalse(actual);
+    }
+
+    @Test
+    void bank_addBranch_true() {
+        String testInput = "Test Branch 1";
+        assertTrue(bank.addBranch(testInput));
+
+        testInput = "Test Branch 2";
+        assertTrue(bank.addBranch(testInput));
+    }
+
+    @Test
+    void bank_addBranch_falseBadInput() {
+        String testInput = "";
+        assertFalse(bank.addBranch(testInput));
+    }
+
+    @Test
+    void bank_addBranch_falseDuplicate() {
+        String testInput = "Test Branch 1";
+        bank.addBranch(testInput);
+
+        assertFalse(bank.addBranch(testInput));
+    }
+
+    @Test
+    void bank_listCustomers_successPrintTrue() {
+        String testInputBranch = "Test Branch";
+        assertTrue(bank.listCustomers(testInputBranch, true));
+        assertTrue(bank.listCustomers(testInputBranch, false));
+    }
+
+    @Test
+    void bank_listCustomers_noBranchFalse() {
+        String testInputBranch = "Test Branch";
+        bank = new FinancialBank("No-Branch Bank");
+        assertFalse(bank.listCustomers(testInputBranch, false));
+    }
+
+    @Test
+    void bank_listCustomers_failBadInput() {
+        String testInputBranch = "";
+        assertFalse(bank.listCustomers(testInputBranch, true));
+        assertFalse(bank.listCustomers(testInputBranch, false));
+    }
+}
+
+class TransportationCarTest extends ChallengesMaster_TestSuite {
+
+    private TransportationCar ferrari;
+    private TransportationCar tripod;
+    private TransportationCar truck;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        ferrari = new TransportationCar(4, 6);
+        tripod = new TransportationCar(3, 3);
+        truck = new TransportationCar(6, 8);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void startEngine_true() {
+        boolean actual = ferrari.startEngine() &&
+                tripod.startEngine() &&
+                truck.startEngine();
+
+        assertTrue(actual);
+    }
+
+    @Test
+    void startEngine_false() {
+        boolean actual = ferrari.getEngine().isOn() &&
+                tripod.getEngine().isOn() &&
+                truck.getEngine().isOn();
+
+        assertFalse(actual);
+    }
+
+    @Test
+    void accelerate_true() {
+        // ! AUTOBOXING: casting primitive dataType -> higher functional wrapper class dataType
+        int test = 10;
+        boolean actual = ferrari.accelerate(test) &&
+                tripod.accelerate(test) &&
+                truck.accelerate(test);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    void accelerate_false() {
+        int test = 0;
+        boolean actual = ferrari.accelerate(test) &&
+                tripod.accelerate(test) &&
+                truck.accelerate(test);
+
+        assertFalse(actual);
+
+        test = -1;
+        actual = ferrari.accelerate(test) &&
+                tripod.accelerate(test) &&
+                truck.accelerate(test);
+
+        assertFalse(actual);
+    }
+
+    @Test
+    void brake_true() {
+        int test = 5;
+
+        ferrari.accelerate(20);
+        tripod.accelerate(20);
+        truck.accelerate(20);
+
+        boolean actual = ferrari.brake(test) &&
+                tripod.brake(test) &&
+                truck.brake(test);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    void brake_false() {
+        int test = -1;
+        boolean actual = ferrari.brake(test) &&
+                tripod.brake(test) &&
+                truck.brake(test);
+
+        assertFalse(actual);
+
+        test = 5;
+        actual = ferrari.brake(test) &&
+                tripod.brake(test) &&
+                truck.brake(test);
+
+        assertFalse(actual);
+    }
+}
+
+class PrinterTest  extends ChallengesMaster_TestSuite {
+
+    private Printer singlePrinter;
+    private Printer duplexPrinter;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        singlePrinter = new Printer(false);
+        duplexPrinter = new Printer(true);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void setTonerLevel_success() {
+
+        int testAmount = 1;
+        int expected = 1;
+
+        singlePrinter.setTonerLevel(testAmount);
+        int actual = singlePrinter.getTonerLevel();
+        assertEquals(expected, actual);
+
+        duplexPrinter.setTonerLevel(testAmount);
+        actual = duplexPrinter.getTonerLevel();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setTonerLevel_successOverflow() {
+        int testAmount = 75;
+        int expected = 100;
+
+        singlePrinter.setTonerLevel(testAmount);
+        duplexPrinter.setTonerLevel(testAmount);
+
+        testAmount = 50;
+        singlePrinter.setTonerLevel(testAmount);
+        duplexPrinter.setTonerLevel(testAmount);
+
+        assertEquals(expected, singlePrinter.getTonerLevel());
+        assertEquals(expected, duplexPrinter.getTonerLevel());
+    }
+
+    @Test
+    void setTonerLevel_failBadInput() {
+        int testAmount = -1;
+        int expected = 0;
+
+        singlePrinter.setTonerLevel(testAmount);
+        duplexPrinter.setTonerLevel(testAmount);
+        assertEquals(expected, singlePrinter.getTonerLevel());
+        assertEquals(expected, duplexPrinter.getTonerLevel());
+
+        testAmount = 0;
+        singlePrinter.setTonerLevel(testAmount);
+        duplexPrinter.setTonerLevel(testAmount);
+        assertEquals(expected, singlePrinter.getTonerLevel());
+        assertEquals(expected, duplexPrinter.getTonerLevel());
+    }
+
+    @Test
+    void printPage_successSingle() {
+        int expected = 1;
+        int actual = singlePrinter.printPage();
+        assertEquals(expected, actual);
+
+        expected = 2;
+        actual = singlePrinter.printPage();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void printPage_successDuplex() {
+        int expected = 2;
+        int actual = duplexPrinter.printPage();
+        assertEquals(expected, actual);
+
+        expected = 4;
+        actual = duplexPrinter.printPage();
+        assertEquals(expected, actual);
+    }
+}
+
+class LinkedListTest  extends ChallengesMaster_TestSuite {
+
+    private SinglyLinkedList singlyLinkedList;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        singlyLinkedList = new SinglyLinkedList("Singly");
+
+        AbstractLinkedList.SinglyIntegerNode node = singlyLinkedList.new SinglyIntegerNode(1);
+        singlyLinkedList.setHead(node);
+        singlyLinkedList.setSize(1);
+
+        node = singlyLinkedList.new SinglyIntegerNode(3);
+        singlyLinkedList.getHead().setNext(node);
+        singlyLinkedList.setSize(2);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void singlyLinkedList_addToFilledSuccess() {
+        int test = 0;
+        singlyLinkedList.add(test);
+
+        Integer expected = 0;
+        Integer actual = singlyLinkedList.getHead().getData();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singlyLinkedList_addToEmptySuccess() {
+        int test = 1;
+        singlyLinkedList = new SinglyLinkedList("Singly");
+        singlyLinkedList.add(test);
+
+        Integer expected = 1;
+        Integer expectedSize = 1;
+        Integer actual = singlyLinkedList.getHead().getData();
+        assertEquals(expected, actual);
+        assertEquals(expectedSize, singlyLinkedList.getSize());
+    }
+
+    @Test
+    void singlyLinkedList_addFail() {
+
+        Integer test = null;
+        singlyLinkedList.add(test);
+
+        Integer expected = 1;
+        Integer actual = singlyLinkedList.getHead().getData();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singlyLinkedList_popFromEmptySuccess() {
+        singlyLinkedList = new SinglyLinkedList("Singly");
+        assertNull(singlyLinkedList.pop());
+    }
+
+    @Test
+    void singlyLinkedList_popFromFilledSuccess() {
+        Integer expected = 1;
+        Integer expectedSize = 1;
+        Integer actual = singlyLinkedList.pop().getData();
+        assertEquals(expected, actual);
+        assertEquals(expectedSize, singlyLinkedList.getSize());
+    }
+
+    @Test
+    void singlyLinkedList_insertSortedSuccess() {
+        Integer test = 2;
+        singlyLinkedList.insertSorted(test);
+
+        Integer expected = 2;
+        Integer actual = singlyLinkedList.getHead().getNext().getData();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void singlyLinkedList_insertSortedFail() {
+        Integer test = null;
+        singlyLinkedList.insertSorted(test);
+
+        Integer expected = 3;
+        Integer actual = singlyLinkedList.getHead().getNext().getData();
+        assertEquals(expected, actual);
+    }
+}
+
+class FirstLastDigitSumTest extends ChallengesMaster_TestSuite {
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void sumFirstAndLastDigit_success() {
+        int test = 252;
+
+        int expected = 4;
+        int actual = FirstLastDigitSum.sumFirstAndLastDigit(test);
+        assertEquals(expected, actual);
+
+        test = 0;
+        expected = 0;
+        actual = FirstLastDigitSum.sumFirstAndLastDigit(test);
+        assertEquals(expected, actual);
+
+        test = 257;
+        expected = 9;
+        actual = FirstLastDigitSum.sumFirstAndLastDigit(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sumFirstAndLastDigit_fail() {
+        int test = -9;
+
+        int expected = -1;
+        int actual = FirstLastDigitSum.sumFirstAndLastDigit(test);
+        assertEquals(expected, actual);
+    }
+}
+
+class LastDigitCheckerTest extends ChallengesMaster_TestSuite {
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void hasSameLastDigit_true() {
+         int a = 25;
+         int b = 55;
+         int c = 30;
+
+         assertTrue(LastDigitChecker.hasSameLastDigit(a,b,c));
+    }
+
+    @Test
+    void hasSameLastDigit_false() {
+         int a = 2;
+         int b = 55;
+         int c = 30;
+
+         assertFalse(LastDigitChecker.hasSameLastDigit(a,b,c));
+    }
+}
+
+class FlourPackerTest extends ChallengesMaster_TestSuite {
+
+    FlourPacker flourPacker;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        flourPacker = new FlourPacker();
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void canPack_true() {
+        int bigCount = 1, smallCount = 5, goal = 9;
+        assertTrue(flourPacker.canPack(bigCount, smallCount, goal));
+    }
+
+    @Test
+    void canPack_false() {
+        int bigCount = 2, smallCount = 0, goal = 9;
+        assertFalse(flourPacker.canPack(bigCount, smallCount, goal));
+    }
+
+    @Test
+    void canPack_fail_badInputs() {
+        int bigCount = -1, smallCount = 0, goal = 0;
+        assertFalse(flourPacker.canPack(bigCount, smallCount, goal));
+    }
+}
+
+class SumOddRangeTest extends ChallengesMaster_TestSuite {
+
+    SumOddRange sumOddRange;
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @BeforeEach
+    void setup() {
+        System.out.println(BEFORE_EACH);
+        sumOddRange = new SumOddRange();
+    }
+
+    @AfterEach
+    void teardown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void setSumOddRange_success() {
+        int input1 = 1;
+        int input2 = 4;
+
+        int expected = 4;
+        int actual = sumOddRange.sumOdd(input1, input2);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void setSumOddRange_badInput() {
+        int input1 = -1;
+        int input2 = -1;
+
+        int expected = -1;
+        int actual = sumOddRange.sumOdd(input1, input2);
+        assertEquals(expected, actual);
+    }
+}
+

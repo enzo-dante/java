@@ -230,36 +230,6 @@ class IntEqualityPrinter {
     }
 }
 
-class LargestPrime {
-
-    public static int getLargestPrime(int number) {
-
-        int largestPrimeFactor = 2;
-        boolean isDivisibleFactor;
-
-        if(number <= 1) {
-            return -1;
-        }
-
-        // continue loop until you get to largestPrimeFactor
-        while(largestPrimeFactor < number) {
-
-            isDivisibleFactor = number % largestPrimeFactor == 0;
-
-            if(isDivisibleFactor) {
-
-                // decrement number by factor to get to prime factors
-                number /= largestPrimeFactor;
-
-            } else {
-                largestPrimeFactor++;
-            }
-        }
-
-        return number;
-    }
-}
-
 class LastDigitChecker {
 
     public static boolean hasSameLastDigit(int num1, int num2, int num3) {
@@ -838,7 +808,6 @@ class Phone {
     }
 }
 
-
 class Bank {
 
     // CONSTANTS
@@ -1031,7 +1000,6 @@ class Branch {
                 }
             }
         }
-
         return null;
     }
 

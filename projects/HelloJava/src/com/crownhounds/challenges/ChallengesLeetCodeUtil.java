@@ -8,6 +8,7 @@ public class ChallengesLeetCodeUtil {
 
     /**
      * ? LeetCode n:
+     *      Company:
      *
      * ?
      *
@@ -17,9 +18,6 @@ public class ChallengesLeetCodeUtil {
      * * O() SPACE COMPLEXITY:
      */
 
-    public static void main(String[] args) {
-
-    }
 }
 
 class LeetCodeIntegers extends ChallengesLeetCodeUtil {
@@ -713,10 +711,397 @@ class LeetCodeStrings extends ChallengesLeetCodeUtil {
 
 class LeetCodeArrays extends ChallengesLeetCodeUtil {
 
-    // OOP constructor that initializes class fields on class/object instantiation
-    public LeetCodeArrays() {
-        // ! OOP INHERITANCE: a child subclass inherits class fields & public methods from extending parent super class
-        super();
+    /**
+     * ? LeetCode 1291:
+     *      Company: Meta Facebook
+     *
+     * ? An integer has sequential digits if and only if each digit in the number is one more than the previous digit.
+     * ? Return a sorted list of all the integers in the range [low, high] inclusive that have sequential digits.
+     *
+     * * Logic:
+     *      Input: low = 100, high = 300
+     *
+     *      use place values (position in a given number) greater than 1 to establish first placeholder value
+     *      generate all possible sequential digits of length i
+     *
+     *      Output: [123,234]
+     *
+     * * O(1) constant TIME COMPLEXITY: worst case number of steps is dependent of the length between low & high
+     * * O(1) SPACE COMPLEXITY: will always take the same number of storage space in memory
+     */
+    public static List<Integer> sequentialDigits(int low, int high) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement handles errors
+        if(low <= 0 || low >= high) return null;
+
+        // ! GENERICS: improve OOP ENCAPSULATION by enforcing parameter dataType
+        List<Integer> result = new ArrayList<>();
+        String numRange = "123456789";
+
+        // use place values (position in a given number) greater than 1 to establish first placeholder value
+        for(int i = 0; i < 9; i++) {
+
+            boolean hasMultiplePlaceValues = (i >= 1);
+
+            if(hasMultiplePlaceValues) {
+                // generate all possible sequential digits of length i
+                for(int j = 0; (i + j) <= 9; j++) {
+
+                    int substringEnd = i + j;
+                    String numberSubstring = numRange.substring(j, substringEnd);
+
+                    // ! WRAPPER CLASS: class variables with greater functionality for respective primitive dataType
+                    int currentValue = Integer.parseInt(numberSubstring);
+
+                    if(inRange(currentValue, low, high)) {
+                        result.add(currentValue);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    // ! ACCESS-MODIFIER protected: access to the variable is limited to the SCOPE of the defining class & it's subclasses within the package
+    // ! STATIC: class variable that is saved in a single space in memory and references across entire app
+    protected static boolean inRange(int n, int low, int high) {
+        return (n >= low) && (n <= high);
+    }
+
+    /**
+     * ? LeetCode 283:
+     *      Company: Facebook
+     *
+     * ? Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+     * ? Note that you must do this in-place without making a copy of the array.
+     *
+     * * Logic:
+     *      declare two index pointers: left & right
+     *
+     *      if rightElement == 0, shift right pointer to the next index
+     *          else update leftElement w/ rightElement, shift both pointers to the next index
+     *
+     *      insert zeroes from current left index-to-lastIndex
+     *
+     * * O(n) linear TIME COMPLEXITY: worst-case performance based on length of input size
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm that doesn't require additional memory space
+     */
+    public static void moveZeroes(int[] nums) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(nums.length <= 1) return;
+
+        // declare two index pointers: left & right
+        int leftPointer = 0;
+
+        for(int rightPointer = 0; rightPointer < nums.length; rightPointer++) {
+
+            boolean nonZeroRightElement = nums[rightPointer] != 0;
+
+            if(nonZeroRightElement) {
+
+                // else update leftElement w/ rightElement, shift both pointers to the next index
+                nums[leftPointer] = nums[rightPointer];
+
+                // shift both pointers to the next index
+                leftPointer++;
+            }
+        }
+
+        // insert zeroes from current left index-to-lastIndex
+        for(int i = leftPointer; i < nums.length; i++) {
+            nums[i] = 0;
+        }
+    }
+
+    /**
+     * ? LeetCode 121:
+     *      Company: Facebook & Microsoft
+     *
+     * ? You are given an array prices where prices[i] is the price of a given stock on the ith day.
+     * ? You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+     * ? Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+     *
+     * * Logic:
+     *      Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+     *      Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+     *
+     * * O(n) linear TIME COMPLEXITY: worst-case performance, based on the length of the input array that requires only 1 pass through
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm that requires only 1 pass through
+     */
+    public static int bestStock(int[] prices) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle errors
+        boolean noPossibleSales = prices.length <= 1;
+        if(noPossibleSales) return 0;
+
+        int maxProfit = 0;
+        int leftPointer = 0;
+
+        // left-to-right traversal
+        for(int rightPointer = 1; rightPointer < prices.length; rightPointer++) {
+
+            boolean hasProfit = prices[rightPointer] > prices[leftPointer];
+            if(hasProfit) {
+
+                int calculatedProfit = prices[rightPointer] - prices[leftPointer];
+                maxProfit = Math.max(maxProfit, calculatedProfit);
+
+            } else {
+                // shift leftPointer to rightPointer when there is no profit to be made between comp days
+                leftPointer = rightPointer;
+            }
+        }
+        return maxProfit;
+    }
+
+    /**
+     * ? LeetCode 1306:
+     *      Company: n/a
+     *
+     * ? Given an array of non-negative integers arr, you are initially positioned at start index of the array.
+     * ? When you are at index i, you can jump to i + arr[i] or i - arr[i], check if you can reach to any index with value 0.
+     * ? Notice that you can not jump outside the array at any time.
+     *
+     * * Logic:
+     *      use Depth First Search (DFS) by use recursive functions calls for incrementing & decrementing start parameters
+     *      its DFS because the method will handle one direction first and drill down for a base case
+     *      before continuing to next recursive direction if necessary
+     *
+     * * O(n) linear TIME COMPLEXITY: worst-case, traverse the length of the input array size
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm that doesn't require additional memory space
+     */
+    // ! ACCESS-MODIFIER public: variable or method is accessible from any scope
+    // ! STATIC: unique class variable assigned to a single space in memory
+    public static boolean jumpGame3(int[] arr, int start) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if((arr.length == 0) ||
+                (start < 0) ||
+                (start >= (arr.length - 1))
+        ) return false;
+
+        int currentElement = arr[start];
+
+        // ! RECURSIVE BASE CASE: the breaking condition that initiates an upward propagation of return of values for the waiting calls that results in a call-stack resolution or overflow
+        boolean isBaseCase = (currentElement == 0);
+        if(isBaseCase) return true;
+
+        int incrementedStart = start + currentElement;
+        int decrementedStart = start - currentElement;
+
+        // ! RECURSIVE FUNCTIONS: a continuously self-calling algorithm & each call on the call-stack waits for the algorithm to reach a base case/breaking condition for a return value.
+        return jumpGame3(arr, incrementedStart) ||
+                jumpGame3(arr, decrementedStart);
+    }
+
+    /**
+     * ? LeetCode 75:
+     *      Company: Facebook
+     *
+     * ? Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+     * ? We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+     * ? solve in single pass through = 0(n)
+     *
+     * * Logic:
+     *      define left, middle, & right pointers
+     *
+     *      INITIALLY:
+     *
+     *          [2,0,2,1,1,0]
+     *
+     *              middle = 2
+     *              left = 2
+     *              right = 0
+     *
+     *      iterate over nums array left-to-right with pointers
+     *
+     *          use middle pointer as comp
+     *
+     *              if middle = red, swap middle & left values, and shift both pointers right
+     *              if middle = white, shift middle to the right
+     *              if middle = blue, swap middle & right values, and shift right pointer left
+     *
+     *      iterate again over nums and re-right in sorted order numbers into nums array based on number of count variables
+     *
+     * * O(n) linear TIME COMPLEXITY: worst-case number of steps dependent on length of input array
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm that doesn't require additional memory space
+     */
+    public static int[] sortColors(int[] nums) {
+
+        // ! EXCEPTION HANDLING look before you leap
+        if(nums.length == 0) return null;
+
+        // define colors
+        int red = 0, white = 1, blue = 2;
+
+        // define pointers
+        int leftPointer = 0, middlePointer = 0;
+        int rightPointer = nums.length - 1;
+
+        // iterate over nums array left-to-right
+        while(middlePointer <= rightPointer) {
+
+            if(nums[middlePointer] == red) {
+
+                // swap left & middle values in the nums array
+                swapColors(leftPointer, middlePointer, nums);
+
+                // shift pointers to the right
+                leftPointer++;
+                middlePointer++;
+
+            } else if(nums[middlePointer] == white) {
+
+                middlePointer++;
+
+            } else if(nums[middlePointer] == blue) {
+
+                swapColors(middlePointer, rightPointer, nums);
+
+                // shift pointer to the right
+                rightPointer--;
+            }
+
+        }
+
+        return nums;
+    }
+
+    // ! ACCESS-MODIFIER private: accessibility to the variable is limited to the scope of the defining class
+    // ! STATIC: class variable saved in a single space in memory and utilize across entire app
+    private static void swapColors(int i, int j, int[] nums) {
+
+        int displacedValue = nums[i];
+        nums[i] = nums[j];
+        nums[j] = displacedValue;
+    }
+
+    /**
+     * ? LeetCode 88:
+     *      Company: Microsoft
+     *
+     * ? given 2 sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+     *
+     * ? m = initialized elements in nums1 and n = initialized elements in nums2
+     *
+     * * Logic: use 2 pointers
+     *
+     *      [1,2,3,0,0,0] m = 3
+     *      [2,5,6] n = 3
+     *
+     *      p1 & p2 starts at last initialized index in nums1 & nums2 respectively
+     *      p1 = m - 1
+     *      p2 = n - 1
+     *
+     *      iterate from end of nums2 and insert into end of nums1
+     *
+     *      output: [1,2,2,3,5,6]
+     *
+     * * O(n) linear TIME COMPLEXITY:
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm that doesn't require additional memory space
+     */
+    public static int[] mergeSortedArray(int[] nums1, int initializedElements1, int[] nums2, int initializedElements2) {
+
+        if(nums1.length == 0 || nums2.length == 0 || initializedElements1 < 1 || initializedElements2 < 1) return null;
+
+        int pointer1 = initializedElements1 - 1;
+        int pointer2 = initializedElements2 - 1;
+
+        // iterate over nums1 array and start at end to insert nums2 elements in sorted order
+        for(int i = nums1.length - 1; i >= 0; i--) {
+
+            int elementP1 = pointer1 >= 0 ? nums1[pointer1] : Integer.MIN_VALUE;
+            int elementP2 = pointer2 >= 0 ? nums2[pointer2] : Integer.MIN_VALUE;
+
+            // update currentElement with greaterElement from either nums1 and nums2
+            if(elementP1 > elementP2) {
+
+                nums1[i] = elementP1;
+                // shift pointer1 to the left
+                pointer1--;
+
+            } else {
+
+                nums1[i] = elementP2;
+                // shift pointer2 to the left
+                pointer2--;
+            }
+        }
+        return nums1;
+    }
+
+    /**
+     * ? LeetCode 189:
+     *      Company: Microsoft
+     *
+     * ? Given an array, rotate the array to the right by k steps, where k is non-negative.
+     *
+     * * Logic:
+     *
+     *      Input: nums = [1,2,3,4,5,6,7], k = 3
+     *      Output: [5,6,7,1,2,3,4]
+     *
+     *      Explanation:
+     *
+     *          rotate 1 steps to the right: [7,1,2,3,4,5,6]
+     *          rotate 2 steps to the right: [6,7,1,2,3,4,5]
+     *          rotate 3 steps to the right: [5,6,7,1,2,3,4]
+     *
+     *      STEP 1:
+     *
+     *          numberOfSteps = k % arrayLength
+     *
+     *      STEP 2: reverse entire array
+     *
+     *          [7,6,5,4,3,2,1]
+     *
+     *      STEP 3: reverse k-element
+     *
+     *          [5,6,7,4,3,2,1]
+     *
+     *      STEP 4: reverse non-k partition
+     *
+     *          [5,6,7,1,2,3,4]
+     *
+     * * O(n) linear TIME COMPLEXITY: worst-case, iterate through entire length of the given array
+     * * O(1) constant SPACE COMPLEXITY: always use only given array and k. in-place algorithm that doesn't require additional memory space
+     */
+    public static int[] rotateArray(int[] nums, int k) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(nums.length == 0) return null;
+
+        // STEP 1
+        int numberOfSteps = k % nums.length;
+
+        // STEP 2
+        reverseArray(nums, 0, nums.length - 1);
+
+        // STEP 3
+        reverseArray(nums, 0, numberOfSteps - 1);
+
+        // STEP 4
+        reverseArray(nums, numberOfSteps, nums.length - 1);
+
+        return nums;
+    }
+
+    // ! ACCESS-MODIFIER private: accessibility to the variable is limited to the scope of the defining class
+    // ! STATIC: class variables saved in single space in memory and access across entire application
+    private static void reverseArray(int[] nums, int start, int end) {
+
+        // ! RECURSIVE BASE CASE: recursion breaking condition that will initiate upward propagation of return values for waiting recursive call for stack resolution
+        boolean isBaseCase = start >= end;
+        if(isBaseCase) return;
+
+        // swap values
+        int displacedStart = nums[start];
+        nums[start] = nums[end];
+        nums[end] = displacedStart;
+
+        // ! RECURSION: self-calling algorithm & each call-stack call waits for a return until reaching base-case or overflow
+        reverseArray(nums, start + 1, end - 1);
     }
 
     /**
@@ -1242,45 +1627,6 @@ class LeetCodeArrays extends ChallengesLeetCodeUtil {
     }
 
     /**
-     * ? LeetCode 1291:
-     *
-     * ? an integer has sequential digits, if and only if each digit in the number is one more than the previous digit
-     * ? return a sorted list of all the integers in the range, low and high, inclusive that have sequential visits.
-     *
-     * * Logic:
-     *      high = 300
-     *      low = 100
-     *      sequential = [123, 234]
-     *
-     * * O(1) constant TIME COMPLEXITY: will only run 64 times consistently
-     * * O(n) linear SPACE COMPLEXITY: to construct arrayList
-     */
-    public List<Integer> sequentialDigits(int low, int high) {
-
-        if((high <= low) ||
-                (high <= 10 && low >= -10)) {
-            return null;
-        }
-
-        List<Integer> result = new ArrayList<>();
-        String digits = "123456789";
-
-        for(int i = 1; i <= 9; i++) {
-
-            for(int j = 0; j < digits.length() - i; j++) {
-
-                String subString = digits.substring(j, j + i);
-                int value = Integer.parseInt(subString);
-
-                if(value <= high && value >= low) {
-                    result.add(value);
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
      * ? LeetCode 442:
      *
      * ? given an array of integers, 1 <= a[i] <= n (n = size of array)
@@ -1327,8 +1673,182 @@ class LeetCodeArrays extends ChallengesLeetCodeUtil {
 class LeetCodeArray2D extends ChallengesLeetCodeUtil {
 
     /**
+     * ? LeetCode 1572:
+     *      Company: n/a
+     *
+     * ? Given a square matrix mat, return the sum of the matrix diagonals.
+     * ? Only include the sum of all the elements on the primary diagonal and all the elements on the secondary diagonal that are not part of the primary diagonal.
+     *
+     * * Logic:
+     *      length = width or height
+     *      diagonal_1 = 1 + 5 + 9 = 15 = matrix[i][i]
+     *      diagonal_2 = 3 + 5 + 7 = 15 = matrix[i][length - i - 1]
+     *
+     *      matrix = [
+     *            [1,2,3],
+     *            [4,5,6],
+     *            [7,8,9]
+     *      ]
+     *
+     *      remove duplicate 5 that appears in both diagonals from current sum 30
+     *      diagonal_sum = 25
+     *
+     *      step 1a: define index of traversing row
+     *      step 1b: define index of shifting diagonal
+     *      step 2: add to sum
+     *      step 3: iterate over rows repeating process
+     *      step 4: remove duplicate middle element from sum if matrix length is odd
+     *      step 5: return sum
+     *
+     * * O(n) linear TIME COMPLEXITY: where n is the length of the given array
+     * * O(1) constant SPACE COMPLEXITY: given we are always using x number of variables
+     */
+    public static int matrixDiagonalSum(int[][] matrix) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(matrix.length == 0) return -1;
+
+        int sum = 0;
+
+        for(int indexRow = 0; indexRow < matrix.length; indexRow++) {
+
+            int indexDiagonal = matrix.length - indexRow - 1;
+            int element1 = matrix[indexRow][indexRow];
+            int element2 = matrix[indexRow][indexDiagonal];
+
+            sum += (element1 + element2);
+        }
+
+        // remove duplicate middle element
+        boolean isOddMatrixLength = matrix.length % 2 == 1;
+
+        if(isOddMatrixLength) {
+
+            int indexMiddle = matrix.length/2;
+            int elementMiddle = matrix[indexMiddle][indexMiddle];
+
+            return sum - elementMiddle;
+        }
+
+        // implied else statement
+        return sum;
+    }
+
+
+
+    /**
+     * ? LeetCode 48:
+     *      Company: Microsoft
+     *
+     * ?    You are given an n x n 2D matrix representing an image
+     * ?        rotate the image by 90 degrees (clockwise).
+     *
+     * ?    You have to rotate the image in-place
+     * ?        which means you have to modify the input 2D matrix directly.
+     * ?        DO NOT allocate another 2D matrix and do the rotation.
+     *
+     * * logic:
+     *
+     *      * flip matrix on second diagonal (top right-bottom left diagonal)
+     *
+     *              matrix = [
+     *                  [1,2,3],
+     *                  [4,5,6],
+     *                  [7,8,9]
+     *              ]
+     *
+     *          1st pass through, matrix BECOMES
+     *
+     *              matrix = [
+     *                  [9,6,3],
+     *                  [4,5,2],
+     *                  [7,8,1]
+     *              ]
+     *
+     *      * flip matrix horizontally
+     *
+     *              POST-DIAGONAL FLIP matrix = [
+     *                  [9,6,3],
+     *                  [8,5,2],
+     *                  [7,4,1]
+     *              ]
+     *
+     *          FINAL MATRIX OUTPUT
+     *
+     *              matrix = [
+     *                  [7,4,1],
+     *                  [8,5,2],
+     *                  [9,6,3]
+     *              ]
+     *
+     * * O(n^2) quadratic TIME COMPLEXITY: nested loops
+     * * O(1) constant SPACE COMPLEXITY: in-place algorithm
+     */
+    public static int[][] rotateImage(int[][] matrix) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement handle exceptions
+        if(matrix.length == 0 || matrix[0].length != matrix.length) return null;
+
+        flipMatrixDiagonally(matrix);
+
+        flipMatrixHorizontally(matrix);
+
+        return matrix;
+    }
+
+    // ! ACCESS-MODIFIER private: access to variable or method limited to the scope of the defining class
+    private static void flipMatrixDiagonally(int[][] matrix) {
+
+        int totalRows = matrix.length;
+
+        for(int rowIndex = 0; rowIndex < totalRows; rowIndex++) {
+
+            int elementsLeftToRotate = totalRows - rowIndex;
+
+            for(int columnInRowIndex = 0; columnInRowIndex < elementsLeftToRotate; columnInRowIndex++) {
+
+                // save element that will be rotated DIAGONALLY to a new (x,y) coordinate in the matrix
+                int currentRowElement = matrix[rowIndex][columnInRowIndex];
+
+                // get (x,y) coordinates & save soon-to-be displaced element that will be rotated DIAGONALLY
+                int xShiftIndex = (totalRows - 1) - columnInRowIndex;
+                int yShiftIndex = (totalRows - 1) - rowIndex;
+                int mirrorDiagonalElement = matrix[xShiftIndex][yShiftIndex];
+
+                // swap 2 values using x & y coordinates in matrix for in-place shifting
+                matrix[rowIndex][columnInRowIndex] = mirrorDiagonalElement;
+                matrix[xShiftIndex][yShiftIndex] = currentRowElement;
+            }
+        }
+    }
+
+    // ! ACCESS-MODIFIER protected: access to variable or method limited to the scope of the defining class and it's subclasses within a package
+    protected static void flipMatrixHorizontally(int[][] matrix) {
+
+        // HORIZONTAL FLIP only requires traversing to midpoint
+        int midpoint = matrix.length / 2;
+
+        for(int rowIndex = 0; rowIndex < midpoint; rowIndex++) {
+
+            for(int columnInRowIndex = 0; columnInRowIndex < matrix.length; columnInRowIndex++) {
+
+                // save element that will be rotated HORIZONTALLY to (newX,sameY) coordinate in the matrix
+                int currentRowElement = matrix[rowIndex][columnInRowIndex];
+
+                // get (newX,sameY) coordinates & save soon-to-be displaced element that will be rotated HORIZONTALLY
+                int newXCoordinate = (matrix.length - 1) - rowIndex;
+                int mirrorHorizontalElement = matrix[newXCoordinate][columnInRowIndex];
+
+                // swap 2 values using x & y coordinates in matrix for in-place shifting
+                matrix[rowIndex][columnInRowIndex] = mirrorHorizontalElement;
+                matrix[newXCoordinate][columnInRowIndex] = currentRowElement;
+            }
+        }
+    }
+
+    /**
      * ? Amazon LeetCode 304:
-     * ?    Given a 2D matrix matrix, handle multiple queries of the following type
+     * ?    Given a 2D matrix, handle multiple queries of the following type
      * ?    Calculate the sum of the sub-matrix given upper left corner and lower right corner
      * ?    defined by its upper left corner (row1, column1), and lower right corner (row2, column2)
      *
@@ -1574,6 +2094,158 @@ class LeetCodeArray2D extends ChallengesLeetCodeUtil {
                 return 1;
             }
         }
+    }
+
+    /**
+     * ? Microsoft LeetCode 74:
+     *
+     * ?    Write an efficient algorithm that searches for a value in an M x N matrix.
+     * ?        This matrix has the following properties:
+     *
+     *              Integers in each row are sorted from left to right.
+     *
+     *              The first integer of each row is greater than the last integer of the previous row.
+     *
+     * * Logic:
+     *
+     *      Given target = 3, return true.
+     *      Given target = 13, return false bc 13 not in matrix
+     *
+     *              [
+     *                [1,   3,  5,  7],
+     *                [10, 11, 16, 20],
+     *                [23, 30, 34, 50]
+     *              ]
+     *
+     *      * use binary search
+     *          traverse right most column and search for row target would be in
+     *          traverse row and search for target
+     *
+     * ! BigO Notation: independent of hardware, an algorithm's TIME COMPLEXITY (the worst-case number of steps required for an algorithm to successfully execute)
+     *
+     * ! BINARY SEARCH: O(logn) logarithmic time complexity traversal in already SORTED array & is recursively partitioned LEFT/RIGHT until respective middle element equals search value else null
+
+            * O(logn) LOGARITHMIC TIME COMPLEXITY: keep dividing sorted array in half
+
+            ? BINARY SEARCH LOGIC
+
+                ! data being searching MUST ALREADY be sorted
+
+                searchValue = 55
+
+                            [-22, -15, 1, 7, 20, 35, 55] where midpoint: 7
+
+                                            [7, 20, 35, 55] where midpoint: 35
+
+                                                [35, 55] where midpoint == searchValue (55)
+
+                                                    return 55
+
+            STEP 1: divide the array down the middle into 2 partitions
+
+                * similar to MERGE sort
+
+                LEFT half = lesser values respective to parent node midpoint
+
+                RIGHT half = greater values respective to parent node midpoint
+
+            STEP 2: compare middle element against searchValue
+
+                2A: if equal we've finished search traversal
+
+                2B: else if less than focus on the LEFT side, and recursively repeat STEP 1 partitioning
+
+                2C: else if greater than focus on the RIGHT side, and recursively repeat STEP 1 partitioning
+
+            STEP 3: recursive calls will gradually traverse down to a sorted one-element partition and either return found searchValue or null
+     *
+     * * O(log(m)) + O(log(n)) logarithmic TIME COMPLEXITY: O of log n to the base 2
+     *      m = matrix height
+     *      n = matrix width
+     *
+     * * O() SPACE COMPLEXITY:
+     */
+    public static boolean searchAMatrix(int[][] matrix, int target) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(matrix.length != 3) return false;
+        for(int[] row : matrix) {
+            if(row.length != 4) return false;
+        }
+
+        // set low and high index to match matrix parameters for traversal & binary search of row with target
+        int lowIndex = 0;
+        int highIndex = matrix.length - 1;
+        int targetRowIndex = -1;
+
+        // ! BINARY SEARCH: O(logn) logarithmic time complexity traversal in already SORTED array & is recursively partitioned LEFT/RIGHT until respective middle element equals search value else null
+        // binary search right most column for row target would be in
+        while(lowIndex <= highIndex) {
+
+            // ! STACK OVERFLOW: buffer error that occurs when app tries to use more memory space in the call stack than it has been allocated to that stack.
+            int overflowProtection = (highIndex - lowIndex) / 2;
+            int middleIndex = lowIndex + overflowProtection;
+
+            int rowEndIndex = matrix[0].length - 1;
+            int rowMaxValue = matrix[middleIndex][rowEndIndex];
+
+            if(rowMaxValue == target) {
+
+                targetRowIndex = middleIndex;
+                System.out.println("\tfound " + target + " in the targetRow index " + targetRowIndex);
+                return true;
+
+            } else if(rowMaxValue < target) {
+
+                // shift middleIndex up & partition in subsequent UPPER sub-array
+                lowIndex = middleIndex + 1;
+
+            } else {
+
+                // shift middleIndex down & partition in subsequent LOWER sub-array
+                targetRowIndex = middleIndex;
+                highIndex = middleIndex - 1;
+            }
+        }
+
+        if(targetRowIndex == -1) {
+            System.out.println("target " + target + " CANNOT be in any rows after binary search traversal");
+            return false;
+        }
+
+        // ! BINARY SEARCH: O(logn) logarithmic time complexity traversal in already SORTED array & is recursively partitioned LEFT/RIGHT until respective middle element equals search value else null
+        // reset low and high index to match targetRow parameters
+        lowIndex = 0;
+        highIndex = matrix[0].length - 1;
+
+        int[] targetRow = matrix[targetRowIndex];
+
+        // binary search target row for target
+        while (lowIndex <= highIndex) {
+
+            // ! STACK OVERFLOW: buffer error that occurs when app tries to use more memory space in the call stack than it has been allocated to that stack.
+            int overflowProtection = (highIndex - lowIndex) / 2;
+            int middleIndex = lowIndex + overflowProtection;
+
+            int middleElement = targetRow[middleIndex];
+
+            if(middleElement == target) {
+
+                System.out.println("\tfound " + target + " in the targetRow index " + targetRowIndex);
+                return true;
+
+            } else if(middleElement < target) {
+
+                // shift middleIndex up & partition in subsequent UPPER sub-array
+                lowIndex = middleIndex + 1;
+
+            } else {
+
+                // shift middleIndex down & partition in subsequent LOWER sub-array
+                highIndex = middleIndex - 1;
+            }
+        }
+        return false;
     }
 
 
@@ -2997,3 +3669,4 @@ class LinkedListNode<T extends Integer> {
         this.next = next;
     }
 }
+

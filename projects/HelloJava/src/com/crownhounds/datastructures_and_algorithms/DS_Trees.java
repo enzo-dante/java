@@ -5,9 +5,7 @@ import com.crownhounds.masterjava.Util;
 public class DS_Trees {
 
     /*
-        ! TREES: a collection of 1 parent nodes & their respective children connected by edges
-
-            every item in a tree is a node
+        ! BINARY TREES: a collection of 1 parent node to respective 2 children nodes with parent child connection edges and left-to-right node movement depends on child value comparisons
 
             * Red-Black Tree: self-balancing tree will validate balanced nodes after each traversal w/ insert(), delete(), & get() of O(n) linear time complexity
 
@@ -52,7 +50,7 @@ public class DS_Trees {
 
             ? LEVEL TRAVERSAL: visit nodes on each level left-to-right
 
-            * level order: 25, 20, 27, 15, 22, 26, 30, 29, 32
+            * level order: [25, 20, 27, 15, 22, 26, 30, 29, 32]
 
                                     25
 
@@ -62,10 +60,10 @@ public class DS_Trees {
 
                                                 29 32
 
-            ? PRE-ORDER TRAVERSAL: visit the root of the subtree first left-to-right
+            ? PRE-ORDER TRAVERSAL: visit the main root first, next the root of the subtree, children left-to-right, and repeat
                 PRE = visit root first
 
-            * pre-order traversal: 25, 20, 15, 22, 27, 26, 30, 29, 32
+            * pre-order: [25, 20, 15, 22, 27, 26, 30, 29, 32]
 
                                     25
 
@@ -77,7 +75,7 @@ public class DS_Trees {
 
             ? POST-ORDER TRAVERSAL: visit the root of every subtree last left-to-right
 
-            * post-order traversal: 15, 22, 20, 26, 29, 32, 30, 27, 25
+            * post-order: [15, 22, 20, 26, 29, 32, 30, 27, 25]
 
                                     25
 
@@ -89,7 +87,7 @@ public class DS_Trees {
 
             ? IN-ORDER TRAVERSAL: visit the left-child, then root, then right-child (repeat process for subtrees)
 
-             * in-order traversal: 15, 20, 22, 25, 26, 27, 29, 30, 32
+             * in-order: [15, 20, 22, 25, 26, 27, 29, 30, 32]
 
                                     25
 
@@ -352,7 +350,6 @@ class Tree {
         }
 
         return subtreeRoot;
-
     }
 
     public TreeNode get(int value) {
@@ -367,10 +364,9 @@ class Tree {
     }
 
     public void traverseInOrder() {
-
+        
         System.out.println("In-order Traversal");
-
-        if(root != null) {
+        if(this.root != null) {
             root.traverseInOrder();
         }
     }
@@ -393,86 +389,131 @@ class Tree {
         }
 
         // OOP CLASS METHODS: unique object behavior
+        /**
+         * left-to-right recursively traverse down binary tree for LEFT-MOST node with min value
+         * @return min value
+         */
         public int getMin() {
 
-            if(this.leftChild == null) {
+            // ! RECURSION BASE CASE: the breaking condition that initiates an upward propagation of return values for the waiting calls resulting in call-stack resolution or overflow
+            boolean isBaseCase = (this.leftChild == null);
+
+            if(isBaseCase) {
                 return this.data;
-            } else {
-                return this.leftChild.getMin();
             }
+
+            // ! RECURSION: continuously self-calling algorithm & each call waits for a return value until reaching a base case or experiences a stack overflow
+            return this.leftChild.getMin();
         }
+
+        /**
+         * left-to-right recursively traverse down binary tree for RIGHT-MOST node with max value
+         * @return max value
+         */
         public int getMax() {
 
-            if(this.rightChild == null) {
+            // ! RECURSION BASE CASE: the breaking condition that initiates an upward propagation of return values for the waiting calls resulting in a call-stack resolution or overflow
+            boolean isBaseCase = (this.rightChild == null);
+
+            if(isBaseCase) {
                 return this.data;
-            } else {
-                return this.rightChild.getMax();
             }
+
+            // ! RECURSION: continuously self-calling algorithm & each call waits for a return value until reaching a base case or experiences a stack overflow
+            return this.rightChild.getMax();
         }
 
+        /**
+         * left-to-right recursively traverse down binary tree for node value by comparing the current node's 2 child values
+         *
+         * @return searched node or null
+         */
         public TreeNode get(int value) {
 
-            if(value == data) {
-                return this;
-            }
+            boolean isBaseCase = (value == this.data);
 
-            if(value < data) {
-                if(leftChild != null) {
+            if(isBaseCase) return this;
+
+            boolean shouldTraverseDownLeftChild = (value < this.data);
+
+            if(shouldTraverseDownLeftChild) {
+
+                boolean hasLeftChild = (this.leftChild != null);
+
+                if(hasLeftChild) {
                     return this.leftChild.get(value);
                 }
 
             } else {
-                if(rightChild != null) {
+
+                boolean hasRightChild = (this.rightChild != null);
+
+                if(hasRightChild) {
                     return this.rightChild.get(value);
                 }
             }
-
             return null;
         }
 
+        /**
+         * get values lowest-to-highest by traversing the left-child, then root, then right-child, and repeat
+         */
         public void traverseInOrder() {
-            if(leftChild != null) {
-                leftChild.traverseInOrder();
+
+            boolean hasLeftChild = (this.leftChild != null);
+
+            if(hasLeftChild) {
+                this.leftChild.traverseInOrder();
             }
 
-            System.out.print(data + ", ");
+            System.out.print(this.data + ", ");
 
-            if(rightChild != null) {
-                rightChild.traverseInOrder();
+            boolean hasRightChild = (this.rightChild != null);
+
+            if(hasRightChild) {
+                this.rightChild.traverseInOrder();
             }
         }
 
+        /**
+         * left-to-right recursively traverse down binary tree for insertion node position by comparing the current node's left & right child values
+         *
+         * @return searched node or null
+         */
         public void insert(int value) {
 
             // No duplicate values allowed in implementation
-            if(value == data) {
-                return;
-            }
+            boolean isDuplicateValue = (value == this.data);
 
-            if(value < data) {
+            if(isDuplicateValue) return;
 
-                if(this.leftChild == null) {
+            boolean shouldTraverseDownLeftChild = (value < this.data);
 
-                    // found leaf node for insertion
+            if(shouldTraverseDownLeftChild) {
+
+                boolean foundInsertionLeftNode = (this.leftChild == null);
+
+                if(foundInsertionLeftNode) {
+
                     this.leftChild = new TreeNode(value);
 
                 } else {
 
                     // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
-                    leftChild.insert(value);
+                    this.leftChild.insert(value);
                 }
-
             } else {
 
-                if(this.rightChild == null) {
+                boolean foundInsertionRightNode = (this.rightChild == null);
 
-                    // found leaf node for insertion
+                if(foundInsertionRightNode) {
+
                     this.rightChild = new TreeNode(value);
 
                 } else {
 
                     // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
-                    rightChild.insert(value);
+                    this.rightChild.insert(value);
                 }
             }
         }

@@ -8,7 +8,6 @@ public class DS_Queues {
      /*
         ! QUEUE: (FIFO) first-in, first-out abstract class implemented by a LINKED LIST that uses enqueue(), dequeue(), peek()
 
-
             due to FIFO, no random access and can only access the top of a stack
 
             * add() or enqueue() = add value to end of the queue
@@ -195,21 +194,32 @@ class ArrayQueue {
     }
 
     // OOP CLASS METHODS: unique object behavior
+    private int getSize() {
+
+        boolean isWrapped = (this.front <= this.back);
+        int wrappedSize = this.back - this.front;
+
+        if(isWrapped) return wrappedSize;
+
+        // ? CIRCULAR QUEUE: to handle negative number when wrapped circular queue size, to get numElements in wrapped queue simply add queueLength to previous calculation
+        return wrappedSize + this.queue.length;
+    }
+
     /**
      * add new Employee to the back of the queue
-     *
-     * @param employee
      */
     public void add(Employee employee) {
 
         // validate if queue is full & resize if full
         // ? CIRCULAR QUEUE: avoid resizing queue array if there is empty slots at the front of the array (size = back - front)
-        if(size() == this.queue.length - 1) {
+        if(this.getSize() == this.queue.length - 1) {
 
-            Employee[] newArray = new Employee[2 * this.queue.length];
+            Employee[] resizedArray = new Employee[2 * this.queue.length];
 
             // ? CIRCULAR QUEUE: when necessary to resize array, unwrap wrapped circular queue by copy elements at the front the end of the array
-            System.arraycopy(this.queue, this.front, newArray, 0, queue.length - this.front);
+            int copyStart = 0;
+            int copyEnd = this.queue.length - this.front;
+            System.arraycopy(this.queue, this.front, resizedArray, copyStart, copyEnd);
             /*
                         0 - jane            ->      0 - mike
                         1 - john            ->      1 - bill
@@ -218,7 +228,7 @@ class ArrayQueue {
                         4 - bill            ->      4 - bill
              */
 
-            System.arraycopy(this.queue, 0, newArray, this.queue.length - this.front, this.back);
+            System.arraycopy(this.queue, copyStart, resizedArray, this.queue.length - this.front, this.back);
              /*
                         0 - mike            ->      0 - mike - front
                         1 - bill            ->      1 - bill
@@ -229,17 +239,16 @@ class ArrayQueue {
                                                     6
                                                     7
              */
-            this.queue = newArray;
+            this.queue = resizedArray;
         }
 
         // add object to back of the queue
         this.queue[back] = employee;
 
-        if(this.back <= this.queue.length - 1) {
-            back++;
-        } else {
-            back = 0;
-        }
+        int lastQueueIndex = this.queue.length - 1;
+        boolean isWrapped = this.back <= lastQueueIndex;
+
+        this.back = isWrapped ? this.back + 1 : 0;
     }
 
     /**
@@ -247,22 +256,28 @@ class ArrayQueue {
      */
     public Employee remove() {
 
-        if(size() == 0) {
-            // ! THROW EXCEPTION: initiate specific exception with provided error msg
-            throw new NoSuchElementException();
-        }
+        // ! THROW EXCEPTION: initiate specific exception with provided error msg
+        if(this.getSize() == 0) throw new NoSuchElementException();
 
-        Employee employee = queue[front];
-        this.queue[front] = null;
-        front++;
+        // FIFO: get employee at the front of the queue
+        Employee employee = this.queue[this.front];
 
-        // if after removal, queue is empty: reset queue
-        if(size() == 0) {
+        // null-out first index and move front up by 1
+        this.queue[this.front] = null;
+        this.front++;
+
+        boolean isEmptyQueue = this.getSize() == 0;
+        boolean isFullyWrapped = this.front == this.queue.length;
+
+        if(isEmptyQueue) {
+
+            // if queue is empty after removal of front: reset queue
             this.back = 0;
             this.front = 0;
 
-        } else if(this.front == this.queue.length) {
-            // ? CIRCULAR QUEUE: wrap front back to index 0 because no more unused space in queue
+        } else if(isFullyWrapped) {
+
+            // if queue fully wrapped, set front back to index 0 because no more unused space in queue
             this.front = 0;
         }
 
@@ -275,10 +290,8 @@ class ArrayQueue {
      */
     public Employee peek() {
 
-        if(size() == 0) {
-            // ! THROW EXCEPTION: initiate specific exception with provided error msg
-            throw new NoSuchElementException();
-        }
+        // ! THROW EXCEPTION: initiate specific exception with provided error msg
+        if(this.getSize() == 0) throw new NoSuchElementException();
 
         return this.queue[front];
     }
@@ -321,17 +334,5 @@ class ArrayQueue {
                 System.out.println(this.queue[i]);
             }
         }
-
-    }
-
-    private int size() {
-
-        // check if circular queue has wrapped
-        if(this.front <= this.back) {
-            return this.back - this.front;
-        }
-
-        // ? CIRCULAR QUEUE: to handle negative number when wrapped circular queue size, to get numElements in wrapped queue simpy add queueLength to previous calculation
-        return this.back - this.front + this.queue.length;
     }
 }

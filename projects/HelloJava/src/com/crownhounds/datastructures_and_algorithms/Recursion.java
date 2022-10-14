@@ -72,7 +72,7 @@ public class Recursion {
      */
     private static int recursiveFactorial(int n) {
 
-        // ? RECURSION base case: breaking condition for upwards unwinding
+        // RECURSIVE BASE CASE: the breaking condition that initiates an upward propagation of return of values for the waiting calls that results in a call-stack resolution or overflow
         if(n == 0) {
             return 1;
         }

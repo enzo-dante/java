@@ -838,30 +838,63 @@ class LeetCodeArrayTest extends ChallengesLeetCode_TestSuite {
 
     @Test
     void sequentialDigits_success() {
+        int inputLow = 100;
+        int inputHigh = 300;
 
         List<Integer> expected = new ArrayList<>();
         expected.add(123);
         expected.add(234);
 
-        List<Integer> actual = leetCodeArrays.sequentialDigits(100, 300);
-        assertEquals(expected, actual);
+        List<Integer> actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
+        assert actual != null;
+        assertArrayEquals(expected.toArray(), actual.toArray());
+
+        inputLow = 1000;
+        inputHigh = 13000;
+
+        expected = new ArrayList<>();
+        expected.add(1234);
+        expected.add(2345);
+        expected.add(3456);
+        expected.add(4567);
+        expected.add(5678);
+        expected.add(6789);
+        expected.add(12345);
+
+        actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
+        assert actual != null;
+        assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void sequentialDigits_none() {
-        List<Integer> actual = leetCodeArrays.sequentialDigits(1, 9);
-        assertNull(actual);
+        int inputLow = 1;
+        int inputHigh = 1;
 
-        actual = leetCodeArrays.sequentialDigits(-10, 10);
+        List<Integer> expected = new ArrayList<>();
+        expected.add(123);
+        expected.add(234);
+
+        List<Integer> actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
         assertNull(actual);
     }
 
     @Test
     void sequentialDigits_badInput() {
-        List<Integer> actual = leetCodeArrays.sequentialDigits(200, 100);
+        int inputLow = -1;
+        int inputHigh = 10;
+
+        List<Integer> actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
         assertNull(actual);
 
-        actual = leetCodeArrays.sequentialDigits(200, 200);
+        inputLow = 10;
+        inputHigh = -1;
+        actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
+        assertNull(actual);
+
+        inputLow = -1;
+        inputHigh = -1;
+        actual = LeetCodeArrays.sequentialDigits(inputLow, inputHigh);
         assertNull(actual);
     }
 
@@ -893,6 +926,119 @@ class LeetCodeArrayTest extends ChallengesLeetCode_TestSuite {
         assertNull(actual);
     }
 
+    @Test
+    void rotateArray_success() {
+
+        int[] test = {1,2,3,4,5,6,7};
+        int rotations = 3;
+
+        int[] expected = {5,6,7,1,2,3,4};
+
+        int[] actual = LeetCodeArrays.rotateArray(test, rotations);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void rotateArray_fail_badInput() {
+        int[] test = {};
+        int rotations = 3;
+
+        int[] actual = LeetCodeArrays.rotateArray(test, rotations);
+        assertNull(actual);
+    }
+
+    @Test
+    void mergeSortedArray_success() {
+
+        int[] input1 = {1,2,3,0,0,0};
+        int[] input2 = {2,5,6};
+        int m = 3;
+        int n = 3;
+
+        int[] expected = {1,2,2,3,5,6};
+        int[] actual = LeetCodeArrays.mergeSortedArray(input1, m, input2, n);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void mergeSortedArray_fail() {
+        int[] input1 = {};
+        int[] input2 = {};
+        int m = 0;
+        int n = 0;
+
+        int[] actual = LeetCodeArrays.mergeSortedArray(input1, m, input2, n);
+
+        assertNull(actual);
+    }
+
+    @Test
+    void sortColors_success() {
+        int[] input = {2,0,2,1,1,0};
+
+        int[] expected = {0,0,1,1,2,2};
+        int[] actual = LeetCodeArrays.sortColors(input);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void sortColors_fail_badInput() {
+        int[] input = {};
+
+        int[] actual = LeetCodeArrays.sortColors(input);
+        assertNull(actual);
+    }
+
+    @Test
+    void jumpGame3_true() {
+        int[] input = {4,2,3,0,3,1,2};
+        int start = 5;
+        boolean actual = LeetCodeArrays.jumpGame3(input, start);
+        assertTrue(actual);
+    }
+
+    @Test
+    void jumpGame3_false() {
+        int[] input = {};
+        int start = -1;
+        boolean actual = LeetCodeArrays.jumpGame3(input, start);
+        assertFalse(actual);
+    }
+
+    @Test
+    void bestBuySellStock_success() {
+
+        int[] input = {7, 1, 5, 3, 6, 4};
+
+        int expected = 5; // 6 - 1
+        int actual = LeetCodeArrays.bestStock(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void bestBuySellStock_badInput() {
+        int[] input = {};
+
+        int expected = 0;
+        int actual = LeetCodeArrays.bestStock(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void moveZeroes_success() {
+        int[] input = {0,1,0,3,12};
+
+        int[] expected = {1,3,12,0,0};
+        LeetCodeArrays.moveZeroes(input);
+        assertArrayEquals(expected, input);
+
+        input = new int[] {0};
+
+        expected = new int[] {0};
+        LeetCodeArrays.moveZeroes(input);
+        assertArrayEquals(expected, input);
+    }
 }
 
 class LeetCodeTwoPointersTest extends ChallengesLeetCode_TestSuite {
@@ -1465,6 +1611,137 @@ class LeetCodeArray2DTest extends ChallengesLeetCode_TestSuite {
         assertTrue(isEqual);
     }
 
+    @Test
+    void searchAMatrix_true() {
+
+        int target = 3;
+        int[][] input = {
+                {1, 3, 5, 7},
+                {10, 11, 16, 20},
+                {23, 30, 34, 50}
+        };
+
+        boolean actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertTrue(actual);
+
+        target = 20;
+        actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertTrue(actual);
+
+        target = 23;
+        actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertTrue(actual);
+    }
+
+    @Test
+    void searchAMatrix_false() {
+
+        int target = 13;
+        int[][] input = {
+                {1, 4, 5, 7},
+                {10, 11, 16, 20},
+                {23, 30, 34, 50}
+        };
+
+        boolean actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertFalse(actual);
+    }
+
+    @Test
+    void searchAMatrix_falseBadInput() {
+
+        int target = 3;
+        int[][] input = {};
+
+        boolean actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertFalse(actual);
+
+        input = new int[][]{
+                {1, 4, 5, 7},
+                {10, 16, 20},
+                {23, 30, 34, 50}
+        };
+
+        actual = LeetCodeArray2D.searchAMatrix(input, target);
+        assertFalse(actual);
+    }
+
+    @Test
+    void rotateImage_success3x3() {
+
+        int[][] test = {
+                {1,2,3},
+                {4,5,6},
+                {7,8,9}
+        };
+
+        int[][] expected = {
+                {7,4,1},
+                {8,5,2},
+                {9,6,3}
+        };
+
+        int[][] actual = LeetCodeArray2D.rotateImage(test);
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    void rotateImage_success4x4() {
+
+        int[][] test = {
+                {5, 1, 9, 11},
+                {2, 4, 8, 10},
+                {13, 3, 6, 7},
+                {15, 14, 12, 16},
+        };
+
+        int[][] expected = {
+                {15, 13, 2, 5},
+                {14, 3, 4 ,1},
+                {12, 6, 8,9},
+                {16, 7, 10, 11},
+        };
+
+        int[][] actual = LeetCodeArray2D.rotateImage(test);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void rotateImage_failBadInput() {
+        int[][] test = {};
+
+        int[][] actual = LeetCodeArray2D.rotateImage(test);
+        assertNull(actual);
+
+        test = new int[][] {
+                {7,4},
+                {8,5,2},
+                {9,6,3}
+        };
+        actual = LeetCodeArray2D.rotateImage(test);
+        assertNull(actual);
+    }
+
+    @Test
+    void matrixDiagonalSum_success() {
+        int[][] test = {
+                {1,2,3},
+                {4,5,6},
+                {7,8,9}
+        };
+
+        int expected = 25;
+        int actual = LeetCodeArray2D.matrixDiagonalSum(test);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void matrixDiagonalSum_fail_badInput() {
+        int[][] test = {};
+
+        int expected = -1;
+        int actual = LeetCodeArray2D.matrixDiagonalSum(test);
+        assertEquals(expected, actual);
+    }
 }
 
 class LeetCodeLinkedListTest extends ChallengesLeetCode_TestSuite {

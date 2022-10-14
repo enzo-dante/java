@@ -12,6 +12,8 @@ public class DS_Stacks {
 
             due to LIFO, no random access and can only access the top of a stack
 
+            ? STACK top: always null because it's a placeholder for next potential item; actual top of stack is the last index of the array
+
         ! STACK O(1) CONSTANT TIME COMPLEXITY: for push(), pop(), & peek() via LINKED LIST backing
 
             O(n) LINEAR TIME COMPLEXITY for push(), pop(), & peek() via ARRAY backing
@@ -110,29 +112,33 @@ class ArrayStack implements IDataStructure {
 
     // OOP ENCAPSULATION private class fields
     private Employee[] stack;
-
-    // ? STACKS: can only access the top of a stack
-    // default value
-    private int top = 0;
+    // ? STACK top: always null because it's a placeholder for next potential item; actual top of stack is the last index of the array
+    private int top;
 
     // OOP constructor that initializes the class fields on class/object instantiation
     public ArrayStack(int capacity) {
         this.stack = new Employee[capacity];
+        this.top = 0;
     }
 
     // OOP CLASS METHODS: unique object behavior
     // ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared signatures for designated classes
     public void push(Employee employee) {
 
-        // stack full validation
-        if(top == stack.length) {
-            // need to resize backing array of stack, double array size
-            int doubleArraySize = stack.length * 2;
-            Employee[] newArray = new Employee[doubleArraySize];
+        boolean isFullforResize = this.top == this.stack.length;
 
-            // copy elements of stack's old array into new array
-            System.arraycopy(stack, 0, newArray, 0, doubleArraySize);
-            this.stack = newArray;
+        if(isFullforResize) {
+
+            // double array size
+            int doubleArraySize = this.stack.length * 2;
+            Employee[] resizedArray = new Employee[doubleArraySize];
+
+            // copy elements of stack's old array into new resized array
+            int startIndex = 0;
+            System.arraycopy(this.stack, startIndex, resizedArray, startIndex, doubleArraySize);
+
+            // set stack's backing array to resized array
+            this.stack = resizedArray;
         }
 
         // add new object to top of stack
@@ -141,39 +147,32 @@ class ArrayStack implements IDataStructure {
 
     public Employee pop() {
 
-        if(isEmptyStack()) {
-
-            // ! THROW EXCEPTION: initiate specific exception with provided error msg
-            throw new EmptyStackException();
-        }
+        // ! THROW EXCEPTION: initiate specific exception with provided error msg
+        if(this.isEmptyStack()) throw new EmptyStackException();
 
         // ? STACK top: the actual top of stack is the last index of the array
         int indexLIFO = --top;
-        Employee employee = this.stack[indexLIFO];
+        Employee poppedEmployee = this.stack[indexLIFO];
 
-        // ? STACK top: always null because its a placeholder for next potential item
+        // ? STACK top: always null because it's a placeholder for next potential item
         this.stack[this.top] = null;
 
-        return employee;
+        return poppedEmployee;
     }
 
     @Override
     public Employee peek() {
 
-        if(isEmptyStack()) {
-            throw new EmptyStackException();
-        }
+        // EXCEPTION HANDLING look before you leap: use if-else statement to handle errors
+        if(isEmptyStack()) throw new EmptyStackException();
 
         // get object at top but do not remove
-        return this.stack[this.top - 1];
+        int firstIndex = this.top - 1;
+        return this.stack[firstIndex];
     }
 
     public boolean isEmptyStack() {
         return this.top == 0;
-    }
-
-    public int size() {
-        return this.top;
     }
 
     public Employee[] getStack() {

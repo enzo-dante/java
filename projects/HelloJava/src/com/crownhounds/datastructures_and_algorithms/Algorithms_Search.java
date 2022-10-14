@@ -165,9 +165,6 @@ public class Algorithms_Search {
         // ? STEP 2: compare middle element against searchValue
         int midpoint = (start + end) / 2;
 
-        // ! GENERIC CLASS: improve ENCAPSULATION by enforcing element dataType with parameter
-        ArrayList<Integer> partition = new ArrayList<>();
-
         if(intArray[midpoint] == searchValue) {
 
 //        ! EXCEPTION HANDLING: EASY TO ASK FOR FORGIVENESS THAN PERMISSION (EAFTP) = use try-catch block

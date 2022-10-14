@@ -46,6 +46,154 @@ abstract class Challenge implements IChallenge {
     }
 }
 
+class MethodHelper {
+
+    /*
+       create a method isEvenNumber with int param
+           return true if even, else return false
+
+       implement isEvenNumber in getEvens() in while loop that prints only even numbers
+           check edge case: infinite loop
+
+       record total number of even numbers found
+           break out of loop on 5 and print the five even numbers
+
+       HINT: use modulo/remainder operator
+     */
+    // ! ACCESS-MODIFIER public: accessibility to the public variable available from any scope
+    // ! STATIC: class variable saved in a single space in memory used across entire application
+    public static int getEvens(int end, int current, int total) {
+
+        // ! RECURSIVE BASE CASE: breaking condition for RECURSIVE FUNCTIONS that initiates an upward propagates that return values for waiting calls resulting in a stack resolution or overflow
+        boolean isBaseCase = (current > end);
+        if(isBaseCase) return total;
+
+        if(isEvenNumber(current)) total++;
+
+        // ! RECURSIVE FUNCTIONS: a continuously self-calling algorithm & each call on the call stack waits for the algorithm to reach a base case/breaking condition for a return value.
+        return getEvens(end,current + 1, total);
+    }
+
+    // ! ACCESS-MODIFIER private: accessibility to the public variable or method is limited to the scope of the defining class
+    private static boolean isEvenNumber(int n) {
+        return (n % 2 == 0);
+    }
+
+    /*
+        write a method called sumDigits with 1 int param
+
+        validate param is >=10 and return -1 if fail
+            numbers 0-9 have 1 digit so don't have to process them
+            negative number don't get processed so return -1
+
+        return the sum of the all digits in the number
+            ex:
+                sumDigits(125) returns 8
+                    1 + 2 + 5 = 8
+
+                sumDigits(1) returns -1
+
+        HINTS:
+            use n % 10 to extract the least significant digit
+            use n / 10 to discard the least significant digit
+     */
+    // ! ACCESS-MODIFIER protected: accessibility to the public variable or method is limited to the scope of the defining class and its inheriting subclasses within the package
+    protected static int sumDigits(int n) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle potential errors
+        if(n < 10) return -1;
+
+        int sum = 0;
+
+        // loop to get leastSignificantDigit and continuously add to sum
+        while(n > 10) {
+
+            // use (n % 10) to extract the least significant digit
+            int leastSignificantNumber = n % 10;
+            sum += (leastSignificantNumber);
+
+            // use (n / 10) to discard the least significant digit
+            n /= 10;
+        }
+        sum += n;
+        return sum;
+    }
+}
+
+/*
+   Write a class SumOddRange
+
+   Write a method called isOdd with an int parameter called number
+       returns a boolean
+
+   validate parameter is greater than 0, return false otherwise
+       return true if num is odd, else return false
+
+   Write sumOdd method that has 2 int params: start and end (range of numbers)
+       use a for loop to sum all odd numbers in that range including the end
+           return the int sum
+       sumOdd should call isOdd
+
+       end >= start and both start and end need to be greater than 0
+       if param validation false, return -1
+
+   HINT: use modulo/remainder operator
+*/
+// ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all public signatures for designated set of standardized classes
+interface IOddRange {
+
+    boolean isOdd(int number);
+    boolean isValidParam(int number);
+    int sumOdd(int start, int end);
+}
+class SumOddRange implements IOddRange {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String INVALID_INPUT = "Invalid input";
+
+    // ! OOP ENCAPSULATION private class fields: use access-modifiers to guard the class/object from inappropriate external access
+    private int error;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public SumOddRange() {
+        // default values
+        this.error = -1;
+    }
+
+    // CLASS METHODS: unique object behavior
+    @Override
+    public boolean isOdd(int number) {
+        return number % 2 == 1;
+    }
+
+    @Override
+    public boolean isValidParam(int number) {
+        return number > 0;
+    }
+
+    @Override
+    public int sumOdd(int start, int end) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(!isValidParam(start) && !isValidParam(end)) return getError();
+
+        int sum = 0;
+
+        for(int i = start; i < end; i++) {
+
+            if(isOdd(i)) {
+                sum += i;
+            }
+        }
+        return sum;
+    }
+
+    // OOP GETTERS & SETTERS
+    public int getError() {
+        return error;
+    }
+}
+
 class MergeSortDescending extends ChallengesMasterUtil {
 
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
@@ -1962,8 +2110,6 @@ class BankAccount extends AbstractAccount {
         System.out.println("New balance: " + response);
         return response;
     }
-
-
 }
 
 /*
@@ -2915,6 +3061,115 @@ class PowerButton {
 }
 
 /*
+    ? define BankThread to create and start 2 threads
+
+    2 people using a joint bank account instance at the same time
+        initial balance of a thousand dollars.
+
+        one will deposit 300 into the bank account and then withdraw 50.
+        second is going to deposit 203.75 and then withdraw 100.
+
+    ? due to thread interference, use the synchronized keyword to make BankAccount class threadsafe
+ */
+class BankThread {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    // ! STATIC: class variable saved in single space in memory and accessed across app
+    private static final String CURRENT_BALANCE = " Account Balance: ";
+
+    // ! ACCESS-MODIFIER protected: accessibility to class variable or method is limited to the scope of the defining class and subclasses
+    protected static final String ANSI_RED = "\u001B[31m";
+    protected static final String ANSI_CYAN = "\u001B[36m";
+
+    // ! ACCESS-MODIFIER public: class variable or method is accessible from anywhere
+    public Double getBalance() {
+
+        BankAccount bankAccount = new BankAccount("007");
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(bankAccount.getBalance() < 0) return null;
+
+        // ! THREAD: a unit of execution within a process, each process can have multiple threads, a process is a method for a program to "split" itself into two or more simultaneously running tasks.
+        // ! THREADS: always call .start() and never call .run() because JVM handles .run() for threads which always requires a new instance
+        // ! THREADS + ANONYMOUS CLASSES/LAMBDA: when using anonymous classes, the Thread must be executed immediately
+        new Thread() {
+            @Override
+            public void run() {
+                bankAccount.deposit(300D);
+                bankAccount.withdraw(50D);
+                System.out.println(BankThread.ANSI_CYAN + bankAccount.getAccountNumber() + CURRENT_BALANCE + bankAccount.getBalance());
+            }
+        }.start();
+
+        // ! THREADS + ANONYMOUS CLASSES: use instance of Thread class w/ Thread anonymous subclass that implements Runnable interface as parameter to execute Thread.start() on its own thread
+        Thread anotherThread = new Thread(new MyRunnable(bankAccount));
+        anotherThread.start();
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        return bankAccount.getBalance();
+    }
+
+    // ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared signatures for designated classes
+    private class MyRunnable implements Runnable {
+
+        // ! OOP ENCAPSULATION: use access-modifiers to protect the class from inappropriate external access & use
+        // ! ACCESS-MODIFIER private: accessibility to class variable or method is limited to the scope of the defining class
+        // private class fields
+        private BankAccount bankAccount;
+
+        // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+        public MyRunnable(BankAccount bankAccount) {
+            this.bankAccount = bankAccount;
+        }
+
+        @Override
+        public void run() {
+            bankAccount.deposit(203.75D);
+            bankAccount.withdraw(100D);
+            System.out.println(BankThread.ANSI_RED + bankAccount.getAccountNumber() + CURRENT_BALANCE + bankAccount.getBalance());
+        }
+    }
+
+    private static class BankAccount {
+
+        // ! OOP ENCAPSULATION: use access-modifiers to protect the class from inappropriate external access & use
+        // ! ACCESS-MODIFIER private: accessibility to class variable or method is limited to the scope of the defining class
+        // private class fields
+        private double balance;
+        private String accountNumber;
+
+        // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+        public BankAccount(String accountNumber) {
+            this.accountNumber = accountNumber;
+
+            // default values
+            this.balance = 1000;
+        }
+
+        // ! THREAD + CONCURRENCY synchronization: use synchronized keyword on only essential code to minimize impact to avoid thread interference & ensure BankThread is threadsafe
+        public synchronized void deposit(double amount) {
+            this.balance += amount;
+        }
+
+        public void withdraw(double amount) {
+            // ! THREAD + CONCURRENCY synchronization: use synchronized code block on only essential code to minimize impact to avoid thread interference & ensure BankThread is threadsafe
+            synchronized (this) {
+                this.balance -= amount;
+            }
+        }
+
+        // OOP GETTERS & SETTERS
+        public double getBalance() {
+            return balance;
+        }
+
+        public String getAccountNumber() {
+            return accountNumber;
+        }
+    }
+}
+
+/*
      ! OOP: Implement the following classes:
 
       ? Bank
@@ -2959,6 +3214,7 @@ class PowerButton {
 
             * TIP:  In Bank, use the findBranch() method in each of the other four methods to validate a branch.
                               * Do the same thing in Branch with findCustomer() except for the two getters.
+
       ?  Branch
 
             It has two fields:
@@ -3005,7 +3261,7 @@ class PowerButton {
                 getTransactions()
                     getter for transactions.
 
-                addTransaction()
+                addCustomerTransaction()
                     has one parameter of type double (transaction)
                     doesn't return anything.
 
@@ -3032,4 +3288,911 @@ class PowerButton {
       NOTE:  Be extremely careful about spaces and spelling in the printed output.
       NOTE:  There are no static members.
       NOTE:  Do not add a main method to the solution code.
+
+     ! INTERFACES VS ABSTRACT CLASSES
+
+        ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+
+        * CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+
+        INTERFACES can ONLY define publicly-shared signatures
  */
+
+// ! INTERFACES: force implementation of publicly-shared method signatures for a set of classes
+interface IFinancial {
+    String getName();
+}
+
+// !ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+abstract class AbstractPerson implements IFinancial {
+
+    private String name;
+
+    public AbstractPerson(String name) {
+        this.name = name;
+    }
+
+    // ! ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+    abstract public void addCustomerTransaction(double amount);
+
+    @Override
+    public String getName() {
+        return name;
+    }
+}
+
+class FinancialCustomer extends AbstractPerson {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to guard class functionality from inappropriate external access & use
+    // ! ACCESS-MODIFIER private: accessibility to the variable or method is limited to the scope of the defining class
+    // ! GENERICS: improve OOP ENCAPSULATION by creating classes, interfaces, & methods that only take a specific dataType parameter
+    // private class fields
+    private ArrayList<Double> transactions;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class object instantiation
+    public FinancialCustomer(String name) {
+        // ! OOP INHERITANCE: child subclass inherits access to public class fields & methods from an extending parent super class
+        super(name);
+
+        // default values
+        this.transactions = new ArrayList<>();
+    }
+
+    // ! ACCESS-MODIFIER public: variable or method is accessible from any scope
+    public void addCustomerTransaction(double amount) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(amount < 0) return;
+
+        // ! AUTOBOXING: casting primitive dataType to compatible higher functionality Wrapper class dataType
+        this.transactions.add(amount);
+    }
+
+    public ArrayList<Double> getTransactions() {
+        return transactions;
+    }
+}
+
+// ! GENERIC CLASSES + INHERITANCE: enforce parent super-class first, then multiple interfaces
+class FinancialBranch<T extends FinancialCustomer> implements IFinancial {
+
+    private String name;
+    // ! GENERICS: Class<T> indicates that this class will only consist of a generic dataType
+    private ArrayList<T> customers;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class object instantiation
+    public FinancialBranch(String name) {
+        this.name = name;
+
+        // default values
+        this.customers = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "FinancialBranch{" +
+                "name='" + name + '\'' +
+                ", customers=" + customers +
+                '}';
+    }
+
+    // ! ACCESS-MODIFIER private: accessibility to the variable or method is limited to the scope of the defining class and subclasses within a package
+    protected boolean newCustomer(String name, double initialTransaction) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(name.isEmpty() || initialTransaction < 0 || findCustomer(name.trim()) != null) return false;
+
+        // implied else-statement
+        int totalCustomers = this.customers.size() + 1;
+        FinancialCustomer customer = new FinancialCustomer(name.trim());
+        customer.addCustomerTransaction(initialTransaction);
+
+        // ? GENERICS: since Java won't know until compile dataType for GENERIC CLASS parameter T, cast dataType to avoid any errors in this scenario
+        this.customers.add((T) customer);
+
+        return this.customers.size() == totalCustomers;
+    }
+
+    public boolean addCustomerTransaction(String name, double amount) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(name.isEmpty() || amount < 0) return false;
+
+        T customer = findCustomer(name.trim());
+        if(customer == null) return false;
+
+        int totalTransactions = customer.getTransactions().size() + 1;
+        customer.addCustomerTransaction(amount);
+
+        return totalTransactions == customer.getTransactions().size();
+    }
+
+    private T findCustomer(String name) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(name.isEmpty()) return null;
+
+        for(int i = 0; i < this.customers.size(); i++) {
+            T customer = this.customers.get(i);
+            if(name.trim().equals(customer.getName())) return customer;
+        }
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    public ArrayList<T> getCustomers() {
+        return customers;
+    }
+}
+
+class FinancialBank {
+
+    private String name;
+    private ArrayList<FinancialBranch> branches;
+
+    public FinancialBank(String name) {
+        this.name = name;
+        this.branches = new ArrayList<>();
+    }
+
+
+    public boolean addBranch(String branchName) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(branchName.isEmpty() || findBranch(branchName.trim()) != null) return false;
+
+        int expectedSize = this.branches.size() + 1;
+        this.branches.add(new FinancialBranch(branchName.trim()));
+        return this.branches.size() == expectedSize;
+    }
+
+    public boolean listCustomers(String branchName, boolean printTransactions) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(branchName.isEmpty()) return false;
+
+        FinancialBranch branch = findBranch(branchName.trim());
+
+        if(branch == null) return false;
+
+        ArrayList<FinancialCustomer> customers = branch.getCustomers();
+
+        for (FinancialCustomer c : customers) {
+            if(printTransactions) {
+                System.out.println(c.getName() + c.getTransactions());
+            }
+            System.out.println(c.getName());
+        }
+        return true;
+    }
+
+    private FinancialBranch findBranch(String name) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(name.isEmpty()) return null;
+
+        for(int i = 0; i < this.branches.size(); i++) {
+
+            FinancialBranch branch = this.branches.get(i);
+            if(name.equals(branch.getName())) return branch;
+
+        }
+        return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<FinancialBranch> getBranches() {
+        return branches;
+    }
+}
+
+/*
+    create LargestPrime class
+
+    define getLargestPrime() with int parameter named 'number'
+
+        should calculate the largest prime factor of a given number and return it
+
+        return -1 if number is negative or does NOT have any prime numbers
+
+    * HINT: since 0 and 1 are not considered prime numbers, they cannot contain prime numbers
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: for standardization, must uniquely implement/@Override all publicly-shared method signatures for designated classes
+interface IPrime {
+    Integer getLargestPrime(int number);
+}
+
+// ! ABSTRACT CLASSES: enforce OOP INHERITANCE of class fields & OOP POLYMORPHISM public methods
+abstract class AbstractPrime implements IPrime {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to guard class functionally against inappropriate external access
+    private String errorMsg;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public AbstractPrime(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    abstract public boolean validateArgs(int n);
+}
+
+class LargestPrime extends AbstractPrime {
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public LargestPrime(String errorMsg) {
+        // ! OOP INHERITANCE: child subclass that inherits public class fields & methods from an extending parent super class
+        super(errorMsg);
+    }
+
+    // CLASS METHODS: unique object behavior
+    @Override
+    public boolean validateArgs(int n) {
+        return n < 0;
+    }
+
+    @Override
+    public Integer getLargestPrime(int number) {
+
+        if(validateArgs(number)) return -1;
+
+        int largestPrimeFactor = 2;
+
+        while(largestPrimeFactor < (number/2)) {
+
+            boolean isDivisibleFactor = number % largestPrimeFactor == 0;
+
+            if(isDivisibleFactor) {
+                number /= largestPrimeFactor;
+            } else {
+                largestPrimeFactor++;
+            }
+        }
+        return number;
+    }
+}
+
+/*
+    ? create a base class called Car that has attributes:
+        engine, cylinder, name, wheels
+
+    ? define a constructor that only has 2 passed parameters
+        initialize cylinders(number of), name, set wheels to 4, and engine to true
+
+    ? define getters & setters
+
+    ? create methods: show a msg for each in the base class
+
+        startEngine, accelerate, and brake
+
+    ? create 3 subclasses for your favorite vehicles
+
+    * use INTERFACES, ABSTRACTION, OOP, GENERICS, BOXING
+
+    ! INTERFACES VS ABSTRACT CLASSES
+
+        ABSTRACT CLASSES can have class fields/object instance members AND define abstract publicly-shared signatures
+
+        * CANNOT instantiate an ABSTRACT CLASS, must use a normal class that inherits from ABSTRACT CLASS for instantiation
+
+        INTERFACES can ONLY define publicly-shared signatures
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared method signatures for designated standardized set of classes
+interface IDrive {
+
+    boolean accelerate(Integer speed);
+    boolean brake(Integer speed);
+}
+
+// ! ABSTRACTION: enforce standardization via OOP INHERITANCE via OOP POLYMORPHISM for designated classes
+abstract class AbstractTransportation implements IDrive {
+
+    private static final String CURRENT_SPEED = "Current speed: ";
+
+    // private class fields
+    private int speed;
+    private int wheels;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public AbstractTransportation(int wheels) {
+        this.speed = 0;
+        this.wheels = wheels;
+    }
+
+    // CLASS METHODS: unique object behavior
+    abstract boolean startEngine();
+
+    @Override
+    public boolean accelerate(Integer speed) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(speed <= 0) return false;
+
+        int currentSpeed = this.speed;
+
+        // ! UNBOXING: casting higher functional Wrapper class dataType -> primitive dataType
+        this.speed += speed;
+        System.out.println(CURRENT_SPEED + getSpeed());
+        return this.speed > currentSpeed;
+    }
+
+    @Override
+    public boolean brake(Integer speed) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(speed <= 0 || this.speed <= 0) return false;
+
+        int currentSpeed = this.speed;
+
+        if(currentSpeed - speed < 0) {
+            this.speed = 0;
+        } else {
+            // ! UNBOXING: casting higher functional Wrapper class dataType -> primitive dataType
+            this.speed -= speed;
+        }
+
+        System.out.println(CURRENT_SPEED + getSpeed());
+        return true;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getWheels() {
+        return wheels;
+    }
+
+    // ! INNER CLASS + OOP COMPOSITION: logically grouped class components with a parent super class
+    // ! ACCESS-MODIFIER protected: accessibility to class variables & methods are limited to scope of the defining class and it's subclasses with a package
+    protected class Engine {
+
+        // OOP ENCAPSULATION class fields
+        private boolean isOn;
+
+        public Engine() {
+            this.isOn = false;
+        }
+
+        public void setPower(boolean isOn) {
+            this.isOn = isOn;
+        }
+
+        public boolean isOn() {
+            return isOn;
+        }
+    }
+}
+
+class TransportationCar extends AbstractTransportation {
+
+    // ! CONSTANTS/static class fields assigned FINAL value before compilation/instantiation
+    // ! STATIC: class variable saved in a single space in memory and used across entire app
+    // ! ACCESS-MODIFIER private: accessibility to class variables and methods limited to the SCOPE of the defining class
+    private static final String STOPPED = "The vehicle is at a complete stop";
+
+    // ! OOP ENCAPSULATION: use access-modifiers to guard the class from inappropriate external access & use
+    // private class fields
+    private final int cylinders;
+    // ! INNER CLASS + OOP COMPOSITION: logically grouped class components with a parent super class
+    private Engine engine;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public TransportationCar(int wheels, int cylinders) {
+        // ! OOP INHERITANCE: child subclass is given access to public class fields & methods from an extending parent super class
+        super(wheels);
+
+        this.cylinders = cylinders;
+
+        // default values
+        this.engine = new Engine();
+    }
+
+    // CLASS METHODS: unique class behavior
+    @Override
+    public boolean startEngine() {
+        this.engine.setPower(true);
+        return this.engine.isOn();
+    }
+
+    // OOP GETTERS & SETTERS
+    public int getCylinders() {
+        return cylinders;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
+
+/*
+    create a Printer class that uses ENCAPSULATION: enables restricting accessing components
+            !READ: protect object instance members/class fields from external access for direct inappropriate update
+
+        Printer class fields: tonerLevel, numPages, isDuplexPrinter (cap both-side printing)
+
+        Printer methods:
+                    set toner level up to a max 100%
+                    printPage() which increases the number of pages printed
+
+    ! Big(O) Notation: independent of hardware, an algorithm's TIME COMPLEXITY (the worst-case number of steps required to execute successfully) and SPACE COMPLEXITY (the total memory space required by the algorithm's input size plus the extra space or temporary space used by an algorithm -- AUXILIARY SPACE).
+
+    * Big(O) best-to-west Types
+
+        O(1) CONSTANT time complexity: O of 1
+
+        O(logn) LOGARITHMIC time complexity: O of log n w/ a base of 2
+
+        O(n) LINEAR time complexity: O of n
+
+        O(nlogn) LOGLINEAR time complexity: O of n log n
+
+        O(n^2) QUADRATIC time complexity: O of n-squared
+
+    ! RECURSION: a continuously self-calling algorithm & each call on the call-stack waits for the algorithm to reach the base case/breaking condition for a return value.
+
+    * RECURSIVE BASE CASE: reaching the breaking condition that initiates an upward propagation of return values for the waiting calls that results in a call-stack resolution or overflow
+
+    * RECURSION + DIVIDE & CONQUER:
+
+        recursively divide the original problem into 2 or more sub-problems & repeat until the sub-problems become small enough to solve a base case
+
+        after solving the base case/breaking condition, combine the solutions to construct the overall solution to the original problem
+*/
+
+// ! INTERFACE + OOP POLYMORPHISM: all publicly-shared method signatures must be uniquely implemented/@Override by designated standardized classes
+interface IPrint {
+    int printPage();
+}
+
+// ! ABSTRACT CLASSES: enforce OOP INHERITANCE of super class fields & public methods & OOP POLYMORPHISM for MANDATORY designated standardized classes
+abstract class AbstractEquipment implements IPrint {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to guard class from inappropriate external access
+    // private class fields
+    private int numPages;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields on class/object instantiation
+    public AbstractEquipment() {
+        this.numPages = 0;
+    }
+
+    // CLASS METHODS: unique object behavior
+    abstract void setTonerLevel(int amount);
+
+    // OOP GETTERS & SETTERS
+    public int getNumPages() {
+        return numPages;
+    }
+
+    public void setNumPages(int numPages) {
+        this.numPages = numPages;
+    }
+}
+
+class Printer extends AbstractEquipment {
+
+    // ! CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String TONER_LEVEL = "The current toner level: ";
+
+    // private class fields
+    private final boolean isDuplexPrinter;
+    private int tonerLevel;
+
+    public Printer(boolean isDuplexPrinter) {
+        this.isDuplexPrinter = isDuplexPrinter;
+        this.tonerLevel = 0;
+    }
+
+    void setTonerLevel(int amount) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exception
+        if(amount <= 0) return;
+
+        int newAmount = this.getTonerLevel() + amount;
+
+        this.tonerLevel = Math.min(newAmount, 100);
+        System.out.println(TONER_LEVEL + this.getTonerLevel());
+    }
+
+    @Override
+    public int printPage() {
+
+        // ! AUTOBOXING: casting primitive dataType -> greater functionality Wrapper class dataType
+        Integer updatedPageCount = this.isDuplexPrinter ?
+                this.getNumPages() + 2 : this.getNumPages() + 1;
+
+        this.setNumPages(updatedPageCount);
+        return this.getNumPages();
+    }
+
+    public boolean isDuplexPrinter() {
+        return isDuplexPrinter;
+    }
+
+    public int getTonerLevel() {
+        return tonerLevel;
+    }
+}
+
+/*
+    ? define a SinglyIntegerNode class
+
+    ? define a SinglyIntegerLinkedList class
+
+    ? in a singly linkedList, implement insertSorted() method in the SinglyIntegerLinkedList class that inserts a value in sorted order
+
+        HEAD -> lowest-to-highest -> TAIL
+
+    * ex)
+        input values 4, 2, 1, 5
+        output: HEAD -> 1 -> 2 -> 4 -> 5 -> null
+
+    ? define a DoublyIntegerNode class
+
+    ? define a DoublyIntegerLinkedList class
+
+    ? in a doubly linkedList, implement insertSorted() method in the DoublyIntegerLinkedList class that inserts a value in sorted order
+
+    ! use a SORT ALGORITHM, OOP, INTERFACES, ABSTRACTION, GENERICS, BOXING
+ */
+
+// ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared method signatures for standardized set of classes
+interface ILinkedList {
+
+    void add(Integer n);
+}
+
+// ! ABSTRACT CLASSES: enforce standardization of class fields, public methods, & method signatures via OOP INHERITANCE & OOP POLYMORPHISM for MANDATORY set of subclasses
+abstract class AbstractLinkedList implements ILinkedList {
+
+    // ! OOP ENCAPSULATION: use access-modifiers to guard class from inappropriate external access
+    // ! ACCESS-MODIFIER private: accessibility of class fields & methods limited to the SCOPE of the defining class
+    // private class fields
+    private SinglyIntegerNode head;
+    private int size;
+    private String type;
+
+    // ! OOP CONSTRUCTOR that initializes the class fields & INTRINSIC LOCK on class/object instantiation
+    public AbstractLinkedList(String type) {
+        this.type = type;
+
+        // default values
+        this.head = null;
+        this.size = 0;
+    }
+
+    // CLASS METHODS: unique object behavior
+    abstract SinglyIntegerNode pop();
+
+    public boolean isEmpty() {
+        return this.head == null;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public SinglyIntegerNode getHead() {
+        return head;
+    }
+
+    public void setHead(SinglyIntegerNode head) {
+        this.head = head;
+    }
+
+    // ! INNER CLASS: logically grouped class components within a parent class
+    // ! ACCESS-MODIFIER protected: accessibility of class fields & methods limited to the SCOPE of the defining class and it's subclasses within the package
+    protected class SinglyIntegerNode {
+
+        private Integer data;
+        private SinglyIntegerNode next;
+
+        public SinglyIntegerNode(Integer data) {
+            // ! UNBOXING: casting higher functionality Wrapper class dataType to primitive dataType
+            this.data = data;
+
+            // default values
+            this.next = null;
+        }
+
+        // CLASS METHODS: unique object behavior
+        @Override
+        public String toString() {
+            return "SinglyIntegerNode{" +
+                    "data=" + data +
+                    ", next=" + next +
+                    '}';
+        }
+
+        // OOP GETTERS & SETTERS
+        public Integer getData() {
+            return data;
+        }
+
+        public void setData(int data) {
+            this.data = data;
+        }
+
+        public SinglyIntegerNode getNext() {
+            return next;
+        }
+
+        public void setNext(SinglyIntegerNode next) {
+            this.next = next;
+        }
+    }
+}
+
+class SinglyLinkedList extends AbstractLinkedList {
+
+    public SinglyLinkedList(String type) {
+        // ! OOP INHERITANCE: child subclass inherits public class fields & public methods from an extending parent super class
+        super(type);
+    }
+
+    /*
+        ! Big(O) Notation: independent of hardware, an algorithm's worst-case performance (TIME & SPACE COMPLEXITY)
+
+        ! TIME COMPLEXITY: independent of hardware, the wost case number of steps required for an algorithm to successfully complete
+            * O(n^2) quadratic time complexity = O of n-squared = worst
+        ! SPACE COMPLEXITY: the total memory space required by the algorithm's input size plus the extra space or temporary space used by an algorithm (AUXILIARY SPACE)
+            * in-place algorithm that doesn't use extra memory
+        ! STABLE ALGORITHM: if there are duplicates, the original order will be preserved
+            * the search for insertion value position stops when you find a sorted value that is less than or equal
+
+        ! INSERTION SORT LOGIC:
+
+            break the array into 2 partitions: sorted & unsorted
+
+                sorted partition of 1 element array index 0
+
+                unsorted partition starting at index 1
+
+            the inserting work is done in the SORTED partition where there is no swapping, the elements shift
+
+                ? STEP 1
+                take first element in the unsorted partition (index 1) and save it,
+                and then "insert" it into the sorted partition via comp
+
+                ? STEP 2
+                by comparing if it is greater than or equal to the value in the sorted partition
+
+                if sorted partition value is less than or equal to the unsorted inserting value,
+                    than the inserting value is inserted at the index above the sorted partition value
+
+                if the sorted partition value is greater than the unsorted inserting value,
+                    than you shift the sorted partition value up 1
+                    next, compare unsorted inserting value to the next decremented index value
+
+                you repeat this process until you find the correct index for the unsorted inserting value, or you reach the beginning of the array (index 0)
+
+               ? STEP 3
+                after the comparison(s) & inserting of the unsorted inserting value,
+                    GAP VALUE 1 = the sorted partition is grown by 1 and the index in the unsorted partition is incremented by 1
+
+                repeat this process until the entire array is sorted
+     */
+    public void insertSorted(Integer value) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch exceptions
+        if(value == null) {
+            return;
+        }
+
+        // assuming the list is sorted, add value to front if it is empty
+        if(this.isEmpty() || this.getHead().getData() >= value) {
+            add(value);
+            return;
+        }
+
+        // find the insertion point
+        SinglyIntegerNode currentNode = this.getHead().getNext();
+        SinglyIntegerNode previousNode = this.getHead();
+
+        while(currentNode != null && currentNode.getData() < value) {
+            previousNode = currentNode;
+            currentNode = currentNode.getNext();
+        }
+
+        SinglyIntegerNode newNode = new SinglyIntegerNode(value);
+
+        // set newNode BEFORE currentNode
+        newNode.setNext(currentNode);
+
+        // set newNode as previousNode's next
+        previousNode.setNext(newNode);
+
+        int incrementedSize = this.getSize() + 1;
+        this.setSize(incrementedSize);
+    }
+
+    @Override
+    public void add(Integer n) {
+
+        if(n == null) return;
+
+        SinglyIntegerNode node = new SinglyIntegerNode(n);
+
+        node.setNext(this.getHead());
+
+        this.setHead(node);
+        this.setSize(this.getSize() + 1);
+    }
+
+    @Override
+    SinglyIntegerNode pop() {
+
+        if(this.isEmpty()) return null;
+
+        SinglyIntegerNode removedNode = this.getHead();
+
+        this.setHead(this.getHead().getNext());
+
+        removedNode.setNext(null);
+        this.setSize(this.getSize() - 1);
+
+        return removedNode;
+    }
+}
+
+/*
+    write a class FirstLastDigitSum
+    write the method sumFirstAndLastDigit with 1 int parameter called number
+        returns -1 if param is negative
+
+        the method needs to find the first and last digit of the parameter number passed to the method
+        use a loop and return the sum of the first and last digit
+ */
+class FirstLastDigitSum {
+
+    // ! STATIC: class variable saved in a single space in memory and used across entire applicaiton
+    public static int sumFirstAndLastDigit(int number) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(number < 0) return -1;
+
+        int lastDigit = number % 10;
+
+        while(number > 10) {
+            number /= 10;
+        }
+
+        return number + lastDigit;
+    }
+}
+
+/*
+    write a class LastDigitChecker
+    write the method hasSameLastDigit with 3 int parameters
+        each parameter should within 10-1000 inclusive
+        returns false if one of the parameters is out of range
+
+    if at least 2 of the 3 numbers share the rightmost digit,
+        otherwise return false
+ */
+class LastDigitChecker {
+    public static boolean hasSameLastDigit(int a, int b, int c) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to handle exceptions
+        if(!inRange(a) || !inRange(b) || !inRange(c)) return false;
+
+        int counter = 0;
+        counter = checker(a, b, counter);
+        counter = checker(a, c, counter);
+        counter = checker(b, c, counter);
+
+        return counter >= 1;
+    }
+
+    private static int checker(int a, int b, int counter) {
+        if(a % 10 == b % 10) counter++;
+        return counter;
+    }
+
+    private static boolean inRange(int n) {
+        return n >= 10 && n <= 1000;
+    }
+}
+
+/*
+    write a class FlourPacker
+
+    write the method canPack with 3 int parameters
+        if params are negative, return false;
+
+            bigCount: big flour bags (5 kilos each)
+            smallCount: small flour bags (1 kilo each)
+            goal: goal amount of kilos of flour needed to assemble a package
+
+        returns true
+            if bigCount + smallCount must at least equal to the value of the goal
+
+            if sum is greater than the goal, ensure only full bags are used toward the goal amount
+                okay, if there are additional bags left over
+
+                ex: goal = 9, bigCount = 2, smallCount = 0
+                    should return false since each big bag is 5 kilos and cannot be divided
+
+                ex: goal = 9, bigCount = 1, smallCount = 5
+                    should return true since each big bag is 1 full bigCount bag and 4 full smallCount bags = goal
+
+         ? Interfaces vs Abstract Classes
+
+            ABSTRACT CLASSES can have class fields/object instance members inherited AND define abstract publicly-shared signatures
+
+            INTERFACES can ONLY define publicly-shared signatures
+
+                interfaces can have essentially-constant variables defined as "public static final"
+ */
+// ! INTERFACE + OOP POLYMORPHISM: must uniquely implement/@Override all publicly-shared method signatures for designated set of classes for standardization
+interface IPacker {
+    boolean canPack(int a, int b, int c);
+}
+
+// ! ABSTRACT CLASSES: enforce child subclass via OOP INHERITANCE + OOP POLYMORPHISM for mandatory class instances
+abstract class AbstractPacker implements IPacker {
+
+    @Override
+    public boolean canPack(int bigCount, int smallCount, int goal) {
+
+        if(!validParameter(bigCount) || !validParameter(smallCount) || !validParameter(goal)) return false;
+
+        boolean hasFullBag;
+        int sum;
+
+        boolean bigCountNotApplicable = goal < 5;
+        int convertedBigCount = bigCount * 5;
+        int convertedBigRemainder = convertedBigCount % 5;
+
+        boolean bigCountDivisibleBy5 = convertedBigCount % 5 == 0;
+
+        if(bigCountNotApplicable) {
+
+            hasFullBag = (smallCount >= goal);
+
+        } else if(bigCountDivisibleBy5) {
+
+            boolean bigGreaterThanGoal = convertedBigCount > goal;
+
+            if(bigGreaterThanGoal) {
+                convertedBigCount = (goal / 5) * 5;
+            }
+
+            sum = convertedBigCount + smallCount;
+            hasFullBag = sum >= goal;
+
+        } else {
+
+            // divBy5 convertedBigCount with remainder
+            sum = (convertedBigCount - convertedBigRemainder) + smallCount;
+            hasFullBag = (sum >= goal);
+        }
+        return hasFullBag;
+    }
+
+    // ! ACCESS-MODIFIER protected: accessibility to the public class variables or methods limited to the scope of the defining class & subclasses within the package
+    protected boolean validParameter(int a) {
+        return a >= 0;
+    }
+}
+
+class FlourPacker extends AbstractPacker {
+    public FlourPacker() {}
+}

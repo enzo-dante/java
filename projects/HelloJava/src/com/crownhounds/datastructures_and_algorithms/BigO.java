@@ -4,7 +4,7 @@ import com.crownhounds.masterjava.Util;
 
 public class BigO {
     /*
-        ! Big(O) Notation / O(n): independent of hardware, an algorithm's TIME COMPLEXITY relative to the number of processed items
+        ! Big(O) Notation: independent of hardware, an algorithm's TIME COMPLEXITY relative to the number of processed items
             Always measures WORST-CASE scenario
 
         ! Big(O) TIME COMPLEXITY: the worst case scenario for the number of steps in an algorithm's execution
@@ -21,7 +21,7 @@ public class BigO {
                logarithmic time complexity
 
             * O(n) = O of n
-               linear time complexity
+               linear time complexity where n is the length of the given array
 
             * O(nlogn) = O of n log n
                loglinear time complexity

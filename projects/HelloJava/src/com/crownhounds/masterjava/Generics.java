@@ -31,7 +31,7 @@ public class Generics {
             ? GENERIC CLASSES can pass an Interface as a Type parameter
                 can extend only a single class via INHERITANCE, but multiple INTERFACES
 
-                ! GENERIC CLASSES + INHERITANCE: extend parent super-class first, then multiple interfaces
+                ! GENERIC CLASSES + INHERITANCE: enforce parent super-class first, then multiple interfaces
                 Company = parent class
                 IOrganization = Interface
                 ISports = Interface
