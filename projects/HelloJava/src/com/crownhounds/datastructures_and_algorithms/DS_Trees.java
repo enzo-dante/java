@@ -1,6 +1,9 @@
 package com.crownhounds.datastructures_and_algorithms;
 
 import com.crownhounds.masterjava.Util;
+import com.sun.source.tree.Tree;
+
+import javax.swing.tree.TreeNode;
 
 public class DS_Trees {
 
@@ -96,101 +99,6 @@ public class DS_Trees {
                           15    22        26  30
 
                                                 29 32
-
-        ! TREE DELETE TRAVERSAL:
-
-            * original:
-                                     25
-
-                               20       27
-
-                          15    22        26  30
-
-                          17                     29 32
-
-            ? delete node is a leaf: null out parent node's left or right child
-
-            * null out 17
-                                     25
-
-                               20       27
-
-                          15    22        26  30
-
-                                                29 32
-
-            ? delete node has one child: save leaf value, delete leaf &  replace it's value at the respective parent node
-
-            * deleted 17 and replaced parent node value 15 with 17
-
-                                     25
-
-                               20       27
-
-                          17    22        26  30
-
-                                              29 32
-
-            ? delete node has two children: get the largest value in left-subtree or the smallest value in right-subtree
-
-            step 1: look for replacement node for minimal disruption from EITHER (NOT both) left or right subtree
-
-            step 2a: if left subtree selected, take the largest value from the left subtree
-
-                    * deleteTargetNode: 20
-                    * subTreeRoot: 15
-                    * look for replacementNode starting at the root of the subtree of the deleteTargetNode (the max in leftSubtree)
-                    * max: completely traverse left edges of a left subtree until discovering a node without a right child
-                    * max: 17
-                        if 17 had a left child, 17 replaces 20 & the left child replaces 17 node value
-
-                    * null out node15 child
-
-                                             25
-
-                                       20       27
-
-                                  15    22        26  30
-
-                                  17                     29 32
-
-                    * post-delete
-                                             25
-
-                                       17       27
-
-                                  15    22        26  30
-
-                                                         29 32
-
-            step 2b: if right subtree selected, take the largest value from the right subtree
-
-                    * deleteTargetNode: 27
-                    * subTreeRoot: 30
-                    * look for replacementNode starting at the root of the subtree of the deleteTargetNode (the min in leftSubtree)
-                    * min: completely traverse right edges of a right subtree until discovering a node without a left child
-                    * min: 29
-                        if 29 had a right child, 29 replaces 27 & the right child replaces 29 node value
-
-                    * null out node15 child
-
-                                             25
-
-                                       20       27
-
-                                  15    22        26  30
-
-                                  17                     29 32
-
-                    * post-delete
-
-                                             25
-
-                                       17       29
-
-                                  15    22        26  30
-
-                                                          32
      */
 
     // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
@@ -198,35 +106,35 @@ public class DS_Trees {
 
     public static void main(String[] args) {
 
-        Tree intTree = buildTree();
+        BinaryTree intTree = buildTree();
         intTree.traverseInOrder();
 
         Util.printSeparator();
 
-        System.out.println(intTree.get(27).getData());
+        System.out.println(intTree.getNode(27).getData());
 
         try {
-            System.out.println(intTree.get(17).getData());
+            System.out.println(intTree.getNode(17).getData());
         } catch(NullPointerException e) {
             System.out.println(NULL);
         }
 
         try {
-            System.out.println(intTree.get(8888).getData());
+            System.out.println(intTree.getNode(8888).getData());
         } catch(NullPointerException e) {
             System.out.println(NULL);
         }
 
         Util.printSeparator();
 
-        System.out.println("min: " + intTree.min());
-        System.out.println("max: " + intTree.max());
+        System.out.println("min: " + intTree.getMin());
+        System.out.println("max: " + intTree.getMax());
 
         Util.printSeparator();
 
-        Tree tree15 = buildTree();
-        Tree tree27 = buildTree();
-        Tree tree25 = buildTree();
+        BinaryTree tree15 = buildTree();
+        BinaryTree tree27 = buildTree();
+        BinaryTree tree25 = buildTree();
 
         tree15.traverseInOrder();
 
@@ -256,127 +164,246 @@ public class DS_Trees {
 
     }
 
-    public static Tree buildTree() {
+    public static BinaryTree buildTree() {
 
-        Tree intTree = new Tree();
-        intTree.insert(25);
-        intTree.insert(20);
-        intTree.insert(15);
-        intTree.insert(27);
-        intTree.insert(30);
-        intTree.insert(29);
-        intTree.insert(26);
-        intTree.insert(22);
-        intTree.insert(32);
+        BinaryTree binaryTree = new BinaryTree();
 
-        return intTree;
+        binaryTree.insertNode(25);
+        binaryTree.insertNode(20);
+        binaryTree.insertNode(15);
+        binaryTree.insertNode(27);
+        binaryTree.insertNode(30);
+        binaryTree.insertNode(29);
+        binaryTree.insertNode(26);
+        binaryTree.insertNode(22);
+        binaryTree.insertNode(32);
+
+        return binaryTree;
     }
 }
 
-class Tree {
+class BinaryTree {
+
+    // CONSTANTS/static class variables assigned FINAL value before compilation/instantiation
+    private static final String EMPTY_TREE = "This binary tree is empty";
+    private static final String IN_ORDER_TRAVERSAL = "In-order Traversal";
 
     // OOP ENCAPSULATION private class fields
     private TreeNode root;
 
-    public void insert(int value) {
+    // OOP CONSTRUCTOR that initializes the class fields & INTRINSIC LOCK on class/object instantiation
+    public BinaryTree() {
+        this.root = null;
+    }
 
-        // insert at first possible node
-        if(this.root == null) {
+    // CLASS METHODS: unique object behavior
+    // ACCESS-MODIFIER protected: accessibility the variable or method is limited to the scope of the defining class & it's OOP INHERITANCE subclasses within the package
+    public boolean isEmpty() {
+        return this.root == null;
+    }
+
+    public void traverseInOrder() {
+
+        if(isEmpty()) return;
+
+        System.out.println(IN_ORDER_TRAVERSAL);
+        this.root.traverseInOrder();
+    }
+
+    public void insertNode(int value) {
+        if(isEmpty()) {
             this.root = new TreeNode(value);
-
         } else {
-            this.root.insert(value);
+            this.root.insertNode(value);
         }
     }
 
-    public int min() {
-        if(this.root == null) {
-            return Integer.MIN_VALUE;
-        } else {
-            return root.getMin();
-        }
-    }
-
-    public int max() {
-        if(this.root == null) {
-            return Integer.MIN_VALUE;
-        } else {
-            return root.getMax();
-        }
-    }
-
+    // METHOD OVERLOADING: use same name, but with unique parameters, for related methods to reduce tech debt and optimize readability & scalability
     public void delete(int value) {
-        root = delete(root, value);
+        this.root = delete(this.root, value);
     }
 
+    /*
+       ! BINARY TREE DELETE TRAVERSAL: recursively traverse binary tree for position of node to delete, delete node, and shift replacement node into position to maintain sorted order & maintain tree integrity
+
+           * original:
+                                    25
+
+                              20       27
+
+                         15    22        26  30
+
+                         17                     29 32
+
+           ? delete node is a leaf: null out parent node's left or right child
+
+           * null out 17
+                                    25
+
+                              20       27
+
+                         15    22        26  30
+
+                                               29 32
+
+           ? delete node has one child: save leaf value, delete leaf &  replace its value at the respective parent node
+
+           * deleted 17 and replaced parent node value 15 with 17
+
+                                    25
+
+                              20       27
+
+                         17    22        26  30
+
+                                             29 32
+
+           ? delete node has two children: get the largest value in left-subtree or the smallest value in right-subtree
+
+           step 1: look for replacement node for minimal disruption from EITHER (NOT both) left or right subtree
+
+           step 2a: if left subtree selected, take the largest value from the left subtree
+
+                   * deleteTargetNode: 20
+                   * subTreeRoot: 15
+
+                   * look for replacementNode starting at the root of the subtree of the deleteTargetNode (the max in leftSubtree)
+                   * max: completely traverse left edges of a left subtree until discovering a node without a right child
+                   * max: 17
+                       if 17 had a left child, 17 replaces 20 & the left child replaces 17 node value
+
+                   * null out node15 child
+
+                                            25
+
+                                      20       27
+
+                                 15    22        26  30
+
+                                 17                     29 32
+
+                   * post-delete
+                                            25
+
+                                      17       27
+
+                                 15    22        26  30
+
+                                                        29 32
+
+           step 2b: if right subtree selected, take the largest value from the right subtree
+
+                   * deleteTargetNode: 27
+                   * subTreeRoot: 30
+
+                   * look for replacementNode starting at the root of the subtree of the deleteTargetNode (the min in leftSubtree)
+                   * min: completely traverse right edges of a right subtree until discovering a node without a left child
+                   * min: 29
+                       if 29 had a right child, 29 replaces 27 & the right child replaces 29 node value
+
+                   * null out node15 child
+
+                                            25
+
+                                      20       27
+
+                                 15    22        26  30
+
+                                 17                     29 32
+
+                   * post-delete
+
+                                            25
+
+                                      17       29
+
+                                 15    22        26  30
+
+                                                         32
+     */
     private TreeNode delete(TreeNode subtreeRoot, int value) {
 
-        // ? RECURSION base case/breaking condition: the algorithm either upward propagates recursive call return for stack resolution or experiences a stack overflow
-        if(subtreeRoot == null) {
-            return subtreeRoot;
-        }
+        // ! RECURSION BASE CASE: the breaking condition that initiates an upward propagation of return values for the waiting calls resulting in call-stack resolution or overflow
+        boolean isBaseCase = (subtreeRoot == null);
+        if(isBaseCase) return subtreeRoot;
 
-        // ? TREE NODE DELETE: traverse left side + replace subtreeRoot value onDelete
-        if(value < subtreeRoot.getData()) {
+        boolean inLeftChild = (value < subtreeRoot.getData());
+        boolean inRightChild = (value > subtreeRoot.getData());
+
+        if(inLeftChild) {
+
+            // ! TREE NODE DELETE: traverse left side + replace subtreeRoot value on delete
             subtreeRoot.setLeftChild(
+                    // ! RECURSION: continuously self-calling algorithm & each call waits for a return value until reaching a base case or experiences a stack overflow
                     delete(subtreeRoot.getLeftChild(), value)
             );
 
-            // ? TREE NODE DELETE: traverse right side + replace subtreeRoot value onDelete
-        } else if(value > subtreeRoot.getData()) {
+        } else if(inRightChild) {
+
+            // ! TREE NODE DELETE: traverse right side + replace subtreeRoot value onDelete
             subtreeRoot.setRightChild(
+                    // ! RECURSION: continuously self-calling algorithm & each call waits for a return value until reaching a base case or experiences a stack overflow
                     delete(subtreeRoot.getRightChild(), value)
             );
 
-            // ? TREE NODE DELETE case 0 & 1: located treeNode to delete in recursive traversal
         } else {
 
-            // ? TREE NODE DELETE: node to delete has 0 or 1 children by always returning replacement node or same node
-            if(subtreeRoot.getLeftChild() == null) {
+            boolean isEmptyLeftChild = (subtreeRoot.getLeftChild() == null);
+            boolean isEmptyRightChild = (subtreeRoot.getRightChild() == null);
+
+            // TREE NODE DELETE: node to delete has 0 or 1 children by always returning replacement node or same node
+            if(isEmptyLeftChild) {
+
                 return subtreeRoot.getRightChild();
 
-            } else if(subtreeRoot.getRightChild() == null) {
+            } else if(isEmptyRightChild) {
+
                 return subtreeRoot.getLeftChild();
             }
 
             // ? TREE NODE DELETE case 2: subtreeRoot/deleteTargetNode has 2 children & find min in rightSubtree or max in leftSubtree for replacement & deletion
-            // traverse & replace the value in the subtreeRoot node w/ the smallest value from rightSubtree
-            int min = subtreeRoot.getRightChild().getMin();
-            subtreeRoot.setData(min);
+            int minimumRightLeaf = subtreeRoot.getRightChild().getMin();
+            subtreeRoot.setData(minimumRightLeaf);
 
             // delete the node that has the smallest value from rightSubtree
             int deleteSmallestNode = subtreeRoot.getData();
             subtreeRoot.setRightChild(delete(subtreeRoot.getRightChild(), deleteSmallestNode));
         }
-
         return subtreeRoot;
     }
 
-    public TreeNode get(int value) {
-
-        System.out.print("get(" + value + "): ");
-
-        if(this.root != null) {
-            return this.root.get(value);
-        }
-
-        return null;
-    }
-
-    public void traverseInOrder() {
-        
-        System.out.println("In-order Traversal");
-        if(this.root != null) {
-            root.traverseInOrder();
+    public int getMin() {
+        if(isEmpty()) {
+            System.out.println(EMPTY_TREE);
+            return Integer.MIN_VALUE;
+        } else {
+            return this.root.getMin();
         }
     }
 
+    public int getMax() {
+        if(isEmpty()) {
+            System.out.println(EMPTY_TREE);
+            return Integer.MIN_VALUE;
+        } else {
+            return this.root.getMax();
+        }
+    }
+
+    public TreeNode getNode(int value) {
+        // EXCEPTION HANDLING look before you leap: use if-else statement to handle errors
+        if(isEmpty()) return null;
+
+        return this.root.getNode(value);
+    }
+
+    // OOP GETTERS & SETTERS
     public TreeNode getRoot() {
-        return root;
+        return this.root;
     }
 
-    // ! INNER CLASS: logically grouped components within an extending parent super class
-    class TreeNode {
+    // INNER CLASS: logically grouped components within an extending parent super class
+    protected class TreeNode {
 
         // OOP ENCAPSULATION private class fields
         private int data;
@@ -389,6 +416,103 @@ class Tree {
         }
 
         // OOP CLASS METHODS: unique object behavior
+        /**
+         * get values lowest-to-highest by traversing the left-child, then root, then right-child, and repeat
+         */
+        public void traverseInOrder() {
+
+            boolean hasLeftChild = (this.leftChild != null);
+
+            if(hasLeftChild) {
+                this.leftChild.traverseInOrder();
+            }
+
+            System.out.print(this.data + ", ");
+
+            boolean hasRightChild = (this.rightChild != null);
+
+            if(hasRightChild) {
+                this.rightChild.traverseInOrder();
+            }
+        }
+
+        /**
+         * recursively traverse down binary tree left-to-right for insertion node position by comparing the current node's left & right child values
+         * @return searched node or null
+         */
+        public void insertNode(int value) {
+
+            // No duplicate values allowed in implementation
+            boolean isDuplicateValue = (value == this.data);
+
+            if(isDuplicateValue) return;
+
+            boolean inLeftChild = (value < this.data);
+
+            if(inLeftChild) {
+
+                boolean foundInsertionLeftNode = (this.leftChild == null);
+
+                if(foundInsertionLeftNode) {
+
+                    this.leftChild = new TreeNode(value);
+
+                } else {
+
+                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+                    this.leftChild.insertNode(value);
+                }
+            } else {
+
+                boolean foundInsertionRightNode = (this.rightChild == null);
+
+                if(foundInsertionRightNode) {
+
+                    this.rightChild = new TreeNode(value);
+
+                } else {
+
+                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+                    this.rightChild.insertNode(value);
+                }
+            }
+        }
+
+        /**
+         * left-to-right recursively traverse down binary tree for node value by comparing the current node's 2 child values
+         *
+         * @return searched node or null
+         */
+        public TreeNode getNode(int value) {
+
+            // ! RECURSION BASE CASE: the breaking condition that initiates an upward propagation of return values for the waiting calls resulting in call-stack resolution or overflow
+            boolean isBaseCase = (value == this.data);
+
+            if(isBaseCase) return this;
+
+            boolean inLeftChild = (value < this.data);
+
+            if(inLeftChild) {
+
+                boolean hasLeftChild = (this.leftChild != null);
+
+                if(hasLeftChild) {
+                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+                    return this.leftChild.getNode(value);
+                }
+
+            } else {
+
+                boolean hasRightChild = (this.rightChild != null);
+
+                if(hasRightChild) {
+                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
+                    return this.rightChild.getNode(value);
+                }
+            }
+            return null;
+        }
+
         /**
          * left-to-right recursively traverse down binary tree for LEFT-MOST node with min value
          * @return min value
@@ -423,104 +547,9 @@ class Tree {
             return this.rightChild.getMax();
         }
 
-        /**
-         * left-to-right recursively traverse down binary tree for node value by comparing the current node's 2 child values
-         *
-         * @return searched node or null
-         */
-        public TreeNode get(int value) {
-
-            boolean isBaseCase = (value == this.data);
-
-            if(isBaseCase) return this;
-
-            boolean shouldTraverseDownLeftChild = (value < this.data);
-
-            if(shouldTraverseDownLeftChild) {
-
-                boolean hasLeftChild = (this.leftChild != null);
-
-                if(hasLeftChild) {
-                    return this.leftChild.get(value);
-                }
-
-            } else {
-
-                boolean hasRightChild = (this.rightChild != null);
-
-                if(hasRightChild) {
-                    return this.rightChild.get(value);
-                }
-            }
-            return null;
-        }
-
-        /**
-         * get values lowest-to-highest by traversing the left-child, then root, then right-child, and repeat
-         */
-        public void traverseInOrder() {
-
-            boolean hasLeftChild = (this.leftChild != null);
-
-            if(hasLeftChild) {
-                this.leftChild.traverseInOrder();
-            }
-
-            System.out.print(this.data + ", ");
-
-            boolean hasRightChild = (this.rightChild != null);
-
-            if(hasRightChild) {
-                this.rightChild.traverseInOrder();
-            }
-        }
-
-        /**
-         * left-to-right recursively traverse down binary tree for insertion node position by comparing the current node's left & right child values
-         *
-         * @return searched node or null
-         */
-        public void insert(int value) {
-
-            // No duplicate values allowed in implementation
-            boolean isDuplicateValue = (value == this.data);
-
-            if(isDuplicateValue) return;
-
-            boolean shouldTraverseDownLeftChild = (value < this.data);
-
-            if(shouldTraverseDownLeftChild) {
-
-                boolean foundInsertionLeftNode = (this.leftChild == null);
-
-                if(foundInsertionLeftNode) {
-
-                    this.leftChild = new TreeNode(value);
-
-                } else {
-
-                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
-                    this.leftChild.insert(value);
-                }
-            } else {
-
-                boolean foundInsertionRightNode = (this.rightChild == null);
-
-                if(foundInsertionRightNode) {
-
-                    this.rightChild = new TreeNode(value);
-
-                } else {
-
-                    // ! RECURSION: an algorithm calls itself & each call is placed on the call stack waiting for a return value until the algorithm can no longer call itself (the base case/breaking condition)
-                    this.rightChild.insert(value);
-                }
-            }
-        }
-
-        // OOP getters & setters
+        // OOP GETTERS & SETTERS
         public int getData() {
-            return data;
+            return this.data;
         }
 
         public void setData(int data) {
@@ -528,7 +557,7 @@ class Tree {
         }
 
         public TreeNode getLeftChild() {
-            return leftChild;
+            return this.leftChild;
         }
 
         public void setLeftChild(TreeNode leftChild) {
@@ -536,7 +565,7 @@ class Tree {
         }
 
         public TreeNode getRightChild() {
-            return rightChild;
+            return this.rightChild;
         }
 
         public void setRightChild(TreeNode rightChild) {

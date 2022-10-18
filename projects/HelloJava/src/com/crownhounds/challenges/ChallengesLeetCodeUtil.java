@@ -573,46 +573,6 @@ class LeetCodeStrings extends ChallengesLeetCodeUtil {
         return -1;
     }
 
-    /**
-     * ? LeetCode 704: write a function to search target in numbers
-     * ?        given an array of integers, numbers sorted in ascending order & an integer target
-     * ?        if target exists, return index else -1
-     *
-     * ! HINT: left-to-right comparisons & recursion
-     *
-     * * BINARY SEARCH only works with SORTED arrays using partitions
-     *
-     * * O(logn) LOGARITHMIC TIME COMPLEXITY: second-best performance O of log n to the base 2
-     *
-     * @return index or -1 error
-     */
-    public Integer binarySearch(int[] nums, int target) {
-
-//        ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
-        if(nums.length != 0) {
-
-            int leftIndex = 0;
-            int rightIndex = nums.length - 1;
-
-            while(leftIndex <= rightIndex) {
-                int midIndex = (rightIndex + leftIndex) / 2;
-
-                if(nums[midIndex] == target) {
-                    return midIndex;
-                }
-
-                // partition array
-                if(nums[midIndex] < target) {
-                    leftIndex = midIndex + 1;
-                } else {
-                    rightIndex = midIndex - 1;
-                }
-            }
-        }
-
-        // ! AUTOBOXING: automatically casting primitive dataType to Wrapper class dataType
-        return -1;
-    }
 
     /**
      * ? Facebook LeetCode 49:
@@ -710,6 +670,98 @@ class LeetCodeStrings extends ChallengesLeetCodeUtil {
 }
 
 class LeetCodeArrays extends ChallengesLeetCodeUtil {
+
+    /**
+     * ? LeetCode 532:
+     *      Company: Amazon
+     *
+     * ? Given an array of integers nums and an integer k, return the number of unique k-diff pairs in the array.
+     * ? A k-diff pair is an integer pair (nums[i], nums[j])
+     *
+     *      where the following are true:
+     *
+     *          0 <= i, j < nums.length
+     *
+     *          i != j
+     *
+     *          nums[i] - nums[j] == k
+     *
+     *          k-diff = (nums[i], nums[j]);
+     *
+     * ? Notice that |val| denotes the absolute value of val.
+     *
+     * * Logic:
+     *      define hashmap
+     *          key = element
+     *          value = number of element occurrences
+     *
+     *      iterate over input array and tally values in hashmap
+     *
+     *      iterate over hashmap key values (that has removed duplicate values)
+     *
+     *      subtract the key target from the unique element in the hashmap
+     *      if the kDiff value is equal to another value in the hashmap, they are a kDiff pair
+     *
+     *      Input:
+     *          nums = [3,1,4,1,5]
+     *          k = 2
+     *
+     *      Output: 2
+     *
+     *          There are two 2-diff pairs in the array, (1, 3) and (3, 5).
+     *          Although we have two 1s in the input, we should only return the number of unique pairs.
+     *
+     * * O(n) linear TIME COMPLEXITY: to iterate over input array and hashmap key-set array
+     * * O(n) linear SPACE COMPLEXITY: to construct hashmap data structure
+     */
+    public static int kDiffPairs(int[] nums, int k) {
+
+        // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch errors
+        if((nums.length == 0) || (k <= 0)) return -1;
+
+        int uniquePairs = 0;
+
+        // ! MAPS: an INTERFACE of unique key-value pairs implemented with a HASHMAP or LINKED HASHMAP class that takes 2 GENERIC parameters
+        Map<Integer, Integer> hashmap = buildKDiffHashmap(nums);
+
+        // iterate over hashmap key set (that has removed duplicate values in original input array)
+        // ! use hashmapInstance.keySet() + hashmapInstance.get(key) = loop through map & return all key-value pairs
+        for(Integer uniqueElement : hashmap.keySet()) {
+
+            // get kDiff by subtracting the key target from the unique element in the hashmap
+            int kDiff = uniqueElement - k;
+
+            boolean isKDiffPair = hashmap.containsKey(kDiff);
+
+            // if the kDiff value is equal to another value in the hashmap, they are a kDiff pair
+            if(isKDiffPair) uniquePairs++;
+        }
+        return uniquePairs;
+    }
+
+    // ! ACCESS-MODIFIER private: access to the variable is limited to the SCOPE of the defining class
+    // ! STATIC: class variable saved in a single space in memory and utilized across entire app
+    private static Map<Integer, Integer> buildKDiffHashmap(int[] nums) {
+        Map<Integer, Integer> hashmap = new HashMap<>();
+
+        // iterate over input array and tally values in hashmap
+        for(int i = 0; i < nums.length; i++) {
+
+            int key = nums[i];
+
+            // ! TIME COMPLEXITY: independent of hardware, the worst-case number of steps required for an algorithm (a consistently repeatable sequence of steps) to perform successfully
+            // ! MAP + get O(1) CONSTANT time complexity: getting a map value with a key will always take the same number of steps (3)
+            boolean isMissingKey = !hashmap.containsKey(key);
+
+            if(isMissingKey) {
+                hashmap.put(key, 1);
+            } else {
+                int incrementedValue = hashmap.get(key) + 1;
+                hashmap.put(key, incrementedValue);
+            }
+        }
+        return hashmap;
+    }
 
     /**
      * ? LeetCode 1291:
@@ -3144,13 +3196,6 @@ class LeetCodeSort extends ChallengesLeetCodeUtil {
 }
 
 class LeetCodeLinkedList extends ChallengesLeetCodeUtil {
-
-    // OOP constructor that initializes the class fields on class object instantiation
-    public LeetCodeLinkedList() {
-        // ! INHERITANCE: child subclass that inherits the extending parent super class
-        super();
-    }
-
     /**
      * ? Amazon LeetCode 876:
      *
@@ -3670,3 +3715,119 @@ class LinkedListNode<T extends Integer> {
     }
 }
 
+class LeetCodeBinarySearch extends ChallengesLeetCodeUtil {
+    /**
+     * ? LeetCode 704: write a function to search target in numbers
+     * ?        given an array of integers, numbers sorted in ascending order & an integer target
+     * ?        if target exists, return index else -1
+     *
+     * ! HINT: left-to-right comparisons & recursion
+     *
+     * * BINARY SEARCH only works with SORTED arrays using partitions
+     *
+     * * O(logn) LOGARITHMIC TIME COMPLEXITY: second-best performance O of log n to the base 2
+     *
+     * @return index or -1 error
+     */
+    public static Integer binarySearch(int[] nums, int target) {
+
+        // ! EXCEPTION HANDLING: LOOK BEFORE YOU LEAP (LBYL) = use conditional if-else block
+        if(nums.length != 0) {
+
+            int leftIndex = 0;
+            int rightIndex = nums.length - 1;
+
+            while(leftIndex <= rightIndex) {
+                int midIndex = (rightIndex + leftIndex) / 2;
+
+                if(nums[midIndex] == target) {
+                    return midIndex;
+                }
+
+                // partition array
+                if(nums[midIndex] < target) {
+                    leftIndex = midIndex + 1;
+                } else {
+                    rightIndex = midIndex - 1;
+                }
+            }
+        }
+        // ! AUTOBOXING: automatically casting primitive dataType to Wrapper class dataType
+        return -1;
+    }
+
+     /**
+      * ? LeetCode 33:
+      *      Company: Meta Facebook
+      *
+      * ? There is an integer array nums sorted in ascending order (with distinct values).
+      * ? Prior to being passed to your function,
+      *     nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length)
+      *     such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed).
+      *     For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+      *
+      * ? Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+      * ? MUST use binary search algorithm to execute with O(log n) runtime complexity.
+      *
+      * * Logic:
+      *     BINARY SEARCH: pre-sorted array traversal & recursively divide array into LEFT/RIGHT partitions, until respective middle element equals search value
+      *         O(logn) logarithmic TIME COMPLEXITY: keep dividing sorted array in half
+      *
+      *     STEP 1: initialize pointers at the start and end of an array
+      *     STEP 2: recursively divide the array down the middle into 2 partitions
+      *     STEP 3: compare middle element against searchValue
+      *     STEP 4: recursive calls will gradually traverse down to a sorted one-element partition and either return found searchValue or null
+      *
+      * * O(logn) logarithmic TIME COMPLEXITY: 2nd best execution performance
+      * * O(1) constant SPACE COMPLEXITY: consistently use only three variables: left, right, middle
+      */
+     public static int searchRotatedArray(int[] nums, int target) {
+
+         // ! EXCEPTION HANDLING look before you leap: use if-else statement to catch errors
+         if(nums.length == 0 || target < 0) return -1;
+
+         // STEP 1: initialize pointers at the start and end of an array
+         int left = 0;
+         int right = nums.length - 1;
+
+         // STEP 4: recursive calls will gradually traverse down to a sorted one-element partition and either return found searchValue or null
+         while(left <= right) {
+
+             int middle = left + (right - left) / 2;
+
+             // STEP 3: compare middle element against searchValue
+             boolean foundTarget = nums[middle] == target;
+             if(foundTarget) return middle;
+
+             // STEP 2: recursively divide the array down the middle into 2 partitions
+             boolean isLeftToRightSorted = nums[left] <= nums[middle];
+
+             if(isLeftToRightSorted) {
+
+                 boolean inLeftPartition = (nums[left] <= target) &&
+                         (target < nums[middle]);
+
+                 if(inLeftPartition) {
+                     // shift right pointer to left partition end index (middle - 1)
+                     right = middle - 1;
+                 } else {
+                      // shift left pointer to right partition start index (middle + 1)
+                     left = middle + 1;
+                 }
+
+             } else { // middle to right partition is sorted
+
+                 boolean inRightPartition = (nums[middle] < target) &&
+                         (target <= nums[right]);
+
+                 if(inRightPartition) {
+                     left = middle + 1;
+                 } else {
+                     right = middle - 1;
+                 }
+             }
+         }
+         return -1;
+     }
+
+}

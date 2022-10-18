@@ -442,27 +442,6 @@ class LeetCodeStringsTest extends ChallengesLeetCode_TestSuite {
         Integer expectedResult = -1;
         assertEquals(expectedResult, actualResult);
     }
-
-    @Test
-    void binarySearch_success() {
-        int[] nums = {1,2,3,4,5,6,7,8,11,13,14,17};
-        int target = 11;
-
-        Integer expectedResult = 8;
-        Integer actualResult = leetCodeStrings.binarySearch(nums, target);
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    void binarySearch_badInput() {
-        int[] nums = {};
-        int target = 11;
-
-        Integer expectedResult = -1;
-        Integer actualResult = leetCodeStrings.binarySearch(nums, target);
-        assertEquals(expectedResult, actualResult);
-    }
-
     @Test
     void groupAnagrams_success() {
         ArrayList<String> testInput = new ArrayList<>();
@@ -1038,6 +1017,33 @@ class LeetCodeArrayTest extends ChallengesLeetCode_TestSuite {
         expected = new int[] {0};
         LeetCodeArrays.moveZeroes(input);
         assertArrayEquals(expected, input);
+    }
+
+    @Test
+    void kDiffPairs_success() {
+        int[] inputArray = {3,1,4,1,5};
+        int k = 2;
+
+        int expected = 2;
+        int actual = LeetCodeArrays.kDiffPairs(inputArray, k);
+        assertEquals(expected, actual);
+
+        inputArray = new int[]{1,2,3,4,5};
+        k = 1;
+
+        expected = 4;
+        actual = LeetCodeArrays.kDiffPairs(inputArray, k);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void kDiffPairs_fail_badInput() {
+        int[] inputArray = {};
+        int k = -1;
+
+        int expected = -1;
+        int actual = LeetCodeArrays.kDiffPairs(inputArray, k);
+        assertEquals(expected, actual);
     }
 }
 
@@ -2058,5 +2064,67 @@ class MinStackTest extends ChallengesLeetCode_TestSuite {
     }
 }
 
+class LeetCodeBinarySearchTest extends ChallengesLeetCode_TestSuite {
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println(BEFORE_ALL);
+    }
+
+    @BeforeEach
+    void setUp() {
+        System.out.println(BEFORE_EACH);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println(AFTER_ALL);
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println(AFTER_EACH);
+    }
+
+    @Test
+    void binarySearch_success() {
+        int[] nums = {1,2,3,4,5,6,7,8,11,13,14,17};
+        int target = 11;
+
+        Integer expectedResult = 8;
+        Integer actualResult = LeetCodeBinarySearch.binarySearch(nums, target);
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void binarySearch_badInput() {
+        int[] nums = {};
+        int target = 11;
+
+        Integer expectedResult = -1;
+        Integer actualResult = LeetCodeBinarySearch.binarySearch(nums, target);
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void searchRotatedArray_success() {
+        int[] inputArray = {4,5,6,7,0,1,2};
+        int target = 0;
+
+        int expected = 4;
+        int actual = LeetCodeBinarySearch.searchRotatedArray(inputArray, target);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void searchRotatedArray_fail_badInput() {
+        int[] inputArray = {};
+        int target = -1;
+
+        int expected = -1;
+        int actual = LeetCodeBinarySearch.searchRotatedArray(inputArray, target);
+        assertEquals(expected, actual);
+    }
+}
 
 
